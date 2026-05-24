@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maps — Climate Activism in Democracy</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    /* ── Map-page-only extras ── */
+    body { background-color: var(--bg); padding-top: var(--nav-h); }
+
+    main { background-color: var(--bg); color: var(--text); }
+
+    /* section headings */
+    .map-title-block {
+      text-align: center;
+      padding: 64px 20px 32px;
+    }
+    .map-title-block h1 { font-family: 'Playfair Display', serif; }
+
+    /* page-internal nav tabs */
+    .map-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 0 40px;
+      flex-wrap: wrap;
+    }
+    .map-tab {
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 28px;
+      border: 1px solid rgba(122, 173, 58, 0.35);
+      border-radius: 2px;
+      color: var(--text-dim);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .map-tab:hover {
+      background: rgba(122, 173, 58, 0.1);
+      color: var(--text-em);
+    }
+
+    /* static map container */
+    .map-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 40px;
+    }
+
+    .static-map-container {
+      position: relative;
+      width: 65%;
+      height: auto;
+    }
+
+    .static-map-container img {
+      width: 100%;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid rgba(122, 173, 58, 0.2);
+    }
+
+    .pointl { width: 20px; height: 20px; }
+
+    .point {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+    }
+
+    .point1 { top: 65%; left: 88%; background: url('marker_1.svg') no-repeat center/contain; }
+    .point2 { top: 28%; left: 80%; background: url('marker_2.svg') no-repeat center/contain; }
+    .point3 { top: 26%; left: 19%; background: url('marker_3.svg') no-repeat center/contain; }
+
+    .text {
+      display: none;
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(10, 22, 5, 0.9);
+      border: 1px solid rgba(122, 173, 58, 0.3);
+      color: var(--text-em);
+      padding: 4px 10px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+    }
+
+    .point:hover .text { display: block; }
+
+    .highlight-area {
+      position: absolute;
+      border: 5px solid #c16b2a;
+      top: 30%;
+      left: 65%;
+      width: 10%;
+      height: 10%;
+    }
+
+    /* RESPONSIVE LEGEND - Updated like the example */
+    .legend {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 65%;
+      background-color: rgba(21, 42, 10, 0.9);
+      border: 1px solid rgba(122, 173, 58, 0.2);
+      border-radius: 4px;
+      margin-top: 12px;
+      padding: 12px 16px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .legend-item img {
+      height: 20px;
+      width: auto;
+    }
+
+    .rectangle {
+      display: inline-block;
+      border: 2px solid #c16b2a;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+    }
+
+    /* Temperature color rectangles for legend */
+    .temp-rect {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .temp-below-neg1 { background-color: #81caf0; }
+    .temp-neg1-to-neg05 { background-color: #a5def1; }
+    .temp-neg05-to-neg02 { background-color: #dcedd3; }
+    .temp-neg02-to-pos02 { background-color: #ffffff; }
+    .temp-pos02-to-pos05 { background-color: #f8ee50; }
+    .temp-pos05-to-pos1 { background-color: #ffcd04; }
+    .temp-pos1-to-pos2 { background-color: #f57e20; }
+    .temp-pos2-to-pos4 { background-color: #ed2024; }
+    .temp-above-pos4 { background-color: #7d1416; }
+
+    /* leaflet section */
+    .leaflet-section { padding: 0 0 40px; }
+
+    #leafletMap {
+      height: 520px;
+      width: 80%;
+      margin: 0 auto 12px;
+      border-radius: 4px;
+      border: 1px solid rgba(122, 173, 58, 0.2);
+      overflow: hidden;
+      display: block;
+    }
+
+    .leaflet-legend {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* excellence box */
+    .excellence-box {
+      margin: 8px auto 40px;
+      padding: 24px 32px;
+      border: 1px dashed rgba(122, 173, 58, 0.3);
+      border-radius: 4px;
+      width: 80%;
+      background-color: rgba(15, 31, 8, 0.5);
+    }
+
+    .excellence-box h3 { margin-bottom: 10px; }
+    .excellence-box p  { font-size: 0.88rem; text-align: left; color: var(--text-dim); }
+
+    /* section divider */
+    .section-rule {
+      width: 80%;
+      margin: 0 auto 8px;
+      border: none;
+      border-top: 1px solid rgba(122, 173, 58, 0.12);
+    }
+
+    /* Leaflet popup theme override */
+    .leaflet-popup-content-wrapper {
+      background: rgba(10, 22, 5, 0.97) !important;
+      border: 1px solid rgba(122, 173, 58, 0.3) !important;
+      border-radius: 4px !important;
+      color: #e8e0cc !important;
+      font-family: 'Jost', sans-serif !important;
+      font-size: 0.85rem !important;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
+    }
+
+    .leaflet-popup-tip { background: rgba(10, 22, 5, 0.97) !important; }
+    .leaflet-popup-close-button { color: rgba(122, 173, 58, 0.6) !important; }
+    .leaflet-popup-close-button:hover { color: #7aad3a !important; }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .static-map-container { width: 94%; }
+      .legend { width: 94%; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+      .legend-item { font-size: 0.65rem; white-space: nowrap; }
+      #leafletMap { width: 94%; }
+      .excellence-box { width: 94%; }
+      .map-tabs { gap: 8px; }
+      .map-tab { padding: 6px 16px; font-size: 0.7rem; }
+    }
+
+    @media (max-width: 550px) {
+      .legend-item { font-size: 0.55rem; gap: 4px; }
+      .legend-item img { height: 16px; }
+      .rectangle, .temp-rect { width: 16px; height: 16px; }
+      .legend { padding: 8px 12px; gap: 6px; }
+    }
+
+    @media (max-width: 480px) {
+      .legend { flex-direction: column; align-items: flex-start; }
+      .legend-item { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+   <nav class="map-page-nav">
+    <span class="nav-brand">Climate &amp; Democracy</span>
+    <button class="menu-toggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-links">
+      <a class="nav" href="index.html">Home</a>
+      <a class="nav" href="about.html">About</a>
+      <a id="active" class="nav" href="map.html">Map</a>
+    </div>
+  </nav>
+
+    <!-- ── Section 1: Temperature map ── -->
+    <section id="image">
+      <div class="map-title-block fade-up">
+        <span class="home-eyebrow">Visualisation</span>
+        <h1>Global Temperature Changes</h1>
+        <div class="divider" style="margin: 16px auto;"></div>
+      </div>
+
+      <div class="map-tabs">
+        <a class="map-tab" href="#image">Temperature Change</a>
+        <a class="map-tab" href="#leaflet">Climate Activism</a>
+      </div>
+
+      <div class="map-wrapper fade-up-2">
+        <div class="static-map-container">
+          <img src="wo-Photoroom.png" alt="Global temperature anomaly map">
+          <div class="point point1"><div class="text">42°C (Summer)</div></div>
+          <div class="point point2"><div class="text">36.7°C (Late Spring)</div></div>
+          <div class="point point3"><div class="text">47.8°C (Summer)</div></div>
+          <div class="point highlight-area"><div class="text">Most heatwave prone zone</div></div>
+        </div>
+
+        <!-- UPDATED LEGEND - Using flexbox with legend-item structure -->
+        <div class="legend">
+          <div class="legend-item"><img src="marker_1.svg" class="pointl"> Sydney</div>
+          <div class="legend-item"><img src="marker_2.svg" class="pointl"> Shanghai</div>
+          <div class="legend-item"><img src="marker_3.svg" class="pointl"> Phoenix</div>
+          <div class="legend-item"><div class="rectangle"></div> South Asia</div>
+          <div class="legend-item"><div class="temp-rect temp-below-neg1"></div> Below −1.0</div>
+          <div class="legend-item"><div class="temp-rect temp-neg1-to-neg05"></div> −1.0 to −0.5</div>
+          <div class="legend-item"><div class="temp-rect temp-neg05-to-neg02"></div> −0.5 to −0.2</div>
+          <div class="legend-item"><div class="temp-rect temp-neg02-to-pos02"></div> −0.2 to +0.2</div>
+          <div class="legend-item"><div class="temp-rect temp-pos02-to-pos05"></div> +0.2 to +0.5</div>
+          <div class="legend-item"><div class="temp-rect temp-pos05-to-pos1"></div> +0.5 to +1.0</div>
+          <div class="legend-item"><div class="temp-rect temp-pos1-to-pos2"></div> +1.0 to +2.0</div>
+          <div class="legend-item"><div class="temp-rect temp-pos2-to-pos4"></div> +2.0 to +4.0</div>
+          <div class="legend-item"><div class="temp-rect temp-above-pos4"></div> Above +4.0</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- ── Section 2: Leaflet activism map ── -->
+    <section id="leaflet" class="leaflet-section">
+      <div class="map-title-block fade-up">
+        <span class="home-eyebrow">Activism</span>
+        <h1>Significant Climate Activism around the World</h1>
+        <div class="divider" style="margin: 16px auto;"></div>
+      </div>
+
+      <div class="leaflet-legend">
+        <img src="marker.svg" class="pointl" alt="marker">
+        <span>Important city</span>
+        <em class="rectangle">&nbsp;&nbsp;&nbsp;</em>
+        <span>Upcoming activism region</span>
+      </div>
+
+      <div style="display:flex;justify-content:center;">
+        <div id="leafletMap"></div>
+      </div>
+
+      <div class="excellence-box">
+        <h3>Excellence Points</h3>
+        <p>I designed custom marker icons and provided informative overlays and popups for each map.
+           Additionally, I styled the static map overlays to be responsive and layered them accurately
+           using CSS.</p>
+      </div>
+    </section>
+
+    <footer>
+      By <a href="https://data.giss.nasa.gov/gistemp/maps/index_v4.html">NASA's Scientific Visualization Studio</a>,
+      Key and Title by uploader (Eric Fisk),
+      <a href="https://commons.wikimedia.org/w/index.php?curid=113131169">BY-SA 4.0</a>
+    </footer>
+
+  </main>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('leafletMap').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const icon = L.icon({ iconUrl: 'marker.svg', iconSize: [24, 24] });
+
+    L.marker([37.5665, 126.9780], { icon }).addTo(map)
+      .bindPopup("Seoul — Over 30,000 protesters criticised the government's inaction on climate change, highlighting the country's reliance on coal and slow adoption of renewable energy.");
+
+    L.marker([52.5200, 13.4050], { icon }).addTo(map)
+      .bindPopup("Berlin — Approximately 75,000 demonstrators called for a transition away from fossil fuels and criticised the government's climate policies.");
+
+    L.marker([-34.6037, -58.3816], { icon }).addTo(map)
+      .bindPopup("Buenos Aires — The protests focused on deforestation, fossil fuel dependence, and environmental justice, linking local issues with global climate action.");
+
+    L.rectangle([[4, -17], [20, 15]], { color: "#c16b2a", weight: 2, fillOpacity: 0.06 })
+      .addTo(map)
+      .bindPopup("West Africa — Climate activism has been growing rapidly in West Africa, driven by the impacts of climate change such as flooding, desertification, and threats to agriculture and livelihoods. Young activists and groups are increasingly organising protests, awareness campaigns, and calls for government action on climate policies.");
+  </script>
+  <script>
+  // Hamburger menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function() {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+      link.addEventListener('click', function() {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+  </script>
+</body>
+</html>

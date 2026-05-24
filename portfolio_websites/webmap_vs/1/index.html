@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Climate Activism in Democracy</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="home">
+
+  <header>
+   <nav>
+  <span class="nav-brand">Climate &amp; Democracy</span>
+  <button class="menu-toggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links">
+    <a id="active" class="nav" href="index.html">Home</a>
+    <a class="nav" href="about.html">About</a>
+    <a class="nav" href="map.html">Map</a>
+  </div>
+</nav>
+    <em class="header-hint">Hover over the footer and click on hyperlinks to go to the source websites</em>
+  </header>
+
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <span class="home-eyebrow fade-up">Global Perspective</span>
+      <h1 class="fade-up-2">Climate Activism<br>in Democracy</h1>
+      <div class="divider fade-up-3"></div>
+      <p class="fade-up-3">
+        Climate change poses a great challenge for democracy, and its endurance—probably the greatest
+        challenge it has ever seen. If greenhouse gas emissions are not reduced and global warming kept
+        within the targets set in the Paris Agreement, the impact on populations, infrastructure and
+        nature will be dire, while governing systems and democratic frameworks will be brought under
+        severe stress.
+      </p>
+      <a href="about.html" class="home-cta fade-up-4">Explore the issue</a>
+    </div>
+  </section>
+
+  <footer>
+    <b>Sources:</b>
+    Retrieved from <a href="https://www.idea.int/sites/default/files/publications/democracy-and-the-challenge-of-the-climate-change.pdf">"Democracy and the Challenge of Climate Change."</a> International IDEA, 2021.;
+    Photo by <a href="https://unsplash.com/photos/woman-in-black-jacket-holding-white-printer-paper-ctUIyfOyWsE">Mika Baumeister</a> on <a href="https://unsplash.com/">Unsplash</a>
+  </footer>
+
+  <script>
+  // Hamburger menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function() {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+      link.addEventListener('click', function() {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+</script>
+
+</body>
+</html>

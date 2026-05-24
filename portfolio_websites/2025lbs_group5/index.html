@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Emergency Accessibility Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+
+<body>
+  <div id="sidebar">
+    <h1>Salzburg Traffic Sign Map</h1>
+    <p>Salzburg road attribute consistence by Traffic Signs.</p>
+    <div class="layer-control">
+      <h2>Switch layers</h2>
+      <button class="layer-button" onclick="switchToOneway()">Oneway</button>
+      <button class="layer-button" onclick="switchToMaxspeed()">
+        Maxspeed
+      </button>
+      <button class="layer-button" onclick="switchToOther()">
+        Weight restrictions
+      </button>
+    </div>
+    <div class="legend">
+      <h2>Map Legend</h2>
+      <ul>
+        <li id="roadnet">
+          <span class="black_line"></span>&nbsp;
+          <span>city roadnet</span>
+        </li>
+        <li id="consistent">
+          <span class="green_line"></span>&nbsp;<span>consistent roads</span>
+        </li>
+        <li id="mismatching">
+          <span class="red_line"></span>&nbsp;<span>inconsistent roads - mismatching attribute</span>
+        </li>
+        <li id="missing">
+          <span class="orange_line"></span>&nbsp;<span>inconsistent roads - missing</span>
+        </li>
+        <li id="oneway">
+          <img src="images/Einbahnstrasse.jpg" class="red_img" /> &nbsp;Oneway
+          traffic signs
+        </li>
+        <li id="maxspeed">
+          <span style="display: inline-block; width: 16px; height: 16px; border: 2px solid red; background: white; border-radius: 50%; vertical-align: middle;"></span>
+          &nbsp;Maxspeed traffic signs
+        </li>
+        
+        <li id="other">
+          <span style="display: inline-block; width: 10px; height: 10px; border: 2px solid red; background: white; border-radius: 50%; vertical-align: middle;"></span> &nbsp; Weight Restriction
+          traffic signs
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="map">
+    <div id="chart-container">
+  <div id="chart-title">Traffic Sign Statistics</div>
+  <svg id="statistics-chart" width="280" height="200"></svg>
+</div>
+  </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+
+
+
+</body>
+
+</html>

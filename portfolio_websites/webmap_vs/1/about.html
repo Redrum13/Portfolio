@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>About — Climate Activism in Democracy</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+
+    <header>
+   <nav>
+  <span class="nav-brand">Climate &amp; Democracy</span>
+  <button class="menu-toggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links">
+    <a class="nav" href="index.html">Home</a>
+    <a id="active" class="nav" href="about.html">About</a>
+    <a class="nav" href="map.html">Map</a>
+  </div>
+</nav>
+    </header>
+
+    <section class="about-layout">
+      <div class="about-image-col fade-up">
+        <img src="pineapple.jpg" alt="Environmental protest scene">
+        <div class="about-image-overlay"></div>
+      </div>
+
+      <div class="about-text-col">
+        <span class="home-eyebrow fade-up">Context</span>
+        <h2 class="fade-up-2">How climate activism fits<br>in the overall theme<br>of democracy?</h2>
+        <div class="divider fade-up-3"></div>
+        <p class="fade-up-3">
+          In the overall theme of democracy, freedom of assembly, association, personal property,
+          freedom of religion and speech, citizenship, consent of the governed, voting rights,
+          freedom from unwarranted governmental deprivation of the right to life and liberty, and
+          minority rights are included. Thus, activism forms a cornerstone of democracy.
+        </p>
+        <p class="fade-up-4" style="margin-top: 20px;">
+          The climate movement seeks to put pressure on governments and industries to take action to
+          curb the impact of climate change. With rising temperatures and shifting weather patterns,
+          the impact of climate change, which is primarily a result of the burning of fossil fuels,
+          poses a huge risk to humans and the environment. Climate change activists such as Greta
+          Thunberg advocate centring climate justice in their message, which argues that those most
+          responsible for climate change should also contribute the most to addressing the problem.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <b>Sources:</b>
+      Retrieved from <a href="https://www.liberties.eu/en/stories/activism/44871">"Climate Activism." Liberties.eu</a>, Civil Liberties Union for Europe.;
+      Photo by <a href="https://www.pexels.com/photo/pineapple-on-sand-139264/">Pineapple Supply Co.</a> from Pexels
+    </footer>
+
+  </main>
+  <script>
+  // Hamburger menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function() {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+      link.addEventListener('click', function() {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+</script>
+</body>
+</html>

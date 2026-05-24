@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tilia cordata · Vienna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #c8cfc0; /*   #1a1c18    */
+      --surface:   #b2c9a0; /*   #21241e    */
+      --border:    #7db87d; /*   #2e3229    */
+      --text:      #1a1c18; /*   #c8cfc0    */
+      --muted:     #6b7564; /*   #6b7564    */
+      --accent:    #2e3229; /*   #7db87d    */
+      --accent2:   #21241e; /*   #b2c9a0    */
+      --tooltip-bg:#b2c9a0;
+      --radius:    6px;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-mono:  'DM Mono', monospace;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      overflow: hidden;
+    }
+
+    /* ── layout ── */
+    .shell {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: 100vh;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    @media (max-width: 720px) {
+      html, body { overflow: auto; }
+      .shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: auto;
+        min-height: 100vh;
+      }
+    }
+
+    /* ── sidebar ── */
+    #sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #sidebar h1 {
+      font-size: 1.55rem;
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--accent2);
+      letter-spacing: 0.01em;
+    }
+
+    #sidebar h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .desc span {
+      color: var(--accent2);
+    }
+
+    /* ── divider ── */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── legend ── */
+    .legend-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    #legend { /* svg legend container */
+      width: 100%;
+    }
+
+    /* ── map ── */
+    #mapContainer {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    @media (max-width: 720px) {
+      #mapContainer {
+        height: 65vw;
+        min-height: 300px;
+      }
+    }
+
+    #mapContainer svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ── tooltip ── */
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--tooltip-bg);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      line-height: 1.65;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      max-width: 220px;
+      white-space: normal;
+    }
+
+    .tooltip strong {
+      display: block;
+      color: var(--accent2);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    /* ── zoom buttons ── */
+    #zoom-buttons {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 20;
+    }
+
+    #zoom-buttons button {
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--accent2);
+      font-family: var(--font-mono);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    #zoom-buttons button:hover {
+      background: var(--border);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── loading indicator ── */
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 1; }
+    }
+    #loading span { animation: pulse 1.8s ease-in-out infinite; }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- ── Sidebar ── -->
+    <aside id="sidebar">
+      <div>
+        <p class="eyebrow">Urban Forest · Vienna</p>
+        <h1><em>Tilia cordata</em><br>family</h1>
+      </div>
+
+      <p class="desc">
+        Circle <span>size</span> encodes crown diameter.
+        Color <span>hue</span> reflects planting year —
+        lighter tones for older trees, deeper green for recent plantings.
+        Older trees tend toward larger canopies.
+      </p>
+
+      <hr class="rule">
+
+      <div>
+        <p class="legend-label">Planting year</p>
+        <div id="legend"></div>
+      </div>
+    </aside>
+
+    <!-- ── Map ── -->
+    <main id="mapContainer">
+      <div id="loading"><span>loading map data…</span></div>
+    </main>
+
+  </div>
+
+  <!-- zoom controls -->
+  <div id="zoom-buttons">
+    <button onclick="zoomIn()" title="Zoom in">+</button>
+    <button onclick="zoomOut()" title="Zoom out">−</button>
+  </div>
+
+  <script>
+  /* ─────────────────────────────────────────
+     CONFIG
+  ───────────────────────────────────────── */
+  const W = 1000, H = 450;
+
+  const COLOR_DOMAIN = [0, 1900, 2000, 2021];
+  const COLOR_RANGE  = ["#b2e2e2","#c2e699","#78c679","#238443"];
+  const treeColor    = d3.scaleLinear().domain(COLOR_DOMAIN).range(COLOR_RANGE);
+  const treeRadius   = d3.scalePow().exponent(2).domain([0, 8]).range([1.5, 25]);
+
+  /* ─────────────────────────────────────────
+     SVG SETUP
+  ───────────────────────────────────────── */
+  const svg = d3.select("#mapContainer")
+    .append("svg")
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("viewBox", `0 0 ${W} ${H}`);
+
+  const zoomGroup = svg.append("g").attr("class", "zoom-group");
+  const streetLayer = zoomGroup.append("g").attr("class", "streets");
+  const treeLayer   = zoomGroup.append("g").attr("class", "trees");
+
+  const projection = d3.geoEquirectangular().scale(2500).translate([W/2, H/2]);
+  const path = d3.geoPath().projection(projection);
+
+  /* ─────────────────────────────────────────
+     TOOLTIP
+  ───────────────────────────────────────── */
+  const tooltip = d3.select("#mapContainer")
+    .append("div")
+    .attr("class", "tooltip");
+
+  /* ─────────────────────────────────────────
+     ZOOM
+  ───────────────────────────────────────── */
+  const zoom = d3.zoom()
+    .scaleExtent([2, 10])
+    .on("zoom", (event) => {
+      zoomGroup.attr("transform", event.transform);
+    });
+
+  svg.call(zoom);
+
+  function zoomIn()  { svg.transition().duration(320).call(zoom.scaleBy, 2); }
+  function zoomOut() { svg.transition().duration(320).call(zoom.scaleBy, 0.5); }
+
+  /* ─────────────────────────────────────────
+     LOAD DATA
+  ───────────────────────────────────────── */
+  Promise.all([
+    d3.json("https://raw.githubusercontent.com/RassCrom/geovisual_vienna_trees/refs/heads/main/streets-oldtown.geojson.geojson"),
+    d3.json("https://raw.githubusercontent.com/RassCrom/geovisual_vienna_trees/main/streets.geojson")
+  ]).then(([streets, trees]) => {
+
+    d3.select("#loading").remove();
+
+    // fit projection to streets extent
+    projection.fitSize([W, H], streets);
+
+    svg.call(zoom.scaleBy, 1.55);  // adds one zoom level
+    // streets
+    streetLayer.selectAll("path")
+      .data(streets.features)
+      .enter().append("path")
+        .attr("d", path)
+        .attr("fill", "none")
+        .attr("stroke", "#3a3f35")
+        .attr("stroke-width", 0.6)
+        .attr("stroke-opacity", 0.9);
+
+    // trees
+    const tilias = trees.features.filter(d =>
+      d.properties.TreeType === "Tilia cordata (Winterlinde)" ||
+      d.properties.TreeType === "Tilia cordata 'Greenspire' (Stadtlinde)" ||
+      d.properties.TreeType === "Tilia cordata 'Rancho' (Kleinblättrige Winterlinde)"
+    );
+
+    treeLayer.selectAll("circle")
+      .data(tilias)
+      .enter().append("circle")
+        .attr("cx", d => projection(d.geometry.coordinates)[0])
+        .attr("cy", d => projection(d.geometry.coordinates)[1])
+        .attr("r",  d => treeRadius(d.properties.TreeCrownDiameter))
+        .attr("fill",         d => treeColor(d.properties.PlantingYear))
+        .attr("fill-opacity", 0.78)
+        .attr("stroke", "#1a1c18")
+        .attr("stroke-width", 0.6)
+        .attr("stroke-opacity", 0.7)
+        .on("mouseover", function(event, d) {
+          const r0 = treeRadius(d.properties.TreeCrownDiameter);
+
+          d3.select(this)
+            .raise()
+            .transition().duration(220).ease(d3.easeCubicOut)
+              .attr("r", Math.max(r0 * 1.6, 8))
+              .attr("fill", "#9fe89f")
+              .attr("stroke", "#c8cfc0")
+              .attr("stroke-width", 1.2)
+              .attr("fill-opacity", 1);
+
+          tooltip
+            .html(`<strong>${d.properties.TreeType}</strong>
+                   Planted: ${d.properties.PlantingYear}<br>
+                   Crown: ${d.properties.TreeCrownDiameter_txt}`)
+            .style("left", (event.offsetX + 14) + "px")
+            .style("top",  (event.offsetY + 14) + "px")
+            .style("opacity", 1);
+        })
+        .on("mousemove", function(event) {
+          tooltip
+            .style("left", (event.offsetX + 14) + "px")
+            .style("top",  (event.offsetY + 14) + "px");
+        })
+        .on("mouseout", function(event, d) {
+          d3.select(this)
+            .transition().duration(350).ease(d3.easeCubicOut)
+              .attr("r",            d => treeRadius(d.properties.TreeCrownDiameter))
+              .attr("fill",         d => treeColor(d.properties.PlantingYear))
+              .attr("fill-opacity", 0.78)
+              .attr("stroke", "#1a1c18")
+              .attr("stroke-width", 0.6);
+
+          tooltip.style("opacity", 0);
+        });
+
+  }).catch(err => {
+    d3.select("#loading span").text("failed to load data");
+    console.error(err);
+  });
+
+  /* ─────────────────────────────────────────
+     LEGEND  (inline SVG in sidebar)
+  ───────────────────────────────────────── */
+  (function buildLegend() {
+    const lw = 240, lh = 180;
+    const lg = d3.select("#legend")
+      .append("svg")
+      .attr("width", lw)
+      .attr("height", lh)
+      .style("overflow", "visible");
+
+    const legendColor = d3.scaleLinear()
+      .domain([0, 1800, 2000, 2021])
+      .range(COLOR_RANGE);
+
+    const yearLabels = ["pre‑1900", "1900", "2000", "2021"];
+    const yearValues = [0, 1900, 2000, 2021];
+    const cx = 14, gapX = 58;
+
+    // color legend
+    yearValues.forEach((v, i) => {
+      lg.append("circle")
+        .attr("cx", cx + i * gapX)
+        .attr("cy", 14)
+        .attr("r", 7)
+        .attr("fill", legendColor(v))
+        .attr("stroke", "#3a3f35")
+        .attr("stroke-width", 0.8);
+
+      lg.append("text")
+        .attr("x", cx + i * gapX)
+        .attr("y", 30)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#6b7564")
+        .attr("font-family", "'DM Mono', monospace")
+        .attr("font-size", "8px")
+        .text(yearLabels[i]);
+    });
+
+    // size legend
+    const sizeLabels = [1, 4, 8];
+    const sizeScale  = d3.scalePow().exponent(2).domain([0,8]).range([3,18]);
+    const sy = 80;
+
+    lg.append("text")
+      .attr("x", 0).attr("y", sy - 14)
+      .attr("fill", "#6b7564")
+      .attr("font-family", "'DM Mono', monospace")
+      .attr("font-size", "8px")
+      .attr("letter-spacing", "0.1em")
+      .text("CROWN DIAMETER");
+
+    sizeLabels.forEach((v, i) => {
+      const r  = sizeScale(v);
+      const x  = cx + i * gapX;
+      const cy2= sy + 20;
+
+      lg.append("circle")
+        .attr("cx", x).attr("cy", cy2)
+        .attr("r", r)
+        .attr("fill", "none")
+        .attr("stroke", "#6b7564")
+        .attr("stroke-width", 0.8);
+
+      lg.append("text")
+        .attr("x", x).attr("y", cy2 + r + 12)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#6b7564")
+        .attr("font-family", "'DM Mono', monospace")
+        .attr("font-size", "8px")
+        .text(v + " m");
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-family: sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#sidebar {
+  flex: 3;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #f0f4f8;
+  border-right: 1px solid #ccc;
+  padding: 1rem;
+}
+
+#sidebar h1 {
+  font-size: 2.5rem;
+  color: #1f4e79;
+  margin: 1rem;
+}
+
+#sidebar h2 {
+  font-size: 1.5rem;
+  color: #1f4e79;
+}
+
+#sidebar p {
+  font-size: 1rem;
+  color: #333333;
+  margin: 1rem;
+}
+
+#map {
+  flex: 7;
+}
+
+.layer-control {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem 0 1rem;
+}
+
+.layer-button {
+  margin: 5px 0;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #0e2f4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.layer-button:hover {
+  background: #045a8d;
+}
+
+.layer-button.active {
+  background: #6a1104;
+  color: white;
+  box-shadow: 0 6px 12px rgba(179, 18, 0, 0.073);
+}
+
+.layer-button p {
+  font-size: 1rem;
+  margin: 1rem;
+}
+
+.legend ul {
+  display: flex;
+  flex-direction: column;
+}
+.legend h2 {
+  margin-left: 1rem;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+}
+
+.red_img {
+  width: 30px;
+  height: 15px;
+}
+
+.green_line {
+  background-color: green;
+  width: 30px;
+  height: 3px;
+  opacity: 1;
+}
+
+.red_line {
+  background-color: red;
+  width: 30px;
+  height: 3px;
+  opacity: 1;
+}
+
+.orange_line {
+  background-color: orange;
+  width: 30px;
+  height: 3px;
+  opacity: 1;
+}
+
+.black_line {
+  background-color: black;
+  width: 30px;
+  height: 3px;
+  opacity: 1;
+}
+
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  min-width: 200px;
+  bottom: 12px;
+  left: -50px;
+  z-index: 100;
+}
+
+.ol-popup:after,
+.ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+.leaflet-tooltip.speed-label {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: #222; /* 深灰文字，可改 */
+  font-size: 12px; /* 根据地图比例可调整 */
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+
+.custom-icon {
+  background: transparent;
+  border: none;
+}
+
+.speed-label {
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+
+
+/* Chart container styles */
+#chart-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 300px;
+  display: none;
+}
+
+#chart-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1f4e79;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chart-bar {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.chart-bar:hover {
+  opacity: 0.8;
+}
+
+.axis-text {
+  font-family: sans-serif;
+  font-size: 12px;
+  fill: #333;
+}
+
+.axis-label {
+  font-family: sans-serif;
+  font-size: 11px;
+  fill: #666;
+}
+
+.value-label {
+  font-family: sans-serif;
+  font-size: 11px;
+  fill: white;
+  font-weight: bold;
+}

@@ -1,0 +1,215 @@
+{
+  "version": 8,
+  "name": "Empty Style",
+  "metadata": {"maputnik:renderer": "mlgljs"},
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=4ipKPMF0tFhqK3Gc7eK5"
+    }
+  },
+  "sprite": "",
+  "glyphs": "https://orangemug.github.io/font-glyphs/glyphs/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {"background-color": "rgba(144, 134, 122, 1)"}
+    },
+    {
+      "id": "landcover",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": {
+          "stops": [
+            [8, "rgba(84, 107, 85, 1)"],
+            [18, "rgba(101, 107, 84, 0.22)"]
+          ]
+        }
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": ["all"],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": {
+          "stops": [[8, "rgba(44, 63, 84, 1)"], [18, "rgba(78, 94, 111, 0.8)"]]
+        }
+      }
+    },
+    {
+      "id": "rivers",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "minzoom": 10,
+      "layout": {"visibility": "visible"},
+      "paint": {"line-color": "rgba(44, 63, 84, 1)"}
+    },
+    {
+      "id": "roads",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 11,
+      "filter": [
+        "any",
+        ["==", "class", "trunk"],
+        ["==", "class", "primary"],
+        ["==", "class", "secondary"]
+      ],
+      "paint": {"line-color": "rgba(103, 45, 45, 1)", "line-width": 2}
+    },
+    {
+      "id": "roads_all",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 11,
+      "paint": {
+        "line-color": "rgba(119, 70, 70, 1)",
+        "line-width": {"base": 1, "stops": [[8, 0], [16, 3], [17, 7]]}
+      }
+    },
+    {
+      "id": "admin-inside",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "boundary",
+      "minzoom": 11,
+      "filter": ["all"],
+      "paint": {
+        "line-opacity": 1,
+        "line-width": 2,
+        "line-color": "rgba(43, 13, 13, 1)"
+      }
+    },
+    {
+      "id": "admin",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "boundary",
+      "filter": ["all", ["==", "admin_level", 4]],
+      "paint": {"line-opacity": 1, "line-width": 2}
+    },
+    {
+      "id": "buildings",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "minzoom": 11,
+      "paint": {"fill-color": "rgba(70, 54, 54, 1)"}
+    },
+    {
+      "id": "places-point",
+      "type": "circle",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "filter": ["any", ["==", "class", "castle"], ["==", "class", "office"]],
+      "paint": {
+        "circle-stroke-opacity": 0,
+        "circle-color": "rgba(83, 0, 0, 1)",
+        "circle-radius": 4,
+        "circle-opacity": 0.7
+      }
+    },
+    {
+      "id": "places-main-name",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 6,
+      "maxzoom": 24,
+      "filter": ["any", ["==", "name", "New Delhi"]],
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-size": 18,
+        "text-font": ["Open Sans Regular"],
+        "visibility": "visible",
+        "text-anchor": "center"
+      },
+      "paint": {
+        "text-halo-color": "rgba(144, 134, 122, 1)",
+        "icon-halo-width": 0,
+        "text-halo-width": 3,
+        "text-halo-blur": 1
+      }
+    },
+    {
+      "id": "places-interest",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "minzoom": 10,
+      "filter": [
+        "any",
+        ["==", "class", "monument"],
+        ["==", "class", "castle"],
+        ["==", "class", "office"]
+      ],
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-size": 10,
+        "text-font": ["Open Sans Regular"],
+        "visibility": "visible",
+        "text-anchor": "bottom-right",
+        "text-justify": "auto",
+        "text-offset": [-0.5, 1.5]
+      },
+      "paint": {
+        "text-halo-color": "rgba(144, 134, 122, 1)",
+        "icon-halo-width": 0,
+        "text-halo-width": 3,
+        "text-halo-blur": 1
+      }
+    },
+    {
+      "id": "places-main",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 9,
+      "filter": ["all", ["==", "class", "city"], ["!=", "name", "New Delhi"]],
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-size": 14,
+        "text-font": ["Open Sans Regular"],
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-halo-color": "rgba(144, 134, 122, 1)",
+        "icon-halo-width": 0,
+        "text-halo-width": 3,
+        "text-halo-blur": 1
+      }
+    },
+    {
+      "id": "places",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 12,
+      "filter": ["none", ["==", "class", "city"]],
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-size": 10,
+        "text-font": ["Open Sans Regular"],
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-halo-color": "rgba(144, 134, 122, 1)",
+        "icon-halo-width": 0,
+        "text-halo-width": 3,
+        "text-halo-blur": 1
+      }
+    }
+  ],
+  "id": "aenc2d7"
+}
