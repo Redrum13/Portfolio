@@ -7,25 +7,60 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
+
+  /* ═══════════════════════════════════════════════
+     COLOUR SYSTEM
+     Background family  → blue (water)
+     Text / UI family   → brown (land / leather)
+     All colours live here — nothing hardcoded below
+  ═══════════════════════════════════════════════ */
   :root {
-    --ink: #0d1117;
-    --parchment: #f5f0e8;
-    --aged: #e8dfc8;
-    --sienna: #8b4513;
-    --gold: #c9943a;
-    --teal: #2a6b6e;
-    --rust: #b5451b;
-    --fog: #d4cfc6;
-    --midnight: #1a2332;
-    --grid-line: rgba(42,107,110,0.12);
+    /* Blues — background & surface hierarchy */
+    --blue-deep:    #0b2233;   /* page background — deep ocean */
+    --blue-mid:     #123650;   /* section alt background */
+    --blue-surface: #1a4a6b;   /* cards, panels */
+    --blue-lift:    #1f799b;   /* primary accent, active states */
+    --blue-light:   #5aaac8;   /* secondary accent, hover glows */
+    --blue-mist:    #a8d4e6;   /* subtle tints, borders */
+
+    /* Browns — text & UI land elements */
+    --brown-ink:    #2b1a0a;   /* darkest — not used on dark bg */
+    --brown-dark:   #5c3317;   /* dark brown for borders on light */
+    --brown-mid:    #8b5a2b;   /* mid brown, secondary text on light */
+    --brown-warm:   #c4884a;   /* warm tan — primary accent on dark */
+    --brown-sand:   #deb887;   /* main body text on dark bg */
+    --brown-cream:  #f5e6cc;   /* headings / high-contrast text */
+
+    /* Semantic aliases — used in the CSS below */
+    --bg:           var(--blue-deep);
+    --bg-alt:       var(--blue-mid);
+    --bg-card:      var(--blue-surface);
+    --bg-lift:      var(--blue-lift);
+
+    --text-primary:   var(--brown-cream);   /* headings — contrast ~12:1 on --bg */
+    --text-body:      var(--brown-sand);    /* body copy — contrast ~9:1 on --bg  */
+    --text-subtle:    var(--blue-mist);     /* labels, coords — contrast ~7:1 on --bg */
+    --text-muted:     #8ab8cc;             /* de-emphasised — still ≥7:1 on --bg  */
+
+    --accent-warm:    var(--brown-warm);    /* gold/amber — titles, icons on dark  */
+    --accent-cool:    var(--blue-lift);     /* azure — active tabs, links          */
+    --accent-hover:   var(--blue-light);    /* lighter azure for hover states      */
+
+    --border:         rgba(196,136,74,0.25);
+    --border-blue:    rgba(31,121,155,0.35);
+    --grid-line:      rgba(31,121,155,0.14);
+
+    --nav-bg:         rgba(11,34,51,0.93);
+    --card-overlay:   rgba(11,34,51,0.96);
+    --drawer-bg:      rgba(11,34,51,0.99);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--ink);
-    color: var(--parchment);
+    background: var(--bg);
+    color: var(--text-body);
     font-family: 'DM Mono', monospace;
     font-weight: 300;
     overflow-x: hidden;
@@ -37,7 +72,7 @@
   /* ─── CURSOR ─── */
   .cursor {
     width: 12px; height: 12px;
-    border: 1.5px solid var(--gold); border-radius: 50%;
+    border: 1.5px solid var(--accent-warm); border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
@@ -45,7 +80,7 @@
     display: none;
   }
   @media (hover: hover) { .cursor { display: block; } }
-  .cursor.expanded { width: 40px; height: 40px; border-color: var(--teal); opacity: 0.6; }
+  .cursor.expanded { width: 40px; height: 40px; border-color: var(--accent-cool); opacity: 0.6; }
 
   /* ─── GRID OVERLAY ─── */
   body::before {
@@ -62,37 +97,37 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
     display: flex; align-items: center; justify-content: space-between;
     padding: 1.4rem 3rem;
-    border-bottom: 1px solid rgba(201,148,58,0.2);
-    background: rgba(13,17,23,0.92);
+    border-bottom: 1px solid var(--border);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
   }
   .nav-logo {
     font-family: 'Playfair Display', serif;
     font-size: 1.05rem; font-weight: 700; letter-spacing: 0.06em;
-    color: var(--gold); text-decoration: none; z-index: 201; position: relative;
+    color: var(--accent-warm); text-decoration: none; z-index: 201; position: relative;
   }
-  .nav-logo span { color: var(--parchment); font-style: italic; font-weight: 400; }
+  .nav-logo span { color: var(--text-primary); font-style: italic; font-weight: 400; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a {
     font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--fog); text-decoration: none; transition: color 0.2s; position: relative;
+    color: var(--text-subtle); text-decoration: none; transition: color 0.2s; position: relative;
   }
   .nav-links a::after {
     content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-    height: 1px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s;
+    height: 1px; background: var(--accent-warm); transform: scaleX(0); transition: transform 0.3s;
   }
-  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover { color: var(--accent-warm); }
   .nav-links a:hover::after { transform: scaleX(1); }
-  .nav-coords { font-size: 0.6rem; color: var(--teal); letter-spacing: 0.1em; }
+  .nav-coords { font-size: 0.6rem; color: var(--accent-cool); letter-spacing: 0.1em; }
 
   /* ─── HAMBURGER ─── */
   .nav-hamburger {
     display: none; flex-direction: column; justify-content: center; gap: 5px;
-    background: none; border: 1px solid rgba(201,148,58,0.3);
+    background: none; border: 1px solid var(--border);
     cursor: pointer; padding: 8px 10px; z-index: 201; position: relative;
   }
   .nav-hamburger span {
-    display: block; width: 22px; height: 1.5px; background: var(--gold);
+    display: block; width: 22px; height: 1.5px; background: var(--accent-warm);
     transition: transform 0.3s, opacity 0.3s, width 0.3s; transform-origin: center;
   }
   .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
@@ -102,7 +137,7 @@
   /* ─── DRAWER OVERLAY ─── */
   .nav-drawer-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5); z-index: 299; opacity: 0; transition: opacity 0.3s;
+    background: rgba(0,0,0,0.6); z-index: 299; opacity: 0; transition: opacity 0.3s;
   }
   .nav-drawer-overlay.open { display: block; opacity: 1; }
 
@@ -110,7 +145,7 @@
   .nav-drawer {
     position: fixed; top: 0; right: 0; bottom: 0;
     width: 78vw; max-width: 300px;
-    background: rgba(13,17,23,0.98); border-left: 1px solid rgba(201,148,58,0.2);
+    background: var(--drawer-bg); border-left: 1px solid var(--border);
     z-index: 300; display: flex; flex-direction: column;
     padding: 5rem 1.8rem 2rem;
     transform: translateX(100%);
@@ -120,25 +155,25 @@
   .nav-drawer.open { transform: translateX(0); }
   .drawer-close {
     position: absolute; top: 1.2rem; right: 1.2rem;
-    background: none; border: 1px solid rgba(201,148,58,0.3);
-    color: var(--gold); cursor: pointer; width: 38px; height: 38px;
+    background: none; border: 1px solid var(--border);
+    color: var(--accent-warm); cursor: pointer; width: 38px; height: 38px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.1rem; transition: background 0.2s;
   }
-  .drawer-close:hover { background: rgba(201,148,58,0.1); }
+  .drawer-close:hover { background: rgba(196,136,74,0.12); }
   .drawer-links { display: flex; flex-direction: column; gap: 0; list-style: none; margin-bottom: 2rem; }
-  .drawer-links li { border-bottom: 1px solid rgba(201,148,58,0.1); }
+  .drawer-links li { border-bottom: 1px solid rgba(196,136,74,0.12); }
   .drawer-links a {
     display: block; font-family: 'Playfair Display', serif;
-    font-size: 1.5rem; font-weight: 700; color: var(--fog);
+    font-size: 1.5rem; font-weight: 700; color: var(--text-subtle);
     text-decoration: none; padding: 0.85rem 0; transition: color 0.2s, padding-left 0.2s;
   }
-  .drawer-links a:hover { color: var(--gold); padding-left: 0.4rem; }
+  .drawer-links a:hover { color: var(--accent-warm); padding-left: 0.4rem; }
   .drawer-coords {
-    font-size: 0.6rem; color: var(--teal); letter-spacing: 0.12em;
-    margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(201,148,58,0.1);
+    font-size: 0.6rem; color: var(--accent-cool); letter-spacing: 0.12em;
+    margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(196,136,74,0.12);
   }
-  .drawer-coords strong { color: var(--gold); display: block; margin-bottom: 0.3rem; font-size: 0.65rem; }
+  .drawer-coords strong { color: var(--accent-warm); display: block; margin-bottom: 0.3rem; font-size: 0.65rem; }
 
   /* ─── HERO ─── */
   #hero {
@@ -148,31 +183,36 @@
   }
   .hero-bg {
     position: absolute; inset: 0; z-index: 0;
-    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(42,107,110,0.18) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,148,58,0.1) 0%, transparent 60%);
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(31,121,155,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(196,136,74,0.12) 0%, transparent 60%);
   }
-  .contour-lines { position: absolute; inset: 0; overflow: hidden; z-index: 0; opacity: 0.06; }
+  .contour-lines { position: absolute; inset: 0; overflow: hidden; z-index: 0; opacity: 0.08; }
   .contour-lines svg { width: 100%; height: 100%; }
   .hero-content { position: relative; z-index: 2; max-width: 750px; }
   .hero-eyebrow {
     font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--teal); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
+    color: var(--accent-cool); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
   }
-  .hero-eyebrow::before { content: '◆'; font-size: 0.5rem; color: var(--gold); }
+  .hero-eyebrow::before { content: '◆'; font-size: 0.5rem; color: var(--accent-warm); }
   .hero-name {
     font-family: 'Playfair Display', serif;
     font-size: clamp(3.5rem, 8vw, 7rem);
     font-weight: 900; line-height: 0.92; letter-spacing: -0.02em;
-    color: var(--parchment); margin-bottom: 0.3rem;
+    color: var(--text-primary); margin-bottom: 0.3rem;
   }
-  .hero-name em { font-style: italic; color: var(--gold); display: block; }
+  .hero-name em { font-style: italic; color: var(--accent-warm); display: block; }
   .hero-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(1.1rem, 2.5vw, 1.6rem);
     font-style: italic; font-weight: 300;
-    color: var(--fog); margin-bottom: 2.5rem; letter-spacing: 0.04em;
+    color: var(--text-subtle); margin-bottom: 2.5rem; letter-spacing: 0.04em;
   }
-  .hero-desc { font-size: 0.8rem; line-height: 1.9; color: rgba(213,207,198,0.7); max-width: 500px; margin-bottom: 3rem; }
+  .hero-desc {
+    font-size: 0.8rem; line-height: 1.9;
+    color: var(--text-body);
+    max-width: 500px; margin-bottom: 3rem;
+  }
   .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; }
   .btn {
     font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em;
@@ -180,249 +220,344 @@
     display: inline-flex; align-items: center; gap: 0.6rem;
     transition: all 0.25s; cursor: pointer; border: none;
   }
-  .btn-primary { background: var(--gold); color: var(--ink); border: 1px solid var(--gold); }
-  .btn-primary:hover { background: var(--sienna); border-color: var(--sienna); }
-  .btn-secondary { background: transparent; color: var(--parchment); border: 1px solid rgba(245,240,232,0.3); }
-  .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+  .btn-primary { background: var(--accent-warm); color: var(--blue-deep); border: 1px solid var(--accent-warm); font-weight: 500; }
+  .btn-primary:hover { background: var(--brown-mid); border-color: var(--brown-mid); color: var(--brown-cream); }
+  .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid rgba(245,230,204,0.35); }
+  .btn-secondary:hover { border-color: var(--accent-cool); color: var(--accent-cool); }
 
-  /* Erasmus badge in hero */
+  /* Erasmus badge */
   .hero-badge {
     position: absolute; right: 6rem; top: 50%;
     transform: translateY(-50%);
-    border: 1px solid rgba(201,148,58,0.3); padding: 1.8rem 2rem;
-    background: rgba(26,35,50,0.6); backdrop-filter: blur(8px); z-index: 2;
+    border: 1px solid var(--border); padding: 1.8rem 2rem;
+    background: rgba(18,54,80,0.7); backdrop-filter: blur(8px); z-index: 2;
     animation: floatBadge 6s ease-in-out infinite;
     text-align: center; min-width: 180px;
   }
   @keyframes floatBadge {
     0%, 100% { transform: translateY(-50%) translateY(0); }
-    50% { transform: translateY(-50%) translateY(-12px); }
+    50%       { transform: translateY(-50%) translateY(-12px); }
   }
   .badge-compass { width: 90px; height: 90px; margin: 0 auto 1rem; display: block; }
   .badge-programme {
     font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--teal); margin-bottom: 0.5rem;
+    color: var(--accent-cool); margin-bottom: 0.5rem;
   }
   .badge-unis {
     font-family: 'Playfair Display', serif; font-size: 0.75rem;
-    color: var(--parchment); line-height: 1.6; margin-bottom: 0.5rem;
+    color: var(--text-primary); line-height: 1.6; margin-bottom: 0.5rem;
   }
-  .badge-unis span { color: var(--gold); font-style: italic; display: block; }
-  .badge-year { font-size: 0.58rem; color: rgba(213,207,198,0.4); letter-spacing: 0.1em; }
+  .badge-unis span { color: var(--accent-warm); font-style: italic; display: block; }
+  .badge-year { font-size: 0.58rem; color: var(--text-muted); letter-spacing: 0.1em; }
 
   .scroll-hint {
     position: absolute; bottom: 2.5rem; left: 3rem;
     font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
-    color: rgba(213,207,198,0.4); display: flex; align-items: center; gap: 0.8rem;
+    color: var(--text-muted); display: flex; align-items: center; gap: 0.8rem;
     animation: fadeUpDown 2.5s ease-in-out infinite;
   }
   @keyframes fadeUpDown {
-    0%, 100% { opacity: 0.4; transform: translateY(0); }
-    50% { opacity: 0.8; transform: translateY(-4px); }
+    0%, 100% { opacity: 0.5; transform: translateY(0); }
+    50%       { opacity: 1;   transform: translateY(-4px); }
   }
-  .scroll-hint::before { content: '↓'; font-size: 0.9rem; color: var(--gold); }
+  .scroll-hint::before { content: '↓'; font-size: 0.9rem; color: var(--accent-warm); }
 
   /* ─── SECTIONS ─── */
   section { position: relative; z-index: 1; }
   .section-label {
     font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
-    color: var(--teal); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem;
+    color: var(--accent-cool); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
   }
-  .section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--teal); }
-  .section-heading { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem; }
-  .section-heading em { font-style: italic; color: var(--gold); }
+  .section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--accent-cool); }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem;
+    color: var(--text-primary);
+  }
+  .section-heading em { font-style: italic; color: var(--accent-warm); }
 
   /* ─── ABOUT ─── */
-  #about { padding: 7rem 3rem; border-top: 1px solid rgba(201,148,58,0.12); }
+  #about { padding: 7rem 3rem; border-top: 1px solid var(--border); }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1200px; margin: 0 auto; }
-  .about-text p { font-size: 0.82rem; line-height: 2; color: rgba(213,207,198,0.75); margin-bottom: 1.4rem; }
+  .about-text p { font-size: 0.82rem; line-height: 2; color: var(--text-body); margin-bottom: 1.4rem; }
   .about-programme-tag {
     display: inline-flex; align-items: center; gap: 0.6rem;
     font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--teal); border: 1px solid rgba(42,107,110,0.4);
+    color: var(--accent-cool); border: 1px solid var(--border-blue);
     padding: 0.4rem 0.8rem; margin-bottom: 1.5rem;
   }
-  .about-programme-tag::before { content: '◆'; font-size: 0.4rem; color: var(--gold); }
-  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid rgba(201,148,58,0.2); }
-  .skill-cell { padding: 1.4rem 1.6rem; border: 1px solid rgba(201,148,58,0.12); background: rgba(26,35,50,0.4); transition: background 0.2s; }
-  .skill-cell:hover { background: rgba(42,107,110,0.15); }
-  .skill-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
-  .skill-name { font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 500; color: var(--parchment); margin-bottom: 0.3rem; text-transform: uppercase; }
-  .skill-detail { font-size: 0.62rem; color: var(--teal); line-height: 1.6; }
+  .about-programme-tag::before { content: '◆'; font-size: 0.4rem; color: var(--accent-warm); }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--border); }
+  .skill-cell {
+    padding: 1.4rem 1.6rem;
+    border: 1px solid rgba(196,136,74,0.1);
+    background: rgba(26,74,107,0.35);
+    transition: background 0.2s;
+  }
+  .skill-cell:hover { background: rgba(31,121,155,0.2); }
+  .skill-name { font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 500; color: var(--text-primary); margin-bottom: 0.3rem; text-transform: uppercase; }
+  .skill-detail { font-size: 0.62rem; color: var(--accent-cool); line-height: 1.6; }
 
-  /* ─── THESIS SPOTLIGHT ─── */
+  /* ─── THESIS ─── */
   #thesis {
     padding: 6rem 3rem;
-    border-top: 1px solid rgba(201,148,58,0.12);
-    background: rgba(26,35,50,0.2);
+    border-top: 1px solid var(--border);
+    background: rgba(18,54,80,0.3);
   }
   .thesis-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
   .thesis-visual {
-    border: 1px solid rgba(201,148,58,0.25);
+    border: 1px solid var(--border);
     aspect-ratio: 4/3; position: relative; overflow: hidden;
-    background: linear-gradient(135deg, #071a1a 0%, #0d2820 50%, #1a1520 100%);
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 50%, var(--blue-surface) 100%);
   }
   .thesis-visual-inner {
     position: absolute; inset: 0; opacity: 0.5;
-    background-image:
-      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(42,107,110,0.5) 0%, transparent 70%);
+    background-image: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(31,121,155,0.5) 0%, transparent 70%);
   }
-  .thesis-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.2; }
+  .thesis-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.25; }
   .thesis-visual-label {
     position: absolute; bottom: 1rem; left: 1rem;
     font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); border: 1px solid rgba(201,148,58,0.3);
-    padding: 0.3rem 0.6rem; background: rgba(13,17,23,0.7);
+    color: var(--accent-warm); border: 1px solid var(--border);
+    padding: 0.3rem 0.6rem; background: rgba(11,34,51,0.8);
   }
-  .thesis-content .section-label { margin-bottom: 0.6rem; }
   .thesis-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.5rem, 3vw, 2.2rem);
     font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem;
-    color: var(--parchment);
+    color: var(--text-primary);
   }
-  .thesis-title em { font-style: italic; color: var(--gold); }
-  .thesis-meta {
-    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
-  }
+  .thesis-title em { font-style: italic; color: var(--accent-warm); }
+  .thesis-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
   .thesis-tag {
     font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.25rem 0.6rem;
-    border: 1px solid rgba(42,107,110,0.5);
-    color: var(--teal); background: rgba(42,107,110,0.1);
+    border: 1px solid var(--border-blue);
+    color: var(--accent-cool); background: rgba(31,121,155,0.12);
   }
-  .thesis-desc { font-size: 0.8rem; line-height: 2; color: rgba(213,207,198,0.7); margin-bottom: 1.5rem; }
+  .thesis-desc { font-size: 0.8rem; line-height: 2; color: var(--text-body); margin-bottom: 1.5rem; }
   .thesis-university {
-    font-size: 0.62rem; color: rgba(213,207,198,0.4); letter-spacing: 0.1em;
-    border-top: 1px solid rgba(201,148,58,0.12); padding-top: 1rem; margin-top: 1rem;
+    font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.1em;
+    border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;
   }
-  .thesis-university strong { color: var(--gold); }
+  .thesis-university strong { color: var(--accent-warm); }
 
   /* ─── PORTFOLIO ─── */
-  #work { padding: 7rem 3rem; background: rgba(26,35,50,0.3); border-top: 1px solid rgba(201,148,58,0.12); }
+  #work { padding: 7rem 3rem; background: rgba(18,54,80,0.25); border-top: 1px solid var(--border); }
   .work-header { max-width: 1200px; margin: 0 auto 4rem; display: flex; align-items: flex-end; justify-content: space-between; }
   .filter-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .filter-tab {
     font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em;
     text-transform: uppercase; padding: 0.5rem 1rem; background: transparent;
-    border: 1px solid rgba(201,148,58,0.25); color: var(--fog); cursor: pointer; transition: all 0.2s;
+    border: 1px solid var(--border); color: var(--text-subtle); cursor: pointer; transition: all 0.2s;
   }
-  .filter-tab:hover, .filter-tab.active { background: var(--teal); border-color: var(--teal); color: white; }
-  .projects-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(201,148,58,0.1); }
-  .project-card { background: var(--midnight); position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: flex-end; }
+  .filter-tab:hover, .filter-tab.active {
+    background: var(--accent-cool); border-color: var(--accent-cool); color: var(--blue-deep);
+    font-weight: 500;
+  }
+  .projects-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px; background: var(--border-blue);
+  }
+  .project-card {
+    background: var(--bg-card); position: relative; overflow: hidden;
+    cursor: pointer; aspect-ratio: 4/3;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
   .project-card.featured { grid-column: span 2; aspect-ratio: auto; min-height: 380px; }
-  .project-img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease, filter 0.4s; filter: saturate(0.7) brightness(0.6); }
-  .project-card:hover .project-img { transform: scale(1.06); filter: saturate(0.9) brightness(0.5); }
-  .project-overlay { position: relative; z-index: 2; padding: 1.8rem; background: linear-gradient(to top, rgba(13,17,23,0.98) 0%, transparent 100%); }
-  .project-type { font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .project-img {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    transition: transform 0.6s ease, filter 0.4s;
+    filter: saturate(0.6) brightness(0.55);
+  }
+  .project-card:hover .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.45); }
+  .project-overlay {
+    position: relative; z-index: 2; padding: 1.8rem;
+    background: linear-gradient(to top, var(--card-overlay) 0%, transparent 100%);
+  }
+  .project-type {
+    font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent-warm); margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
   .project-type::before { content: '■'; font-size: 0.35rem; }
-  .project-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.5rem; line-height: 1.2; }
-  .project-desc { font-size: 0.65rem; color: rgba(213,207,198,0.65); line-height: 1.7; margin-bottom: 1rem; max-width: 380px; transform: translateY(10px); opacity: 0; transition: all 0.3s 0.1s; }
+  .project-title {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.2;
+  }
+  .project-desc {
+    font-size: 0.65rem; color: var(--text-body); line-height: 1.7;
+    margin-bottom: 1rem; max-width: 380px;
+    transform: translateY(10px); opacity: 0; transition: all 0.3s 0.1s;
+  }
   .project-card:hover .project-desc { transform: translateY(0); opacity: 1; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .tag { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid rgba(42,107,110,0.5); color: var(--teal); background: rgba(42,107,110,0.1); }
+  .tag {
+    font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border-blue);
+    color: var(--blue-mist); background: rgba(31,121,155,0.12);
+  }
 
-  /* map card backgrounds */
-  .map-topo { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Cdefs%3E%3CradialGradient id='g1' cx='50%25' cy='50%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%232a6b6e' stop-opacity='0.6'/%3E%3Cstop offset='100%25' stop-color='%230d1117' stop-opacity='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='400' height='300'/%3E%3Cellipse cx='200' cy='150' rx='80' ry='60' fill='none' stroke='%23c9943a' stroke-width='1' opacity='0.4'/%3E%3Cellipse cx='200' cy='150' rx='110' ry='85' fill='none' stroke='%23c9943a' stroke-width='0.8' opacity='0.3'/%3E%3Cellipse cx='200' cy='150' rx='145' ry='115' fill='none' stroke='%23c9943a' stroke-width='0.6' opacity='0.2'/%3E%3C/svg%3E"); }
-  .map-web { background: linear-gradient(135deg, #0d2137 0%, #0d3830 60%, #1a2332 100%); }
-  .map-print { background: linear-gradient(160deg, #1a1008 0%, #3d2200 50%, #1a0d00 100%); }
-  .map-mobile { background: linear-gradient(135deg, #0d1a2e 0%, #101a0d 60%, #1a1520 100%); }
-  .map-atlas { background: linear-gradient(135deg, #1a0808 0%, #2a1a00 50%, #0d1117 100%); }
-  .map-gis { background: linear-gradient(160deg, #071a1a 0%, #0d2820 50%, #1a1117 100%); }
+  /* card bg variants */
+  .map-topo  { background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 60%, var(--blue-surface) 100%); }
+  .map-web   { background: linear-gradient(135deg, #091d2e 0%, #0e2e44 60%, var(--blue-mid) 100%); }
+  .map-print { background: linear-gradient(160deg, #1a0e04 0%, #2e1800 50%, #1a0c02 100%); }
+  .map-mobile{ background: linear-gradient(135deg, #0a1828 0%, #0e2235 60%, #12162a 100%); }
+  .map-atlas { background: linear-gradient(135deg, #180800 0%, #2a1400 50%, var(--blue-deep) 100%); }
+  .map-gis   { background: linear-gradient(160deg, #071820 0%, #0d2838 50%, #101520 100%); }
 
   /* ─── TECH STRIP ─── */
-  #stack { padding: 4rem 3rem; border-top: 1px solid rgba(201,148,58,0.12); overflow: hidden; }
-  .stack-scroll { display: flex; gap: 3rem; align-items: center; animation: scrollStrip 25s linear infinite; width: max-content; }
+  #stack { padding: 4rem 3rem; border-top: 1px solid var(--border); overflow: hidden; }
+  .stack-scroll {
+    display: flex; gap: 3rem; align-items: center;
+    animation: scrollStrip 25s linear infinite; width: max-content;
+  }
   @keyframes scrollStrip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .stack-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(213,207,198,0.4); white-space: nowrap; transition: color 0.2s; }
-  .stack-item:hover { color: var(--gold); }
-  .stack-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+  .stack-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted); white-space: nowrap; transition: color 0.2s;
+  }
+  .stack-item:hover { color: var(--accent-warm); }
+  .stack-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-cool); flex-shrink: 0; }
 
-  /* ─── ERASMUS JOURNEY ─── */
-  #journey { padding: 6rem 3rem; border-top: 1px solid rgba(201,148,58,0.12); }
+  /* ─── JOURNEY ─── */
+  #journey { padding: 6rem 3rem; border-top: 1px solid var(--border); }
   .journey-inner { max-width: 1200px; margin: 0 auto; }
   .journey-steps {
     display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; margin-top: 4rem; border: 1px solid rgba(201,148,58,0.2);
+    gap: 0; margin-top: 4rem; border: 1px solid var(--border);
   }
   .journey-step {
-    padding: 2.5rem 2rem; border-right: 1px solid rgba(201,148,58,0.2);
+    padding: 2.5rem 2rem; border-right: 1px solid var(--border);
     position: relative; transition: background 0.3s;
   }
   .journey-step:last-child { border-right: none; }
-  .journey-step:hover { background: rgba(42,107,110,0.08); }
+  .journey-step:hover { background: rgba(31,121,155,0.1); }
   .journey-year {
     font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 0.5rem; display: block;
+    color: var(--accent-warm); margin-bottom: 0.5rem; display: block;
   }
   .journey-uni {
     font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-    color: var(--parchment); margin-bottom: 0.3rem; line-height: 1.2;
+    color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.2;
   }
-  .journey-city { font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
-  .journey-desc { font-size: 0.67rem; line-height: 1.8; color: rgba(213,207,198,0.55); }
-  .journey-step-line { position: absolute; top: 2.5rem; right: -1px; width: 1px; height: 40px; background: var(--gold); opacity: 0; transition: opacity 0.3s; }
-  .journey-step:hover .journey-step-line { opacity: 0.6; }
+  .journey-city { font-size: 0.65rem; color: var(--accent-cool); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .journey-desc { font-size: 0.67rem; line-height: 1.8; color: var(--text-body); }
+  .journey-step-line {
+    position: absolute; top: 2.5rem; right: -1px; width: 1px; height: 40px;
+    background: var(--accent-warm); opacity: 0; transition: opacity 0.3s;
+  }
+  .journey-step:hover .journey-step-line { opacity: 0.7; }
 
   /* ─── STATS ─── */
-  #stats { padding: 5rem 3rem; background: rgba(42,107,110,0.06); border-top: 1px solid rgba(201,148,58,0.12); }
-  .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid rgba(201,148,58,0.2); }
-  .stat { padding: 2.5rem 2rem; text-align: center; border-right: 1px solid rgba(201,148,58,0.2); }
+  #stats {
+    padding: 5rem 3rem;
+    background: rgba(31,121,155,0.07);
+    border-top: 1px solid var(--border);
+  }
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0; border: 1px solid var(--border);
+  }
+  .stat { padding: 2.5rem 2rem; text-align: center; border-right: 1px solid var(--border); }
   .stat:last-child { border-right: none; }
-  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; margin-bottom: 0.6rem; }
-  .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fog); }
+  .stat-number {
+    font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
+    color: var(--accent-warm); display: block; line-height: 1; margin-bottom: 0.6rem;
+  }
+  .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-subtle); }
 
   /* ─── CONTACT ─── */
-  #contact { padding: 7rem 3rem; border-top: 1px solid rgba(201,148,58,0.12); }
+  #contact { padding: 7rem 3rem; border-top: 1px solid var(--border); }
   .contact-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-  .contact-info p { font-size: 0.82rem; line-height: 2; color: rgba(213,207,198,0.65); margin-bottom: 2rem; }
+  .contact-info p { font-size: 0.82rem; line-height: 2; color: var(--text-body); margin-bottom: 2rem; }
   .contact-links { display: flex; flex-direction: column; gap: 0.6rem; }
   .contact-link {
     display: flex; align-items: center; gap: 1rem;
-    font-size: 0.7rem; color: var(--fog); text-decoration: none;
-    padding: 0.9rem 1.2rem; border: 1px solid rgba(201,148,58,0.15);
-    background: rgba(26,35,50,0.3);
+    font-size: 0.7rem; color: var(--text-subtle); text-decoration: none;
+    padding: 0.9rem 1.2rem; border: 1px solid var(--border);
+    background: rgba(26,74,107,0.25);
     transition: all 0.2s; letter-spacing: 0.05em;
   }
-  .contact-link:hover { border-color: rgba(42,107,110,0.5); color: var(--teal); background: rgba(42,107,110,0.08); }
-  .contact-link-icon { color: var(--gold); font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
-  .contact-link-label { font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 0.2rem; }
-  .contact-link-value { color: var(--fog); font-size: 0.68rem; }
+  .contact-link:hover {
+    border-color: var(--accent-cool); color: var(--accent-cool);
+    background: rgba(31,121,155,0.12);
+  }
+  .contact-link-icon { color: var(--accent-warm); font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
+  .contact-link-label {
+    font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent-cool); display: block; margin-bottom: 0.2rem;
+  }
+  .contact-link-value { color: var(--text-subtle); font-size: 0.68rem; }
 
-  /* CV download block */
   .cv-block {
     margin-top: 2rem; padding: 1.5rem;
-    border: 1px solid rgba(201,148,58,0.2);
-    background: rgba(26,35,50,0.4);
+    border: 1px solid var(--border);
+    background: rgba(26,74,107,0.3);
   }
-  .cv-block-label { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.8rem; display: block; }
-  .cv-block p { font-size: 0.72rem; color: rgba(213,207,198,0.6); line-height: 1.7; margin-bottom: 1rem; }
+  .cv-block-label {
+    font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-cool); margin-bottom: 0.8rem; display: block;
+  }
+  .cv-block p { font-size: 0.72rem; color: var(--text-body); line-height: 1.7; margin-bottom: 1rem; }
 
-  /* Availability badge */
   .availability {
     display: inline-flex; align-items: center; gap: 0.6rem;
     font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.5rem 1rem; border: 1px solid rgba(42,107,110,0.4);
-    color: var(--teal); background: rgba(42,107,110,0.08);
+    padding: 0.5rem 1rem; border: 1px solid var(--border-blue);
+    color: var(--accent-cool); background: rgba(31,121,155,0.1);
     margin-bottom: 1.5rem;
   }
-  .availability::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 2s ease-in-out infinite; }
+  .availability::before {
+    content: ''; display: block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-cool); animation: pulse 2s ease-in-out infinite;
+  }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
   /* ─── FOOTER ─── */
-  footer { padding: 2rem 3rem; border-top: 1px solid rgba(201,148,58,0.15); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .footer-copy { font-size: 0.6rem; color: rgba(213,207,198,0.3); letter-spacing: 0.1em; }
+  footer {
+    padding: 2rem 3rem; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.1em; }
   .footer-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .footer-nav a { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(213,207,198,0.3); text-decoration: none; transition: color 0.2s; }
-  .footer-nav a:hover { color: var(--gold); }
+  .footer-nav a {
+    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-nav a:hover { color: var(--accent-warm); }
 
   /* ─── LIGHTBOX ─── */
-  #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.94); z-index: 9999; align-items: center; justify-content: center; }
+  #lightbox {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.94); z-index: 9999;
+    align-items: center; justify-content: center;
+  }
   #lightbox.open { display: flex; }
-  #lightbox-img { max-width: 88vw; max-height: 82vh; border: 1px solid rgba(201,148,58,0.4); box-shadow: 0 0 80px rgba(0,0,0,0.8); }
-  .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(13,17,23,0.9); border: 1px solid rgba(201,148,58,0.5); color: var(--gold); cursor: pointer; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; transition: background 0.2s; }
-  .lightbox-close:hover { background: rgba(201,148,58,0.2); }
-  .lightbox-hint { position: absolute; bottom: 1.5rem; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(213,207,198,0.3); }
+  #lightbox-img {
+    max-width: 88vw; max-height: 82vh;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  }
+  .lightbox-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: rgba(11,34,51,0.9); border: 1px solid var(--border);
+    color: var(--accent-warm); cursor: pointer; width: 46px; height: 46px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; transition: background 0.2s;
+  }
+  .lightbox-close:hover { background: rgba(196,136,74,0.2); }
+  .lightbox-hint {
+    position: absolute; bottom: 1.5rem;
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
 
   /* ─── ANIMATIONS ─── */
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -431,9 +566,7 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
 
-  /* ══════════════════════════
-     TABLET  ≤ 900px
-  ══════════════════════════ */
+  /* ══ TABLET ══ */
   @media (max-width: 900px) {
     body > nav { padding: 1rem 1.2rem; }
     .nav-links, .nav-coords { display: none; }
@@ -459,9 +592,7 @@
     footer { padding: 1.5rem 1.2rem; }
   }
 
-  /* ══════════════════════════
-     MOBILE  ≤ 600px
-  ══════════════════════════ */
+  /* ══ MOBILE ══ */
   @media (max-width: 600px) {
     body > nav { padding: 0.85rem 1rem; }
     #hero { padding: 6rem 1rem 3rem; }
@@ -490,12 +621,12 @@
     .work-header { gap: 0.8rem; margin-bottom: 1.5rem; }
     #journey { padding: 3.5rem 1rem; }
     .journey-steps { grid-template-columns: 1fr; }
-    .journey-step { border-right: none; border-bottom: 1px solid rgba(201,148,58,0.2); padding: 1.5rem 1rem; }
+    .journey-step { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem 1rem; }
     .journey-step:last-child { border-bottom: none; }
     #stats { padding: 3rem 1rem; }
     .stats-inner { grid-template-columns: 1fr 1fr; }
-    .stat { padding: 1.4rem 0.8rem; border-bottom: 1px solid rgba(201,148,58,0.2); }
-    .stat:nth-child(odd) { border-right: 1px solid rgba(201,148,58,0.2); }
+    .stat { padding: 1.4rem 0.8rem; border-bottom: 1px solid var(--border); }
+    .stat:nth-child(odd)  { border-right: 1px solid var(--border); }
     .stat:nth-child(even) { border-right: none; }
     .stat:nth-last-child(-n+2) { border-bottom: none; }
     .stat-number { font-size: 2rem; }
@@ -558,13 +689,13 @@
   <div class="hero-bg"></div>
   <div class="contour-lines">
     <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-      <ellipse cx="900" cy="400" rx="200" ry="150" fill="none" stroke="#c9943a" stroke-width="1.5"/>
-      <ellipse cx="900" cy="400" rx="280" ry="220" fill="none" stroke="#c9943a" stroke-width="1.2"/>
-      <ellipse cx="900" cy="400" rx="370" ry="300" fill="none" stroke="#c9943a" stroke-width="1"/>
-      <ellipse cx="900" cy="400" rx="470" ry="390" fill="none" stroke="#c9943a" stroke-width="0.8"/>
-      <ellipse cx="900" cy="400" rx="580" ry="490" fill="none" stroke="#2a6b6e" stroke-width="0.7"/>
-      <line x1="500" y1="0" x2="500" y2="800" stroke="#2a6b6e" stroke-width="0.5" stroke-dasharray="4,12"/>
-      <line x1="0" y1="400" x2="1200" y2="400" stroke="#2a6b6e" stroke-width="0.5" stroke-dasharray="4,12"/>
+      <ellipse cx="900" cy="400" rx="200" ry="150" fill="none" stroke="#c4884a" stroke-width="1.5"/>
+      <ellipse cx="900" cy="400" rx="280" ry="220" fill="none" stroke="#c4884a" stroke-width="1.2"/>
+      <ellipse cx="900" cy="400" rx="370" ry="300" fill="none" stroke="#c4884a" stroke-width="1"/>
+      <ellipse cx="900" cy="400" rx="470" ry="390" fill="none" stroke="#c4884a" stroke-width="0.8"/>
+      <ellipse cx="900" cy="400" rx="580" ry="490" fill="none" stroke="#1f799b" stroke-width="0.7"/>
+      <line x1="500" y1="0" x2="500" y2="800" stroke="#1f799b" stroke-width="0.5" stroke-dasharray="4,12"/>
+      <line x1="0" y1="400" x2="1200" y2="400" stroke="#1f799b" stroke-width="0.5" stroke-dasharray="4,12"/>
     </svg>
   </div>
 
@@ -573,10 +704,10 @@
     <h1 class="hero-name reveal reveal-delay-1">Radhika<em>Dhuri</em></h1>
     <p class="hero-title reveal reveal-delay-2">Mapping the world — one projection at a time</p>
     <p class="hero-desc reveal reveal-delay-3">
-      Graduating cartography student in the Erasmus Mundus MSc Cartography programme, 
+      Graduating cartography student in the Erasmus Mundus MSc Cartography programme,
       having studied across Technical University Munich, Technical University Vienna, Technical University
-      Dresden, and University of Twente (ITC). 
-      I work across the full spectrum — from handcrafted print maps to interactive web 
+      Dresden, and University of Twente (ITC).
+      I work across the full spectrum — from handcrafted print maps to interactive web
       maps and mobile applications — and I'm looking for my first role in geospatial design or GIS.
     </p>
     <div class="hero-cta reveal reveal-delay-3">
@@ -585,23 +716,21 @@
     </div>
   </div>
 
-  <!-- Erasmus badge -->
   <div class="hero-badge">
     <svg class="badge-compass" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="45" cy="45" r="42" fill="none" stroke="rgba(201,148,58,0.4)" stroke-width="1"/>
-      <circle cx="45" cy="45" r="35" fill="none" stroke="rgba(42,107,110,0.3)" stroke-width="0.5"/>
-      <text x="45" y="12" text-anchor="middle" fill="#c9943a" font-size="8" font-family="DM Mono" letter-spacing="1">N</text>
-      <text x="45" y="83" text-anchor="middle" fill="rgba(213,207,198,0.5)" font-size="6" font-family="DM Mono">S</text>
-      <text x="82" y="48" text-anchor="middle" fill="rgba(213,207,198,0.5)" font-size="6" font-family="DM Mono">E</text>
-      <text x="8" y="48" text-anchor="middle" fill="rgba(213,207,198,0.5)" font-size="6" font-family="DM Mono">W</text>
-      <line x1="45" y1="3" x2="45" y2="10" stroke="#c9943a" stroke-width="1.5"/>
-      <line x1="45" y1="80" x2="45" y2="87" stroke="rgba(213,207,198,0.4)" stroke-width="1"/>
-      <line x1="3" y1="45" x2="10" y2="45" stroke="rgba(213,207,198,0.4)" stroke-width="1"/>
-      <line x1="80" y1="45" x2="87" y2="45" stroke="rgba(213,207,198,0.4)" stroke-width="1"/>
-      <polygon points="45,16 42,45 45,52 48,45" fill="#c9943a" opacity="0.9"/>
-      <polygon points="45,74 42,45 45,38 48,45" fill="rgba(213,207,198,0.4)"/>
-      <circle cx="45" cy="45" r="3.5" fill="#0d1117" stroke="#c9943a" stroke-width="1.2"/>
-      <!-- <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 45 45" to="360 45 45" dur="90s" repeatCount="indefinite"/> -->
+      <circle cx="45" cy="45" r="42" fill="none" stroke="rgba(196,136,74,0.45)" stroke-width="1"/>
+      <circle cx="45" cy="45" r="35" fill="none" stroke="rgba(31,121,155,0.35)" stroke-width="0.5"/>
+      <text x="45" y="12" text-anchor="middle" fill="#c4884a" font-size="8" font-family="DM Mono" letter-spacing="1">N</text>
+      <text x="45" y="83" text-anchor="middle" fill="#a8d4e6" font-size="6" font-family="DM Mono">S</text>
+      <text x="82" y="48" text-anchor="middle" fill="#a8d4e6" font-size="6" font-family="DM Mono">E</text>
+      <text x="8"  y="48" text-anchor="middle" fill="#a8d4e6" font-size="6" font-family="DM Mono">W</text>
+      <line x1="45" y1="3"  x2="45" y2="10" stroke="#c4884a" stroke-width="1.5"/>
+      <line x1="45" y1="80" x2="45" y2="87" stroke="#a8d4e6" stroke-width="1"/>
+      <line x1="3"  y1="45" x2="10" y2="45" stroke="#a8d4e6" stroke-width="1"/>
+      <line x1="80" y1="45" x2="87" y2="45" stroke="#a8d4e6" stroke-width="1"/>
+      <polygon points="45,16 42,45 45,52 48,45" fill="#c4884a" opacity="0.9"/>
+      <polygon points="45,74 42,45 45,38 48,45" fill="#a8d4e6" opacity="0.5"/>
+      <circle cx="45" cy="45" r="3.5" fill="#0b2233" stroke="#c4884a" stroke-width="1.2"/>
     </svg>
     <div class="badge-programme">Erasmus Mundus</div>
     <div class="badge-unis">
@@ -622,29 +751,29 @@
       <h2 class="section-heading">A student who <em>loves maps</em></h2>
       <div class="about-programme-tag">Erasmus Mundus MSc Cartography</div>
       <p>
-        I'm a master's student in the Erasmus Mundus MSc Cartography programme — 
-        one of the few joint degree programmes in the world spanning four technical 
-        universities across Europe. The programme has taken me from Munich to Vienna, 
+        I'm a master's student in the Erasmus Mundus MSc Cartography programme —
+        one of the few joint degree programmes in the world spanning four technical
+        universities across Europe. The programme has taken me from Munich to Vienna,
         Dresden, and back to Munich for thesis, each semester building on a different pillar of cartographic practice.
       </p>
       <p>
-        My interests sit at the intersection of cartographic design and digital technology. 
-        I care deeply about how maps communicate — who they include, what they emphasise, 
-        and how they guide the reader. I enjoy working across both the analytical rigour 
+        My interests sit at the intersection of cartographic design and digital technology.
+        I care deeply about how maps communicate — who they include, what they emphasise,
+        and how they guide the reader. I enjoy working across both the analytical rigour
         of GIS and the visual craft of map design.
       </p>
       <p>
-        I'm currently finishing my master's thesis and looking for junior positions, 
+        I'm currently finishing my master's thesis and looking for junior positions,
         graduate roles, or internships in cartography, geospatial design, or GIS development.
       </p>
       <a href="#work" class="btn btn-secondary" style="margin-top:1rem; display:inline-flex;">See my work →</a>
     </div>
     <div class="skills-grid reveal reveal-delay-2">
-      <div class="skill-cell"><div class="skill-name">GIS &amp; Analysis</div><div class="skill-detail">QGIS · ArcGIS Pro · PostGIS · GDAL/OGR </div></div>
-      <div class="skill-cell"><div class="skill-name">Print Cartography</div><div class="skill-detail">Adobe Illustrator · Figma · Mapbox Studio </div></div>
+      <div class="skill-cell"><div class="skill-name">GIS &amp; Analysis</div><div class="skill-detail">QGIS · ArcGIS Pro · PostGIS · GDAL/OGR</div></div>
+      <div class="skill-cell"><div class="skill-name">Print Cartography</div><div class="skill-detail">Adobe Illustrator · Figma · Mapbox Studio</div></div>
       <div class="skill-cell"><div class="skill-name">Web Mapping</div><div class="skill-detail">Leaflet.js · Mapbox GL JS · D3.js · GitHub Pages</div></div>
       <div class="skill-cell"><div class="skill-name">Mobile Apps</div><div class="skill-detail">Android Studio · Java</div></div>
-      <div class="skill-cell"><div class="skill-name">Remote Sensing</div><div class="skill-detail">Google Earth Engine · Landsat USGS · Sentinel Hub </div></div>
+      <div class="skill-cell"><div class="skill-name">Remote Sensing</div><div class="skill-detail">Google Earth Engine · Landsat USGS · Sentinel Hub</div></div>
       <div class="skill-cell"><div class="skill-name">Data &amp; Dev</div><div class="skill-detail">Python · R · JavaScript · Git · PostgreSQL · GeoJSON</div></div>
     </div>
   </div>
@@ -684,19 +813,19 @@
   </div>
 </section>
 
-<!-- THESIS SPOTLIGHT -->
+<!-- THESIS -->
 <section id="thesis">
   <div class="thesis-inner">
     <div class="thesis-visual reveal">
       <div class="thesis-visual-inner"></div>
       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-        <ellipse cx="200" cy="150" rx="60" ry="45" fill="none" stroke="#c9943a" stroke-width="1" opacity="0.6"/>
-        <ellipse cx="200" cy="150" rx="90" ry="68" fill="none" stroke="#c9943a" stroke-width="0.8" opacity="0.4"/>
-        <ellipse cx="200" cy="150" rx="125" ry="95" fill="none" stroke="#c9943a" stroke-width="0.6" opacity="0.3"/>
-        <ellipse cx="200" cy="150" rx="165" ry="128" fill="none" stroke="#2a6b6e" stroke-width="0.5" opacity="0.3"/>
-        <line x1="0" y1="150" x2="400" y2="150" stroke="#2a6b6e" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.4"/>
-        <line x1="200" y1="0" x2="200" y2="300" stroke="#2a6b6e" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.4"/>
-        <circle cx="200" cy="150" r="4" fill="#c9943a" opacity="0.8"/>
+        <ellipse cx="200" cy="150" rx="60"  ry="45"  fill="none" stroke="#c4884a" stroke-width="1"   opacity="0.65"/>
+        <ellipse cx="200" cy="150" rx="90"  ry="68"  fill="none" stroke="#c4884a" stroke-width="0.8" opacity="0.45"/>
+        <ellipse cx="200" cy="150" rx="125" ry="95"  fill="none" stroke="#c4884a" stroke-width="0.6" opacity="0.3"/>
+        <ellipse cx="200" cy="150" rx="165" ry="128" fill="none" stroke="#1f799b" stroke-width="0.5" opacity="0.3"/>
+        <line x1="0" y1="150" x2="400" y2="150" stroke="#1f799b" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.45"/>
+        <line x1="200" y1="0" x2="200" y2="300" stroke="#1f799b" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.45"/>
+        <circle cx="200" cy="150" r="4" fill="#c4884a" opacity="0.85"/>
       </svg>
       <div class="thesis-visual-label">Master's Thesis · 2026</div>
     </div>
@@ -710,11 +839,11 @@
         <span class="thesis-tag">Geovisualisation</span>
       </div>
       <p class="thesis-desc">
-        This thesis investigates how dune crestline migration and environmental dynamics can be effectively visualized using 
-        remote sensing data and cartographic techniques. Using multi-temporal Sentinel-2 imagery and wind observations from 
-        the Namib Sand Sea in Namibia, I develop a reproducible workflow to extract dune crestlines and represent their changes 
-        over time. The research evaluates different spatiotemporal visualization methods, including approaches for communicating 
-        uncertainty and data gaps. 
+        This thesis investigates how dune crestline migration and environmental dynamics can be effectively visualized using
+        remote sensing data and cartographic techniques. Using multi-temporal Sentinel-2 imagery and wind observations from
+        the Namib Sand Sea in Namibia, I develop a reproducible workflow to extract dune crestlines and represent their changes
+        over time. The research evaluates different spatiotemporal visualization methods, including approaches for communicating
+        uncertainty and data gaps.
         The goal is to contribute a cartographic framework that improves the interpretation of dynamic desert landscapes.
       </p>
       <div class="thesis-university">
@@ -744,46 +873,37 @@
   <div class="projects-grid" id="projectsGrid">
 
     <div class="project-card featured map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
-      <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
+      <div class="project-img map-topo"></div>
       <div class="project-overlay">
         <div class="project-type">Python · Thesis · TU Munich (ITC)</div>
         <div class="project-title">Thesis Dashboard: Ongoing</div>
-        <div class="project-desc"> Web Map Dashboard created to support star dune synamics cartographic visualization.
-          Currently in development as part of my master's thesis, built using Python libraries such as Streamlit and Matplotlib to visualize data extracted using
-           Sentinel-2 satellite imagery and dune crestline migration patterns. 
-          The dashboard will provide interactive tools for exploring spatiotemporal changes in the Namib Sand Sea Star Dune near Sossusvlei, 
-          including uncertainty visualizations and data filtering options.
-        </div>
+        <div class="project-desc">Web Map Dashboard created to support star dune dynamics cartographic visualization. Currently in development as part of my master's thesis, built using Python libraries such as Streamlit and Matplotlib to visualize data extracted using Sentinel-2 satellite imagery and dune crestline migration patterns.</div>
         <div class="project-tags"><span class="tag">Google Earth Engine</span><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Dashboard</span></div>
       </div>
     </div>
 
     <div class="project-card map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://github.com/Redrum13/remote_sensing">
-      <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
+      <div class="project-img map-topo"></div>
       <div class="project-overlay">
         <div class="project-type">R · Remote Sensing · TU Dresden</div>
         <div class="project-title">Above Ground Biomass (AGB) Estimation</div>
-        <div class="project-desc"> Estimated AGB using remote sensing data and machine learning (Random Forest) algorithms in R environment.
-          This project was done in a team of 4. The R files and presentation including workflow and results of the project are available on my GitHub Repository.
-        </div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Print</span></div>
+        <div class="project-desc">Estimated AGB using remote sensing data and machine learning (Random Forest) algorithms in R environment. Team project of 4 students.</div>
+        <div class="project-tags"><span class="tag">R</span><span class="tag">Random Forest</span><span class="tag">Remote Sensing</span></div>
       </div>
     </div>
 
-    
-
     <div class="project-card map-mobile reveal reveal-delay-2" data-cat="mobile" data-type="print" data-image="portfolio_websites\hobby_map\app_screenshots.png">
-      <div class="project-img" style="background: linear-gradient(160deg, #0d1a20 0%, #102215 60%, #1a1020 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Mobile · Assignment Project · TU Dresden</div>
         <div class="project-title">Hobby Corner App</div>
-        <div class="project-desc">Created a Map based app in a team of 4 as part of a mobile app development assignment.</div>
+        <div class="project-desc">Created a map-based app in a team of 4 as part of a mobile app development assignment.</div>
         <div class="project-tags"><span class="tag">Android Studio</span><span class="tag">Java</span><span class="tag">Figma</span></div>
       </div>
     </div>
 
     <div class="project-card map-print reveal reveal-delay-3" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\TM_ map_Radhika-1.png">
-      <div class="project-img" style="background: linear-gradient(135deg, #180800 0%, #2e1200 50%, #180600 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Topographic · TU Dresden</div>
         <div class="project-title">Topographic Map of Tharandt</div>
@@ -793,48 +913,47 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="print" data-image="https://github.com/uwcartlab/Vienna-DC-2025">
-      <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
+      <div class="project-img map-topo"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Atlas · TU Vienna</div>
         <div class="project-title">Sustainable Atlas Contribution in a Map</div>
-        <div class="project-desc"> Contribution to one map in a print atlas produced as part of the Map Design Challenge Week in Vienna. The 16 SDG Goals Thematic Map produced in QGIS and finalised in Adobe Illustrator for printing.
-          The Goal (13) map was done in a team of 3 including me.</div>
+        <div class="project-desc">Contribution to one map in a print atlas produced as part of the Map Design Challenge Week in Vienna. The 16 SDG Goals Thematic Map produced in QGIS and finalised in Adobe Illustrator for printing.</div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Print</span></div>
       </div>
     </div>
 
     <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\map_creation_radhika-1.png">
-      <div class="project-img" style="background: linear-gradient(135deg, #1a0e00 0%, #2e1800 60%, #1a0900 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Tourist Map · TU Vienna</div>
         <div class="project-title">Map for Vijaydurg Fort</div>
-        <div class="project-desc">A tourist historical site map created as part of a map design project during the Vienna semester. Compiled using OpenStreetMap data and satellite imagery, styled in QGIS with custom cartographic linework, and refined in Adobe Illustrator with a satellite image overlay. Designed for print in A4 format.</div>
+        <div class="project-desc">A tourist historical site map created as part of a map design project during the Vienna semester. Compiled using OpenStreetMap data and satellite imagery, refined in Adobe Illustrator. Designed for print in A4 format.</div>
         <div class="project-tags"><span class="tag">OSM</span><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">A4 Print</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="print" data-image="portfolio_websites\CIS_project\placeholder.png" style="background:#0a1a1a;">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
+    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="print" data-image="portfolio_websites\CIS_project\placeholder.png">
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web Map of Vienna</div>
-        <div class="project-desc">Developed during the Vienna semester, this web map integrates layered OpenStreetMap datasets managed and customized in PostgreSQL (pgAdmin). Features include custom interactive controls, thematic visualization, and a responsive design optimized for multiple devices.</div>
-        <div class="project-tags"><span class="tag">postgresql</span><span class="tag">Thematic</span><span class="tag">OSM</span></div>
+        <div class="project-desc">Developed during the Vienna semester, this web map integrates layered OpenStreetMap datasets managed in PostgreSQL. Features custom interactive controls, thematic visualization, and responsive design.</div>
+        <div class="project-tags"><span class="tag">PostgreSQL</span><span class="tag">Thematic</span><span class="tag">OSM</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\2025lbs_group5\index.html" style="background:#0a1a1a;">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
+    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\2025lbs_group5\index.html">
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web map of Salzburg</div>
-        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets provided by official Salzburg road dataset website, custom controls, and responsive design.</div>
+        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets from the official Salzburg road dataset website.</div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Thematic</span><span class="tag">GitLab</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\multimedia_vs\index.html" style="background:#0a1a1a;">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
+    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\multimedia_vs\index.html">
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web map of Pune Talukas</div>
@@ -843,8 +962,8 @@
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\2\index.html" style="background:#0a1a1a;">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
+    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\2\index.html">
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Map of New Delhi</div>
@@ -853,8 +972,8 @@
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\1\index.html" style="background:#0a1a1a;">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
+    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\1\index.html">
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Development Assignment</div>
@@ -864,27 +983,27 @@
     </div>
 
     <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="https://kidlanli.github.io/GovTech/">
-      <div class="project-img" style="background: linear-gradient(135deg, #0a1520 0%, #0a1e2a 60%, #1a1520 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Mobile · Project Week · TU Munich</div>
         <div class="project-title">Project Week — Climate &amp; Risk</div>
-        <div class="project-desc">A one-week intensive project building a informative website about Conflict and Climate Risk. Team project of four students.</div>
+        <div class="project-desc">A one-week intensive project building an informative website about Conflict and Climate Risk. Team project of four students.</div>
         <div class="project-tags"><span class="tag">ArcGIS Runtime</span><span class="tag">Field GIS</span><span class="tag">SQLite</span></div>
       </div>
-    </div>  
-    
+    </div>
+
     <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\geoviz_vs\index.html">
-      <div class="project-img" style="background: linear-gradient(135deg, #071a12 0%, #0d2820 60%, #1a1117 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Munich</div>
-        <div class="project-title">Trees in Vienna</div>          
+        <div class="project-title">Trees in Vienna</div>
         <div class="project-desc">Interactive choropleth map tracking urban tree coverage across Vienna's districts built with D3.js.</div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">D3.js</span></div>
       </div>
     </div>
 
     <div class="project-card map-atlas reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\walk_in_english_garden\index.html">
-      <div class="project-img" style="background: linear-gradient(135deg, #1a0808 0%, #2a0a00 50%, #0d1117 100%);"></div>
+      <div class="project-img"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Munich</div>
         <div class="project-title">A Walk in the English Garden</div>
@@ -896,7 +1015,7 @@
   </div>
 </section>
 
-<!-- ERASMUS JOURNEY -->
+<!-- JOURNEY -->
 <section id="journey">
   <div class="journey-inner">
     <div class="section-label reveal">Academic Path</div>
@@ -952,8 +1071,8 @@
       <h2 class="section-heading">Open to <em>opportunities</em></h2>
       <div class="availability">Available from Winter 2026/27</div>
       <p>
-        I'm looking for junior cartographer roles, GIS analyst positions, graduate 
-        schemes, and job opportunities in geospatial design, web mapping, or data 
+        I'm looking for junior cartographer roles, GIS analyst positions, graduate
+        schemes, and job opportunities in geospatial design, web mapping, or data
         visualisation. I'm open to opportunities across Europe and beyond.
       </p>
       <div class="contact-links">
@@ -984,15 +1103,15 @@
     <div class="cv-block reveal reveal-delay-2">
       <span class="cv-block-label">Curriculum Vitae</span>
       <p>
-        My CV includes my full academic background, soft skills, technical skills, and language proficiencies. 
+        My CV includes my full academic background, soft skills, technical skills, and language proficiencies.
         Available as a PDF download.
       </p>
       <a href="Radhika Dhuri Student CV Resume.pdf" download class="btn btn-primary" style="width:100%; justify-content:center;">
         Download CV ↓
       </a>
-      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(201,148,58,0.15);">
+      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
         <span class="cv-block-label">Location</span>
-        <p style="margin-bottom:0; color: rgba(213,207,198,0.5); font-size:0.72rem;">
+        <p style="margin-bottom:0; color: var(--text-muted); font-size:0.72rem;">
           Currently based in Munich, Germany<br>
           Open to relocation across Europe
         </p>
@@ -1018,11 +1137,11 @@
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
+  cursor.style.top  = e.clientY + 'px';
   const lat = (51.0504 + (e.clientY / window.innerHeight - 0.5) * 0.08).toFixed(4);
-  const lng = (13.7373 + (e.clientX / window.innerWidth - 0.5) * 0.2).toFixed(4);
+  const lng = (13.7373 + (e.clientX / window.innerWidth  - 0.5) * 0.2 ).toFixed(4);
   const coordStr = `${lat}° N · ${lng}° E`;
-  document.getElementById('liveCoords').textContent = coordStr;
+  document.getElementById('liveCoords').textContent   = coordStr;
   document.getElementById('drawerCoords').textContent = coordStr;
 });
 document.querySelectorAll('.project-card, .btn, .contact-link').forEach(el => {
@@ -1032,17 +1151,11 @@ document.querySelectorAll('.project-card, .btn, .contact-link').forEach(el => {
 
 // ─── Hamburger / Drawer
 const hamburger = document.getElementById('navHamburger');
-const drawer = document.getElementById('navDrawer');
-const overlay = document.getElementById('drawerOverlay');
+const drawer    = document.getElementById('navDrawer');
+const overlay   = document.getElementById('drawerOverlay');
 hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
-function openDrawer() {
-  drawer.classList.add('open'); overlay.classList.add('open'); hamburger.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeDrawer() {
-  drawer.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open');
-  document.body.style.overflow = '';
-}
+function openDrawer()  { drawer.classList.add('open');    overlay.classList.add('open');    hamburger.classList.add('open');    document.body.style.overflow = 'hidden'; }
+function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open'); document.body.style.overflow = ''; }
 
 // ─── Lightbox
 document.querySelectorAll('.project-card[data-type="print"]').forEach(card => {
@@ -1052,13 +1165,8 @@ document.querySelectorAll('.project-card[data-type="print"]').forEach(card => {
     document.body.style.overflow = 'hidden';
   });
 });
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeLightboxOnBackdrop(e) {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
-}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+function closeLightboxOnBackdrop(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); closeDrawer(); } });
 
 // ─── Web cards
@@ -1076,10 +1184,9 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 const statsObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      const el = e.target;
-      const target = parseInt(el.dataset.target);
+      const el = e.target, target = parseInt(el.dataset.target);
       let current = 0;
-      const step = Math.max(1, Math.ceil(target / 40));
+      const step  = Math.max(1, Math.ceil(target / 40));
       const timer = setInterval(() => {
         current = Math.min(current + step, target);
         el.textContent = current;
@@ -1099,10 +1206,7 @@ function filterProjects(cat, btn) {
     if (cat === 'all' || card.dataset.cat === cat) {
       card.style.display = '';
       card.style.opacity = '0'; card.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        card.style.transition = 'opacity 0.4s, transform 0.4s';
-        card.style.opacity = '1'; card.style.transform = 'translateY(0)';
-      }, 50);
+      setTimeout(() => { card.style.transition = 'opacity 0.4s, transform 0.4s'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
     } else { card.style.display = 'none'; }
   });
 }
