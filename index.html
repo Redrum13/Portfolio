@@ -371,9 +371,9 @@
   .project-img {
     position: absolute; inset: 0; background-size: cover; background-position: center;
     transition: transform 0.6s ease, filter 0.4s;
-    filter: saturate(0.6) brightness(0.55);
+    filter: saturate(0.6) brightness(0.35);
   }
-  .project-card:hover .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.45); }
+  .project-card:hover .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.15); }
   .project-overlay {
     position: relative; z-index: 2; padding: 1.8rem;
     background: linear-gradient(to top, var(--card-overlay) 0%, transparent 100%);
@@ -817,16 +817,7 @@
 <section id="thesis">
   <div class="thesis-inner">
     <div class="thesis-visual reveal">
-      <div class="thesis-visual-inner"></div>
-      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-        <ellipse cx="200" cy="150" rx="60"  ry="45"  fill="none" stroke="#c4884a" stroke-width="1"   opacity="0.65"/>
-        <ellipse cx="200" cy="150" rx="90"  ry="68"  fill="none" stroke="#c4884a" stroke-width="0.8" opacity="0.45"/>
-        <ellipse cx="200" cy="150" rx="125" ry="95"  fill="none" stroke="#c4884a" stroke-width="0.6" opacity="0.3"/>
-        <ellipse cx="200" cy="150" rx="165" ry="128" fill="none" stroke="#1f799b" stroke-width="0.5" opacity="0.3"/>
-        <line x1="0" y1="150" x2="400" y2="150" stroke="#1f799b" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.45"/>
-        <line x1="200" y1="0" x2="200" y2="300" stroke="#1f799b" stroke-width="0.4" stroke-dasharray="4,10" opacity="0.45"/>
-        <circle cx="200" cy="150" r="4" fill="#c4884a" opacity="0.85"/>
-      </svg>
+      <div class="thesis-visual-inner" style="background-image: url('portfolio_websites/Thumbnails/start_thesis_tn.png'); background-size: cover; background-position: center; opacity: 0.15;"></div>
       <div class="thesis-visual-label">Master's Thesis · 2026</div>
     </div>
     <div class="thesis-content reveal reveal-delay-2">
@@ -873,7 +864,7 @@
   <div class="projects-grid" id="projectsGrid">
 
     <div class="project-card featured map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
-      <div class="project-img map-topo"></div>
+      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/thesis_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Python · Thesis · TU Munich (ITC)</div>
         <div class="project-title">Thesis Dashboard: Ongoing</div>
@@ -883,7 +874,7 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://github.com/Redrum13/remote_sensing">
-      <div class="project-img map-topo"></div>
+      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">R · Remote Sensing · TU Dresden</div>
         <div class="project-title">Above Ground Biomass (AGB) Estimation</div>
@@ -893,7 +884,7 @@
     </div>
 
     <div class="project-card map-mobile reveal reveal-delay-2" data-cat="mobile" data-type="print" data-image="portfolio_websites\hobby_map\app_screenshots.png">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/hobby_corner_icon.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Mobile · Assignment Project · TU Dresden</div>
         <div class="project-title">Hobby Corner App</div>
@@ -903,7 +894,7 @@
     </div>
 
     <div class="project-card map-print reveal reveal-delay-3" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\TM_ map_Radhika-1.png">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tm_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Topographic · TU Dresden</div>
         <div class="project-title">Topographic Map of Tharandt</div>
@@ -912,8 +903,8 @@
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="print" data-image="https://github.com/uwcartlab/Vienna-DC-2025">
-      <div class="project-img map-topo"></div>
+    <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="web" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
+      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/atlas_map.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Atlas · TU Vienna</div>
         <div class="project-title">Sustainable Atlas Contribution in a Map</div>
@@ -923,7 +914,7 @@
     </div>
 
     <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\map_creation_radhika-1.png">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/map_creation_radhika-1.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Print · Tourist Map · TU Vienna</div>
         <div class="project-title">Map for Vijaydurg Fort</div>
@@ -933,7 +924,7 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="print" data-image="portfolio_websites\CIS_project\placeholder.png">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/cis_thumbnail.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web Map of Vienna</div>
@@ -943,17 +934,17 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\2025lbs_group5\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/salzburg_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web map of Salzburg</div>
-        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets from the official Salzburg road dataset website.</div>
+        <div class="project-desc">Created in a team of 3. Interactive thematic webmap built in Vienna semester, featuring layered datasets from the official Salzburg road dataset website.</div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Thematic</span><span class="tag">GitLab</span></div>
       </div>
     </div>
 
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\multimedia_vs\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pune_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web map of Pune Talukas</div>
@@ -963,7 +954,7 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\2\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/delhi_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Map of New Delhi</div>
@@ -973,7 +964,7 @@
     </div>
 
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\1\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/wm_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Development Assignment</div>
@@ -983,7 +974,7 @@
     </div>
 
     <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="https://kidlanli.github.io/GovTech/">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pw_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Mobile · Project Week · TU Munich</div>
         <div class="project-title">Project Week — Climate &amp; Risk</div>
@@ -993,7 +984,7 @@
     </div>
 
     <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\geoviz_vs\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tree_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Assignment · TU Munich</div>
         <div class="project-title">Trees in Vienna</div>
@@ -1003,7 +994,7 @@
     </div>
 
     <div class="project-card map-atlas reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\walk_in_english_garden\index.html">
-      <div class="project-img"></div>
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/walk_tn.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay">
         <div class="project-type">Web · Project · TU Munich</div>
         <div class="project-title">A Walk in the English Garden</div>
