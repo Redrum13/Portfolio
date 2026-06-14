@@ -738,17 +738,34 @@
       <button class="filter-tab" onclick="filterProjects('print',this)">Print</button>
       <button class="filter-tab" onclick="filterProjects('web',this)">Web</button>
       <button class="filter-tab" onclick="filterProjects('mobile',this)">Mobile</button>
+      <button class="filter-tab" onclick="filterProjects('other',this)">Other</button>
     </div>
   </div>
   <div class="projects-grid" id="projectsGrid">
 
-    <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="print" data-image="https://github.com/uwcartlab/Vienna-DC-2025">
+    <div class="project-card featured map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
       <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
       <div class="project-overlay">
-        <div class="project-type">Print · Atlas · TU Vienna</div>
-        <div class="project-title">Sustainable Atlas Contribution in a Map</div>
-        <div class="project-desc"> Contribution to one map in a print atlas produced as part of the Map Design Challenge Week in Vienna. The 16 SDG Goals Thematic Map produced in QGIS and finalised in Adobe Illustrator for printing.
-          The Goal (13) map was done in a team of 3 including me.</div>
+        <div class="project-type">Python · Thesis · TU Munich (ITC)</div>
+        <div class="project-title">Thesis Dashboard: Ongoing</div>
+        <div class="project-desc"> Web Map Dashboard created to support star dune synamics cartographic visualization.
+          Currently in development as part of my master's thesis, built using Python libraries such as Streamlit and Matplotlib to visualize data extracted using
+           Sentinel-2 satellite imagery and dune crestline migration patterns. 
+          The dashboard will provide interactive tools for exploring spatiotemporal changes in the Namib Sand Sea Star Dune near Sossusvlei, 
+          including uncertainty visualizations and data filtering options.
+        </div>
+        <div class="project-tags"><span class="tag">Google Earth Engine</span><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Dashboard</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://github.com/Redrum13/remote_sensing">
+      <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
+      <div class="project-overlay">
+        <div class="project-type">R · Remote Sensing · TU Dresden</div>
+        <div class="project-title">Above Ground Biomass (AGB) Estimation</div>
+        <div class="project-desc"> Estimated AGB using remote sensing data and machine learning (Random Forest) algorithms in R environment.
+          This project was done in a team of 4. The R files and presentation including workflow and results of the project are available on my GitHub Repository.
+        </div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Print</span></div>
       </div>
     </div>
@@ -758,7 +775,7 @@
     <div class="project-card map-mobile reveal reveal-delay-2" data-cat="mobile" data-type="print" data-image="portfolio_websites\hobby_map\app_screenshots.png">
       <div class="project-img" style="background: linear-gradient(160deg, #0d1a20 0%, #102215 60%, #1a1020 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Mobile · Assignment Project</div>
+        <div class="project-type">Mobile · Assignment Project · TU Dresden</div>
         <div class="project-title">Hobby Corner App</div>
         <div class="project-desc">Created a Map based app in a team of 4 as part of a mobile app development assignment.</div>
         <div class="project-tags"><span class="tag">Android Studio</span><span class="tag">Java</span><span class="tag">Figma</span></div>
@@ -775,6 +792,17 @@
       </div>
     </div>
 
+    <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="print" data-image="https://github.com/uwcartlab/Vienna-DC-2025">
+      <div class="project-img map-topo" style="background: radial-gradient(ellipse 70% 60% at 40% 55%, rgba(139,69,19,0.4) 0%, rgba(42,107,110,0.3) 40%, transparent 80%), repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(201,148,58,0.03) 30px, rgba(201,148,58,0.03) 31px);"></div>
+      <div class="project-overlay">
+        <div class="project-type">Print · Atlas · TU Vienna</div>
+        <div class="project-title">Sustainable Atlas Contribution in a Map</div>
+        <div class="project-desc"> Contribution to one map in a print atlas produced as part of the Map Design Challenge Week in Vienna. The 16 SDG Goals Thematic Map produced in QGIS and finalised in Adobe Illustrator for printing.
+          The Goal (13) map was done in a team of 3 including me.</div>
+        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Print</span></div>
+      </div>
+    </div>
+
     <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\map_creation_radhika-1.png">
       <div class="project-img" style="background: linear-gradient(135deg, #1a0e00 0%, #2e1800 60%, #1a0900 100%);"></div>
       <div class="project-overlay">
@@ -788,7 +816,7 @@
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="print" data-image="portfolio_websites\CIS_project\placeholder.png" style="background:#0a1a1a;">
       <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Project · Vienna</div>
+        <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web Map of Vienna</div>
         <div class="project-desc">Developed during the Vienna semester, this web map integrates layered OpenStreetMap datasets managed and customized in PostgreSQL (pgAdmin). Features include custom interactive controls, thematic visualization, and a responsive design optimized for multiple devices.</div>
         <div class="project-tags"><span class="tag">postgresql</span><span class="tag">Thematic</span><span class="tag">OSM</span></div>
@@ -798,7 +826,7 @@
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\2025lbs_group5\index.html" style="background:#0a1a1a;">
       <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Project · Vienna</div>
+        <div class="project-type">Web · Project · TU Vienna</div>
         <div class="project-title">Web map of Salzburg</div>
         <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets provided by official Salzburg road dataset website, custom controls, and responsive design.</div>
         <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Thematic</span><span class="tag">GitLab</span></div>
@@ -808,7 +836,7 @@
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\multimedia_vs\index.html" style="background:#0a1a1a;">
       <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Assignment · Vienna</div>
+        <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web map of Pune Talukas</div>
         <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
         <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
@@ -818,9 +846,9 @@
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\2\index.html" style="background:#0a1a1a;">
       <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Assignment · Vienna</div>
+        <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Map of New Delhi</div>
-        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
+        <div class="project-desc">Interactive thematic webmap built in TU Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
         <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
       </div>
     </div>
@@ -828,9 +856,9 @@
     <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\1\index.html" style="background:#0a1a1a;">
       <div class="project-img" style="background: linear-gradient(135deg, #071a2a 0%, #0a2430 60%, #0d1117 100%);"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Assignment · Vienna</div>
+        <div class="project-type">Web · Assignment · TU Vienna</div>
         <div class="project-title">Web Development Assignment</div>
-        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
+        <div class="project-desc">Interactive thematic webmap built in TU Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
         <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
       </div>
     </div>
@@ -910,8 +938,8 @@
   <div class="stats-inner">
     <div class="stat reveal"><span class="stat-number" data-target="2">0</span><span class="stat-label">Years of Study</span></div>
     <div class="stat reveal reveal-delay-1"><span class="stat-number" data-target="4">0</span><span class="stat-label">Universities</span></div>
-    <div class="stat reveal reveal-delay-2"><span class="stat-number" data-target="4">0</span><span class="stat-label">Countries</span></div>
-    <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="10">0</span><span class="stat-label">Projects</span></div>
+    <div class="stat reveal reveal-delay-2"><span class="stat-number" data-target="3">0</span><span class="stat-label">Countries</span></div>
+    <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="12">0</span><span class="stat-label">Projects</span></div>
     <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="2026">0</span><span class="stat-label">Graduating</span></div>
   </div>
 </section>
