@@ -676,14 +676,11 @@ document.querySelectorAll('.card').forEach(card => {
     { name: 'Dresden, Germany',         note: 'Topographic and mobile maps',       lon: 13.74, lat: 51.05 },
     { name: 'Namib Sand Sea, Namibia',  note: 'Thesis study area',                 lon: 15.30, lat: -24.73 }
   ];
-  // ISO numeric codes: India, Germany, Austria, Namibia
-  const HIGHLIGHT = new Set(['356', '276', '040', '516']);
 
   const css = getComputedStyle(document.documentElement);
   const C = {
     sea:   css.getPropertyValue('--ocean-lift').trim(),
     land:  '#2f5a74',
-    mine:  css.getPropertyValue('--sandstone').trim(),
     edge:  css.getPropertyValue('--paper').trim(),
     grid:  'rgba(169,199,214,0.22)',
     red:   css.getPropertyValue('--survey-red').trim()
@@ -699,20 +696,17 @@ document.querySelectorAll('.card').forEach(card => {
   const gSea   = svg.append('path').datum({ type: 'Sphere' }).attr('fill', C.sea);
   const gGrid  = svg.append('path').datum(graticule).attr('fill', 'none').attr('stroke', C.grid).attr('stroke-width', 0.6);
   const gLand  = svg.append('g');
-  const gBorders = svg.append('g').attr('fill', 'none');
   const gMarks = svg.append('g');
   const gRim   = svg.append('path').datum({ type: 'Sphere' }).attr('fill', 'none').attr('stroke', C.edge).attr('stroke-opacity', 0.5);
 
   let current = 2; // start at Munich
   let countries = null;
-  let borders = null;
 
   function render() {
     gSea.attr('d', path);
     gGrid.attr('d', path);
     gRim.attr('d', path);
     if (countries) gLand.selectAll('path').attr('d', path);
-    if (borders) gBorders.selectAll('path').attr('d', path);
 
     const centre = projection.invert([size / 2, size / 2]);
     const marks = gMarks.selectAll('g').data(PLACES);
@@ -747,33 +741,18 @@ document.querySelectorAll('.card').forEach(card => {
   projection.rotate([-PLACES[current].lon, -PLACES[current].lat * 0.75]);
   render();
 
-  /* Country shapes: filled only, no outlines.
-     Borders come from a separate Natural Earth line layer below,
-     so disputed and line-of-control segments can be drawn dashed. */
-  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json').then(world => {
-    countries = topojson.feature(world, world.objects.countries).features;
+  /* Land only, no country borders or highlights.
+     The globe makes no boundary statement. The markers tell the story. */
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json').then(world => {
+    countries = [topojson.feature(world, world.objects.land)];
     gLand.selectAll('path').data(countries).enter().append('path')
-      .attr('fill', d => HIGHLIGHT.has(d.id) ? C.mine : C.land)
-      .attr('stroke', d => HIGHLIGHT.has(d.id) ? C.mine : C.land).attr('stroke-width', 0.3);
+      .attr('fill', C.land);
     render();
     setInterval(() => {
       if (document.hidden) return;
       rotateTo((current + 1) % PLACES.length);
     }, 4500);
   }).catch(() => { /* globe stays as sea and grid if data cannot load */ });
-
-  /* Natural Earth "Admin 0 boundary lines, land" (1:50m), saved in your repo.
-     Disputed, indefinite and line-of-control segments are dashed. */
-  const DASHED = /disput|control|indefinite|claim/i;
-  d3.json('portfolio_websites/data/ne_50m_admin_0_boundary_lines_land.geojson').then(geo => {
-    borders = geo.features;
-    gBorders.selectAll('path').data(borders).enter().append('path')
-      .attr('stroke', C.edge)
-      .attr('stroke-opacity', d => DASHED.test(d.properties.FEATURECLA || d.properties.featurecla || '') ? 0.9 : 0.55)
-      .attr('stroke-width', 0.7)
-      .attr('stroke-dasharray', d => DASHED.test(d.properties.FEATURECLA || d.properties.featurecla || '') ? '2.5 2' : null);
-    render();
-  }).catch(() => { /* no border lines if the file is missing */ });
 })();
 </script>
 </body>
