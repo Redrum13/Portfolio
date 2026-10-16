@@ -1,84 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>About — Climate Activism in Democracy</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css" />
+  <title>About | Climate Activism in Democracy</title>
+  <meta name="description" content="Why climate activism is part of democracy.">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
 
     <header>
-   <nav>
-  <span class="nav-brand">Climate &amp; Democracy</span>
-  <button class="menu-toggle" aria-label="Menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-  <div class="nav-links">
-    <a class="nav" href="index.html">Home</a>
-    <a id="active" class="nav" href="about.html">About</a>
-    <a class="nav" href="map.html">Map</a>
-  </div>
-</nav>
+      <nav>
+        <span class="nav-brand">Climate &amp; Democracy</span>
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+          <a class="nav" href="index.html">Home</a>
+          <a id="active" class="nav" href="about.html" aria-current="page">About</a>
+          <a class="nav" href="map.html">Map</a>
+          <a class="nav nav-back" href="../../../index.html">Portfolio</a>
+        </div>
+      </nav>
     </header>
 
     <section class="about-layout">
       <div class="about-image-col fade-up">
-        <img src="pineapple.jpg" alt="Environmental protest scene">
+        <img src="pineapple.jpg" alt="Climate protest scene">
         <div class="about-image-overlay"></div>
       </div>
 
       <div class="about-text-col">
         <span class="home-eyebrow fade-up">Context</span>
-        <h2 class="fade-up-2">How climate activism fits<br>in the overall theme<br>of democracy?</h2>
+        <h2 class="fade-up-2">How does climate activism fit into democracy?</h2>
         <div class="divider fade-up-3"></div>
         <p class="fade-up-3">
-          In the overall theme of democracy, freedom of assembly, association, personal property,
-          freedom of religion and speech, citizenship, consent of the governed, voting rights,
-          freedom from unwarranted governmental deprivation of the right to life and liberty, and
-          minority rights are included. Thus, activism forms a cornerstone of democracy.
+          Democracy includes freedom of assembly, association, religion and speech. It also
+          includes citizenship, voting rights, consent of the governed, protection of life and
+          liberty, and minority rights. This makes activism a cornerstone of democracy.
         </p>
-        <p class="fade-up-4" style="margin-top: 20px;">
-          The climate movement seeks to put pressure on governments and industries to take action to
-          curb the impact of climate change. With rising temperatures and shifting weather patterns,
-          the impact of climate change, which is primarily a result of the burning of fossil fuels,
-          poses a huge risk to humans and the environment. Climate change activists such as Greta
-          Thunberg advocate centring climate justice in their message, which argues that those most
-          responsible for climate change should also contribute the most to addressing the problem.
+        <p class="fade-up-4">
+          The climate movement puts pressure on governments and industries to act on climate
+          change. Burning fossil fuels drives rising temperatures and shifting weather, which put
+          people and the environment at risk. Activists such as Greta Thunberg call for climate
+          justice. This means those most responsible for climate change should do the most to fix it.
         </p>
+        <a href="map.html" class="home-cta fade-up-4">See the maps</a>
       </div>
     </section>
 
     <footer>
       <b>Sources:</b>
-      Retrieved from <a href="https://www.liberties.eu/en/stories/activism/44871">"Climate Activism." Liberties.eu</a>, Civil Liberties Union for Europe.;
-      Photo by <a href="https://www.pexels.com/photo/pineapple-on-sand-139264/">Pineapple Supply Co.</a> from Pexels
+      Text based on <a href="https://www.liberties.eu/en/stories/activism/44871">Climate Activism</a>, Liberties.eu, Civil Liberties Union for Europe.
+      Photo by <a href="https://www.pexels.com/photo/pineapple-on-sand-139264/">Pineapple Supply Co.</a> on Pexels.
     </footer>
 
   </main>
+
   <script>
-  // Hamburger menu toggle
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
-
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', function() {
-      menuToggle.classList.toggle('active');
-      navLinks.classList.toggle('active');
-    });
-
-    // Close menu when a link is clicked
-    const links = document.querySelectorAll('.nav-links a');
-    links.forEach(link => {
-      link.addEventListener('click', function() {
+    // Mobile menu
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active', open);
+        menuToggle.setAttribute('aria-expanded', open);
+      });
+      navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
         menuToggle.classList.remove('active');
         navLinks.classList.remove('active');
-      });
-    });
-  }
-</script>
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }));
+    }
+  </script>
 </body>
 </html>
