@@ -175,14 +175,6 @@
   .card-tools { color: var(--shoal); font-size: 0.92rem; margin-top: auto; padding-top: 0.4rem; }
   .card-open { color: var(--sandstone); font-weight: 700; font-size: 0.95rem; }
 
-  /* ─── RESEARCH ─── */
-  .research .wrap { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
-  .research-image { border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); background: var(--ocean-lift); aspect-ratio: 4 / 3; }
-  .research-image img { width: 100%; height: 100%; object-fit: cover; }
-  .research h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin: 0.4rem 0 1rem; }
-  .research p { margin-bottom: 1rem; max-width: 60ch; }
-  .research .meta { color: var(--shoal); font-size: 0.98rem; margin-bottom: 1.4rem; }
-
   /* ─── BACKGROUND ─── */
   .timeline { list-style: none; margin-top: 2.2rem; border-left: 2px solid var(--rule); }
   .timeline li { position: relative; padding: 0 0 2.2rem 1.8rem; max-width: 70ch; }
@@ -234,7 +226,7 @@
   /* ─── RESPONSIVE ─── */
   @media (max-width: 960px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
-    .hero .wrap, .about .wrap, .research .wrap, .contact .wrap { grid-template-columns: 1fr; }
+    .hero .wrap, .about .wrap, .contact .wrap { grid-template-columns: 1fr; }
     #globe { max-width: 270px; }
   }
   @media (max-width: 760px) {
@@ -270,7 +262,6 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#research">Research</a></li>
       <li><a href="#background">Background</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a class="nav-cv" href="Radhika_Dhuri_CV.pdf" download>Download CV</a></li>
@@ -369,6 +360,17 @@
       data-url   = opens a link in a new tab on click
     -->
     <div class="grid" id="grid">
+
+      <article class="card" data-cat="rs" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/thesis_tn.png" alt="Dashboard showing star dune crestlines in the Namib Sand Sea"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MSc thesis, 2026</div>
+          <h3>Moving star dunes in Namibia</h3>
+          <p>Found dune crestlines in Sentinel-2 images with Python and mapped how they move over time, including uncertain or missing data.</p>
+          <div class="card-tools">Python, Sentinel-2, Streamlit</div>
+          <span class="card-open">Open dashboard</span>
+        </div>
+      </article>
 
       <article class="card" data-cat="print" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
         <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/atlas_map.png" alt="Atlas spread on climate action"></div>
@@ -528,29 +530,6 @@
   </div>
 </section>
 
-<!-- RESEARCH -->
-<section class="research" id="research">
-  <div class="wrap">
-    <a class="research-image" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener">
-      <img loading="lazy" src="portfolio_websites/Thumbnails/thesis_tn.png" alt="Thesis dashboard showing star dune crestlines">
-    </a>
-    <div>
-      <h2>Research</h2>
-      <h3>Mapping moving star dunes in Namibia</h3>
-      <p>
-        For my MSc thesis I built a Python workflow that finds dune crestlines in Sentinel-2
-        images of the Namib Sand Sea. I then tested ways to show how the dunes move over time,
-        including where the data is uncertain or missing.
-      </p>
-      <p class="meta">
-        Cartographic Approach to Remotely Sensed Star Dunes and Environment Dynamics.
-        TU Munich, defended September 2026. Supervised by Katharina Anders and Pimmbhattra Maydhisudhiwongs.
-      </p>
-      <a class="btn btn-solid" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener">Open the dashboard</a>
-    </div>
-  </div>
-</section>
-
 <!-- BACKGROUND -->
 <section class="background" id="background">
   <div class="wrap">
@@ -574,7 +553,7 @@
         <div class="tl-years">2024 to 2026</div>
         <h3>MSc Cartography, Erasmus Mundus</h3>
         <div class="tl-place">TU Munich, TU Wien, TU Dresden and University of Twente</div>
-        <p>Map design and GIS in Munich. Web mapping in Vienna. Mobile and topographic maps and an Alpine field school in Dresden. Thesis in Munich.</p>
+        <p>Map design and GIS in Munich. Web mapping in Vienna. Mobile and topographic maps and an Alpine field school in Dresden. Thesis on moving star dunes, defended at TU Munich in September 2026, supervised by Katharina Anders and Pimmbhattra Maydhisudhiwongs.</p>
       </li>
       <li class="now">
         <div class="tl-years">Now</div>
