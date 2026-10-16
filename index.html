@@ -3,1747 +3,779 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Radhika Dhuri | Cartography &amp; Geography</title>
-<meta name="description" content="Portfolio of Radhika Dhuri, cartographer and geographer. Print maps, web maps, remote sensing and GIS projects. Based in Munich.">
-<meta property="og:title" content="Radhika Dhuri | Cartography &amp; Geography">
-<meta property="og:description" content="From landscapes to legends. Print maps, web maps, remote sensing and GIS projects.">
+<title>Radhika Dhuri | Cartography and Geography</title>
+<meta name="description" content="Radhika Dhuri, cartographer and geographer based in Munich. Print maps, web maps, remote sensing and GIS.">
+<meta property="og:title" content="Radhika Dhuri | Cartography and Geography">
+<meta property="og:description" content="From landscapes to legends. Print maps, web maps, remote sensing and GIS.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://redrum13.github.io/Portfolio/">
 <meta property="og:image" content="https://redrum13.github.io/Portfolio/portfolio_websites/Thumbnails/thesis_tn.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet">
 <style>
-
-  /* ═══════════════════════════════════════════════
-     COLOUR SYSTEM
-     Default → blue (water) background, brown (land) text
-     Parchment mode → swaps to cream / sepia
-  ═══════════════════════════════════════════════ */
+  /* ─────────────────────────────────────────
+     PALETTE
+     Ocean = page, Chart paper = text,
+     Sandstone = land and links, Survey red = "you are here"
+  ───────────────────────────────────────── */
   :root {
-    /* Core palette (dark / water mode) */
-    --blue-deep:    #0b2233;
-    --blue-mid:     #123650;
-    --blue-surface: #1a4a6b;
-    --blue-lift:    #1f799b;
-    --blue-light:   #5aaac8;
-    --blue-mist:    #a8d4e6;
+    --ocean:      #0f2a3d;
+    --ocean-deep: #0a1f2e;
+    --ocean-lift: #163a54;
+    --paper:      #f2ead8;
+    --shoal:      #a9c7d6;
+    --sandstone:  #e2b071;
+    --survey-red: #f0623e;
+    --rule:       rgba(169,199,214,0.18);
 
-    --brown-ink:    #2b1a0a;
-    --brown-dark:   #5c3317;
-    --brown-mid:    #8b5a2b;
-    --brown-warm:   #c4884a;
-    --brown-sand:   #deb887;
-    --brown-cream:  #f5e6cc;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans:  'Atkinson Hyperlegible', system-ui, sans-serif;
 
-    /* Cartographic red — used sparingly for "you are here" and active states */
-    --red-marker:   #d94f2b;
-    --red-glow:     rgba(217,79,43,0.35);
-
-    /* Semantic tokens */
-    --bg:           var(--blue-deep);
-    --bg-alt:       var(--blue-mid);
-    --bg-card:      var(--blue-surface);
-    --bg-lift:      var(--blue-lift);
-
-    --text-primary:   var(--brown-cream);
-    --text-body:      var(--brown-sand);
-    --text-subtle:    var(--blue-mist);
-    --text-muted:     #8ab8cc;
-
-    --accent-warm:    var(--brown-warm);
-    --accent-cool:    var(--blue-lift);
-    --accent-hover:   var(--blue-light);
-    --accent-red:     var(--red-marker);
-
-    --border:         rgba(196,136,74,0.25);
-    --border-blue:    rgba(31,121,155,0.35);
-    --grid-line:      rgba(31,121,155,0.14);
-    --contour-line:   rgba(196,136,74,0.10);
-    --grain-opacity:  0.045;
-
-    --nav-bg:         rgba(11,34,51,0.93);
-    --card-overlay:   rgba(11,34,51,0.96);
-    --drawer-bg:      rgba(11,34,51,0.99);
-  }
-
-  /* ─── PARCHMENT MODE ─── */
-  body.parchment {
-    --bg:           #f0e2c4;
-    --bg-alt:       #e8d7b3;
-    --bg-card:      #e0cba3;
-    --bg-lift:      #d4b98a;
-
-    --text-primary:   #2b1a0a;
-    --text-body:      #4a2f14;
-    --text-subtle:    #6b4522;
-    --text-muted:     #8a6a45;
-
-    --accent-warm:    #8b3a1f;
-    --accent-cool:    #7a4a1a;
-    --accent-hover:   #5c3317;
-    --accent-red:     #b83a1a;
-
-    --border:         rgba(92,51,23,0.35);
-    --border-blue:    rgba(122,74,26,0.35);
-    --grid-line:      rgba(122,74,26,0.10);
-    --contour-line:   rgba(92,51,23,0.14);
-    --grain-opacity:  0.08;
-
-    --nav-bg:         rgba(240,226,196,0.94);
-    --card-overlay:   rgba(240,226,196,0.96);
-    --drawer-bg:      rgba(240,226,196,0.99);
+    --wrap: 1180px;
+    --gutter: clamp(1rem, 4vw, 3rem);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-
   body {
-    background: var(--bg);
-    color: var(--text-body);
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: crosshair;
-    width: 100%;
-    max-width: 100vw;
-    transition: background 0.5s ease, color 0.5s ease;
+    background: var(--ocean);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
   }
+  img { max-width: 100%; display: block; }
+  a { color: var(--sandstone); }
+  a:focus-visible, button:focus-visible, .card:focus-visible {
+    outline: 3px solid var(--sandstone); outline-offset: 3px;
+  }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
-  /* ─── PAPER GRAIN OVERLAY ─── */
-  body::after {
-    content: '';
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 9997;
-    opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; color: var(--paper); }
+  h2 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 0.6rem; }
+  .lead { color: var(--shoal); font-size: 1.125rem; max-width: 60ch; }
 
-  /* ─── CURSOR ─── */
-  .cursor {
-    width: 12px; height: 12px;
-    border: 1.5px solid var(--accent-warm); border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
-    display: none;
-  }
-  @media (hover: hover) { .cursor { display: block; } }
-  .cursor.expanded { width: 40px; height: 40px; border-color: var(--accent-red); opacity: 0.7; }
-  .cursor.expanded::after {
-    content: ''; position: absolute; inset: 50% auto auto 50%;
-    width: 4px; height: 4px; border-radius: 50%;
-    background: var(--accent-red); transform: translate(-50%, -50%);
-  }
-
-  /* ─── GRID / GRATICULE OVERLAY ─── */
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-    transition: background-image 0.5s;
-  }
-
-  /* ─── PARALLAX CONTOUR LAYER ─── */
-  #contourLayer {
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 0;
-    opacity: 0.9;
-    will-change: transform;
-  }
-  #contourLayer svg { width: 100%; height: 140%; display: block; }
+  section { padding: clamp(4rem, 9vw, 7rem) 0; scroll-margin-top: 64px; }
+  section + section { border-top: 1px solid var(--rule); }
 
   /* ─── NAV ─── */
-  body > nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.4rem 3rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--nav-bg);
-    backdrop-filter: blur(12px);
-    transition: background 0.5s, border-color 0.5s;
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(15,42,61,0.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
   }
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem; font-weight: 700; letter-spacing: 0.06em;
-    color: var(--accent-warm); text-decoration: none; z-index: 201; position: relative;
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-name { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--paper); text-decoration: none; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+  .nav-links a { color: var(--shoal); text-decoration: none; font-size: 0.98rem; }
+  .nav-links a:hover { color: var(--paper); }
+  .nav-links .nav-cv {
+    color: var(--ocean); background: var(--sandstone);
+    padding: 0.45rem 0.95rem; border-radius: 4px; font-weight: 700;
   }
-  .nav-logo span { color: var(--text-primary); font-style: italic; font-weight: 400; }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-subtle); text-decoration: none; transition: color 0.2s; position: relative;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-    height: 1px; background: var(--accent-red); transform: scaleX(0); transition: transform 0.3s;
-  }
-  .nav-links a:hover { color: var(--accent-warm); }
-  .nav-links a:hover::after { transform: scaleX(1); }
-  .nav-coords { font-size: 0.6rem; color: var(--accent-cool); letter-spacing: 0.1em; }
-
-  /* ─── PARCHMENT TOGGLE ─── */
-  .parchment-toggle {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: none; border: 1px solid var(--border);
-    color: var(--text-subtle); cursor: pointer;
-    font-family: 'DM Mono', monospace; font-size: 0.58rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.4rem 0.75rem; margin-left: 1.5rem;
-    transition: all 0.25s;
-  }
-  .parchment-toggle:hover { border-color: var(--accent-red); color: var(--accent-red); }
-  .parchment-toggle .swatch {
-    width: 10px; height: 10px; border: 1px solid currentColor;
-    background: linear-gradient(135deg, #f0e2c4 50%, #0b2233 50%);
-  }
-
-  /* ─── HAMBURGER ─── */
-  .nav-hamburger {
-    display: none; flex-direction: column; justify-content: center; gap: 5px;
-    background: none; border: 1px solid var(--border);
-    cursor: pointer; padding: 8px 10px; z-index: 201; position: relative;
-  }
-  .nav-hamburger span {
-    display: block; width: 22px; height: 1.5px; background: var(--accent-warm);
-    transition: transform 0.3s, opacity 0.3s, width 0.3s; transform-origin: center;
-  }
-  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
-  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-  /* ─── DRAWER ─── */
-  .nav-drawer-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6); z-index: 299; opacity: 0; transition: opacity 0.3s;
-  }
-  .nav-drawer-overlay.open { display: block; opacity: 1; }
-  .nav-drawer {
-    position: fixed; top: 0; right: 0; bottom: 0;
-    width: 78vw; max-width: 300px;
-    background: var(--drawer-bg); border-left: 1px solid var(--border);
-    z-index: 300; display: flex; flex-direction: column;
-    padding: 5rem 1.8rem 2rem;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-    backdrop-filter: blur(20px);
-  }
-  .nav-drawer.open { transform: translateX(0); }
-  .drawer-close {
-    position: absolute; top: 1.2rem; right: 1.2rem;
-    background: none; border: 1px solid var(--border);
-    color: var(--accent-warm); cursor: pointer; width: 38px; height: 38px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; transition: background 0.2s;
-  }
-  .drawer-close:hover { background: rgba(196,136,74,0.12); }
-  .drawer-links { display: flex; flex-direction: column; gap: 0; list-style: none; margin-bottom: 2rem; }
-  .drawer-links li { border-bottom: 1px solid rgba(196,136,74,0.12); }
-  .drawer-links a {
-    display: block; font-family: 'Playfair Display', serif;
-    font-size: 1.5rem; font-weight: 700; color: var(--text-subtle);
-    text-decoration: none; padding: 0.85rem 0; transition: color 0.2s, padding-left 0.2s;
-  }
-  .drawer-links a:hover { color: var(--accent-warm); padding-left: 0.4rem; }
-  .drawer-toggle {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-subtle); cursor: pointer;
-    font-family: 'DM Mono', monospace; font-size: 0.62rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.7rem 1rem; margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 0.6rem; justify-content: center;
-  }
-  .drawer-toggle:hover { border-color: var(--accent-red); color: var(--accent-red); }
-  .drawer-coords {
-    font-size: 0.6rem; color: var(--accent-cool); letter-spacing: 0.12em;
-    margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(196,136,74,0.12);
-  }
-  .drawer-coords strong { color: var(--accent-warm); display: block; margin-bottom: 0.3rem; font-size: 0.65rem; }
+  .nav-links .nav-cv:hover { color: var(--ocean); background: var(--paper); }
+  .nav-toggle { display: none; background: none; border: 1px solid var(--rule); color: var(--paper);
+    padding: 0.4rem 0.75rem; border-radius: 4px; font: inherit; cursor: pointer; }
 
   /* ─── HERO ─── */
-  #hero {
-    min-height: 100vh; position: relative;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 8rem 3rem 4rem; overflow: hidden;
+  .hero { padding-top: clamp(3rem, 7vw, 5.5rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .hero-role { color: var(--shoal); font-size: 1.05rem; margin-bottom: 0.8rem; }
+  .hero h1 {
+    font-size: clamp(3.2rem, 8vw, 6rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 0.98; margin-bottom: 1rem;
+    font-variation-settings: "opsz" 144;
   }
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(31,121,155,0.22) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(217,79,43,0.08) 0%, transparent 60%);
+  .hero-tagline {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem); color: var(--sandstone); margin-bottom: 1.4rem;
   }
-  .hero-sat {
-    position: absolute; inset: 0; z-index: 0;
-    background-image: url('portfolio_websites/Thumbnails/hero_dunes.png');
-    background-size: cover; background-position: center;
-    opacity: 0.1; filter: grayscale(0.4) contrast(1.1);
-    mix-blend-mode: luminosity;
-  }
-  .hero-content { position: relative; z-index: 2; max-width: 750px; }
-  .hero-eyebrow {
-    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--accent-cool); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
-  }
-  .hero-eyebrow::before { content: '◆'; font-size: 0.5rem; color: var(--accent-red); }
-  .hero-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3.5rem, 8vw, 7rem);
-    font-weight: 900; line-height: 0.92; letter-spacing: -0.02em;
-    color: var(--text-primary); margin-bottom: 0.3rem;
-  }
-  .hero-name em { font-style: italic; color: var(--accent-warm); display: block; }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    font-style: italic; font-weight: 300;
-    color: var(--text-subtle); margin-bottom: 2.5rem; letter-spacing: 0.04em;
-  }
-  .hero-desc {
-    font-size: 0.8rem; line-height: 1.9;
-    color: var(--text-body);
-    max-width: 500px; margin-bottom: 3rem;
-  }
-  .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; }
-  .btn {
-    font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em;
-    text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none;
+  .hero-text { font-size: 1.15rem; max-width: 34em; margin-bottom: 1.8rem; }
+  .status {
     display: inline-flex; align-items: center; gap: 0.6rem;
-    transition: all 0.25s; cursor: pointer; border: none;
+    color: var(--paper); font-size: 0.98rem; margin-bottom: 2rem;
   }
-  .btn-primary { background: var(--accent-warm); color: var(--blue-deep); border: 1px solid var(--accent-warm); font-weight: 500; }
-  body.parchment .btn-primary { color: var(--brown-cream); }
-  .btn-primary:hover { background: var(--accent-red); border-color: var(--accent-red); color: #fff; }
-  .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid rgba(245,230,204,0.35); }
-  body.parchment .btn-secondary { border-color: rgba(92,51,23,0.4); }
-  .btn-secondary:hover { border-color: var(--accent-red); color: var(--accent-red); }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--survey-red);
+    box-shadow: 0 0 0 0 rgba(240,98,62,0.55); animation: ping 2.4s ease-out infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(240,98,62,0.55); } 80%,100% { box-shadow: 0 0 0 10px rgba(240,98,62,0); } }
+  .actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; font: inherit; font-weight: 700; font-size: 1rem;
+    padding: 0.8rem 1.4rem; border-radius: 4px; text-decoration: none; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-solid { background: var(--sandstone); color: var(--ocean); border: 2px solid var(--sandstone); }
+  .btn-solid:hover { background: var(--paper); border-color: var(--paper); }
+  .btn-line { background: transparent; color: var(--paper); border: 2px solid rgba(242,234,216,0.45); }
+  .btn-line:hover { border-color: var(--paper); }
 
-  /* ─── GLOBE BADGE ─── */
-  .hero-badge {
-    position: absolute; right: 6rem; top: 50%;
-    transform: translateY(-50%);
-    border: 1px solid var(--border); padding: 1.6rem 1.8rem;
-    background: var(--card-overlay); backdrop-filter: blur(8px); z-index: 2;
-    animation: floatBadge 6s ease-in-out infinite;
-    min-width: 260px;
-    transition: background 0.5s, border-color 0.5s;
-  }
-  @keyframes floatBadge {
-    0%, 100% { transform: translateY(-50%) translateY(0); }
-    50%       { transform: translateY(-50%) translateY(-12px); }
-  }
-  #globeCanvas {
-    display: block; width: 180px; height: 180px; margin: 0 auto 0.8rem;
-    filter: drop-shadow(0 0 12px rgba(31,121,155,0.3));
-  }
-  .badge-title {
-    font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--accent-warm); text-align: center;
-    padding-bottom: 0.7rem; margin-bottom: 0.7rem; border-bottom: 1px solid var(--border);
-  }
-  .badge-focus {
-    text-align: center; font-size: 0.58rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--accent-red);
-    margin-bottom: 0.9rem; font-weight: 500;
-  }
-  .badge-focus span { color: var(--text-muted); font-weight: 300; }
-  .meta-row {
-    display: flex; justify-content: space-between; gap: 1rem;
-    font-size: 0.6rem; letter-spacing: 0.06em; padding: 0.35rem 0;
-    border-bottom: 1px dashed rgba(168,212,230,0.15);
-  }
-  body.parchment .meta-row { border-bottom-color: rgba(92,51,23,0.18); }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.52rem; }
-  .meta-val { color: var(--text-primary); text-align: right; }
-  .meta-val.live { color: var(--accent-red); }
-
-  .scroll-hint {
-    position: absolute; bottom: 2.5rem; left: 3rem;
-    font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--text-muted); display: flex; align-items: center; gap: 0.8rem;
-    animation: fadeUpDown 2.5s ease-in-out infinite;
-  }
-  @keyframes fadeUpDown {
-    0%, 100% { opacity: 0.5; transform: translateY(0); }
-    50%       { opacity: 1;   transform: translateY(-4px); }
-  }
-  .scroll-hint::before { content: '↓'; font-size: 0.9rem; color: var(--accent-red); }
-
-  /* ─── SECTIONS ─── */
-  section { position: relative; z-index: 1; }
-  .section-label {
-    font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
-    color: var(--accent-cool); margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--accent-red); }
-  .section-heading {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem;
-    color: var(--text-primary);
-  }
-  .section-heading em { font-style: italic; color: var(--accent-warm); }
+  /* Globe */
+  .globe-figure { margin: 0; text-align: center; }
+  #globe { width: 100%; max-width: 440px; height: auto; display: block; margin: 0 auto; }
+  .globe-caption { margin-top: 0.8rem; min-height: 3.4em; }
+  .globe-place { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; }
+  .globe-note { color: var(--shoal); font-size: 0.98rem; }
 
   /* ─── ABOUT ─── */
-  #about { padding: 7rem 3rem; border-top: 1px solid var(--border); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1200px; margin: 0 auto; }
-  .about-text p { font-size: 0.82rem; line-height: 2; color: var(--text-body); margin-bottom: 1.4rem; }
-  .about-programme-tag {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent-cool); border: 1px solid var(--border-blue);
-    padding: 0.4rem 0.8rem; margin-bottom: 1.5rem;
+  .about .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); }
+  .about p { margin-bottom: 1.1rem; max-width: 60ch; }
+  .skills h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+  .skills h3:first-child { margin-top: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; }
+  .chips li {
+    font-size: 0.95rem; padding: 0.3rem 0.7rem; border-radius: 999px;
+    background: var(--ocean-lift); color: var(--paper); border: 1px solid var(--rule);
   }
-  .about-programme-tag::before { content: '◆'; font-size: 0.4rem; color: var(--accent-red); }
-  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--border); }
-  .skill-cell {
-    padding: 1.4rem 1.6rem;
-    border: 1px solid rgba(196,136,74,0.1);
-    background: rgba(26,74,107,0.35);
-    transition: background 0.2s;
+
+  /* ─── PROJECTS ─── */
+  .projects { background: var(--ocean-deep); }
+  .projects-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
+  .legend { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .legend button {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font: inherit; font-size: 0.98rem; color: var(--shoal);
+    background: transparent; border: 1px solid var(--rule); border-radius: 4px;
+    padding: 0.45rem 0.85rem; cursor: pointer;
   }
-  body.parchment .skill-cell { background: rgba(224,203,163,0.5); border-color: rgba(92,51,23,0.12); }
-  .skill-cell:hover { background: rgba(31,121,155,0.2); }
-  body.parchment .skill-cell:hover { background: rgba(217,79,43,0.08); }
-  .skill-name { font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 500; color: var(--text-primary); margin-bottom: 0.3rem; text-transform: uppercase; }
-  .skill-detail { font-size: 0.62rem; color: var(--accent-cool); line-height: 1.6; }
+  .legend button:hover { color: var(--paper); border-color: var(--shoal); }
+  .legend button[aria-pressed="true"] { color: var(--paper); border-color: var(--paper); background: var(--ocean-lift); }
+  .swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+  .sw-all   { background: conic-gradient(var(--sandstone) 0 25%, #5fb0d4 0 50%, #8fd1a8 0 75%, var(--survey-red) 0); }
+  .sw-print { background: var(--sandstone); }
+  .sw-web   { background: #5fb0d4; }
+  .sw-rs    { background: #8fd1a8; }
+  .sw-apps  { background: var(--survey-red); }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  .card {
+    display: flex; flex-direction: column; text-align: left;
+    background: var(--ocean); border: 1px solid var(--rule); border-radius: 6px;
+    overflow: hidden; cursor: pointer; color: inherit; text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--shoal); }
+  .card[hidden] { display: none; }
+  .card-media { position: relative; aspect-ratio: 4 / 3; background: var(--ocean-lift); overflow: hidden; }
+  .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .card:hover .card-media img { transform: scale(1.03); }
+  /* Printer's crop marks */
+  .card-media::before, .card-media::after {
+    content: ''; position: absolute; width: 14px; height: 14px; z-index: 2; pointer-events: none;
+    border-color: rgba(242,234,216,0.85);
+  }
+  .card-media::before { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+  .card-media::after  { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+  .card-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+  .card-kind { display: flex; align-items: center; gap: 0.5rem; color: var(--shoal); font-size: 0.92rem; }
+  .card h3 { font-size: 1.28rem; }
+  .card p { font-size: 0.99rem; color: #d9dfe0; }
+  .card-tools { color: var(--shoal); font-size: 0.92rem; margin-top: auto; padding-top: 0.4rem; }
+  .card-open { color: var(--sandstone); font-weight: 700; font-size: 0.95rem; }
 
   /* ─── RESEARCH ─── */
-  #research {
-    padding: 6rem 3rem;
-    border-top: 1px solid var(--border);
-    background: rgba(18,54,80,0.3);
-  }
-  body.parchment #research { background: rgba(232,215,179,0.5); }
-  .thesis-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
-  .thesis-visual {
-    border: 1px solid var(--border);
-    aspect-ratio: 4/3; position: relative; overflow: hidden; display: block;
-    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 50%, var(--blue-surface) 100%);
-  }
-  .thesis-visual-img {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    opacity: 0.9; transition: transform 0.6s ease;
-  }
-  .thesis-visual:hover .thesis-visual-img { transform: scale(1.04); }
-  .thesis-visual-label {
-    position: absolute; bottom: 1rem; left: 1rem;
-    font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-warm); border: 1px solid var(--border);
-    padding: 0.3rem 0.6rem; background: var(--card-overlay);
-  }
-  .thesis-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
-    font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem;
-    color: var(--text-primary);
-  }
-  .thesis-title em { font-style: italic; color: var(--accent-warm); }
-  .thesis-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
-  .thesis-tag {
-    font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.25rem 0.6rem;
-    border: 1px solid var(--border-blue);
-    color: var(--accent-cool); background: rgba(31,121,155,0.12);
-  }
-  .thesis-desc { font-size: 0.8rem; line-height: 2; color: var(--text-body); margin-bottom: 1.5rem; }
-  .thesis-supervisors { font-size: 0.66rem; color: var(--text-subtle); margin-bottom: 1.5rem; letter-spacing: 0.04em; }
-  .thesis-university {
-    font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.1em;
-    border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1.5rem;
-  }
-  .thesis-university strong { color: var(--accent-warm); }
+  .research .wrap { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .research-image { border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); background: var(--ocean-lift); aspect-ratio: 4 / 3; }
+  .research-image img { width: 100%; height: 100%; object-fit: cover; }
+  .research h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin: 0.4rem 0 1rem; }
+  .research p { margin-bottom: 1rem; max-width: 60ch; }
+  .research .meta { color: var(--shoal); font-size: 0.98rem; margin-bottom: 1.4rem; }
 
-  /* ─── WORK — SHEET INDEX ─── */
-  #work { padding: 7rem 3rem; background: rgba(18,54,80,0.25); border-top: 1px solid var(--border); }
-  body.parchment #work { background: rgba(232,215,179,0.4); }
-  .work-header { max-width: 1200px; margin: 0 auto 4rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+  /* ─── BACKGROUND ─── */
+  .timeline { list-style: none; margin-top: 2.2rem; border-left: 2px solid var(--rule); }
+  .timeline li { position: relative; padding: 0 0 2.2rem 1.8rem; max-width: 70ch; }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li::before {
+    content: ''; position: absolute; left: -8px; top: 0.45rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--ocean); border: 2px solid var(--sandstone);
+  }
+  .timeline li.now::before { background: var(--survey-red); border-color: var(--survey-red); }
+  .tl-years { color: var(--sandstone); font-weight: 700; font-size: 0.98rem; }
+  .timeline h3 { font-size: 1.35rem; margin: 0.15rem 0 0.2rem; }
+  .tl-place { color: var(--shoal); margin-bottom: 0.35rem; }
 
-  /* ─── LEGEND-STYLE FILTER TABS ─── */
-  .filter-legend {
-    display: flex; flex-wrap: wrap; gap: 0.6rem;
-    border: 1px solid var(--border); padding: 0.75rem 0.9rem;
-    background: var(--card-overlay);
-  }
-  .filter-tab {
-    font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em;
-    text-transform: uppercase; padding: 0.4rem 0.8rem; background: transparent;
-    border: 1px solid var(--border); color: var(--text-subtle); cursor: pointer;
-    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
-  }
-  .filter-tab .swatch {
-    width: 10px; height: 10px; border: 1px solid currentColor;
-    display: inline-block;
-  }
-  .filter-tab[data-cat="print"] .swatch { background: var(--accent-warm); border-color: var(--accent-warm); }
-  .filter-tab[data-cat="web"]   .swatch { background: var(--blue-lift);  border-color: var(--blue-lift); }
-  .filter-tab[data-cat="rs"]    .swatch { background: var(--blue-mist);  border-color: var(--blue-mist); }
-  .filter-tab[data-cat="apps"]  .swatch { background: var(--accent-red); border-color: var(--accent-red); }
-  .filter-tab[data-cat="all"]   .swatch { background: linear-gradient(135deg, var(--accent-warm), var(--blue-lift)); border-color: var(--accent-warm); }
-  .filter-tab:hover { color: var(--text-primary); border-color: var(--accent-red); }
-  .filter-tab.active {
-    background: rgba(217,79,43,0.12); border-color: var(--accent-red);
-    color: var(--accent-red); font-weight: 500;
-  }
+  .talks { margin-top: 3.5rem; }
+  .talks h3 { font-size: 1.35rem; margin-bottom: 0.9rem; }
+  .talks ul { list-style: none; display: grid; gap: 0.9rem; max-width: 70ch; }
+  .talks li { padding-left: 1.2rem; position: relative; }
+  .talks li::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 6px; height: 6px; background: var(--sandstone); }
 
-  /* ─── ATLAS MASONRY GRID ─── */
-  .projects-grid {
-    max-width: 1200px; margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 80px;
-    gap: 1.5px;
-    background: var(--border-blue);
+  /* ─── CONTACT ─── */
+  .contact { background: var(--ocean-deep); }
+  .contact .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .contact-list { list-style: none; display: grid; gap: 0.8rem; }
+  .contact-list a {
+    display: block; padding: 1rem 1.2rem; border: 1px solid var(--rule); border-radius: 6px;
+    text-decoration: none; color: var(--paper); background: var(--ocean);
   }
-  .project-card {
-    background: var(--bg-card); position: relative; overflow: hidden;
-    cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end;
-    grid-column: span 2; grid-row: span 3;
-    transition: background 0.5s;
-  }
-  .project-card.hero-card { grid-column: span 4; grid-row: span 4; }
-  .project-card.wide      { grid-column: span 3; grid-row: span 3; }
-  .project-card.tall      { grid-column: span 2; grid-row: span 4; }
-  .project-card.short     { grid-column: span 2; grid-row: span 2; }
-
-  .project-card:focus-visible { outline: 2px solid var(--accent-red); outline-offset: -2px; }
-  .project-img {
-    position: absolute; inset: 0; background-size: cover; background-position: center;
-    transition: transform 0.6s ease, filter 0.4s;
-    filter: saturate(0.6) brightness(0.35);
-  }
-  .project-card:hover .project-img,
-  .project-card:focus-visible .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.15); }
-
-  /* ─── CORNER TICKS (printer crop marks) ─── */
-  .sheet-tick {
-    position: absolute; width: 12px; height: 12px; z-index: 4;
-    border-color: var(--accent-warm); pointer-events: none;
-  }
-  .sheet-tick.tl { top: 8px;    left: 8px;    border-top: 1.5px solid; border-left: 1.5px solid; }
-  .sheet-tick.tr { top: 8px;    right: 8px;   border-top: 1.5px solid; border-right: 1.5px solid; }
-  .sheet-tick.bl { bottom: 8px; left: 8px;    border-bottom: 1.5px solid; border-left: 1.5px solid; }
-  .sheet-tick.br { bottom: 8px; right: 8px;   border-bottom: 1.5px solid; border-right: 1.5px solid; }
-
-  /* ─── SHEET NUMBER ─── */
-  .sheet-number {
-    position: absolute; top: 12px; left: 26px; z-index: 4;
-    font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-warm); font-family: 'DM Mono', monospace;
-    background: var(--card-overlay); padding: 0.15rem 0.4rem;
-    border: 1px solid var(--border);
-  }
-
-  /* ─── MINI SCALE + NORTH ARROW ─── */
-  .sheet-scale {
-    position: absolute; top: 12px; right: 26px; z-index: 4;
-    display: flex; align-items: center; gap: 0.35rem;
-    font-size: 0.48rem; letter-spacing: 0.1em;
-    color: var(--text-muted); font-family: 'DM Mono', monospace;
-    background: var(--card-overlay); padding: 0.15rem 0.4rem;
-    border: 1px solid var(--border);
-  }
-  .north-arrow {
-    width: 10px; height: 14px; display: inline-block;
-    background:
-      linear-gradient(to bottom, var(--accent-red) 0%, var(--accent-red) 55%, transparent 55%),
-      linear-gradient(to top, var(--accent-warm) 0%, var(--accent-warm) 100%);
-    clip-path: polygon(50% 0, 100% 100%, 50% 78%, 0 100%);
-  }
-
-  .project-overlay {
-    position: relative; z-index: 2; padding: 1.8rem;
-    background: linear-gradient(to top, var(--card-overlay) 0%, transparent 100%);
-  }
-  .project-type {
-    font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--accent-warm); margin-bottom: 0.5rem;
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .project-type::before { content: '■'; font-size: 0.35rem; color: var(--accent-red); }
-  .project-title {
-    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-    color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.2;
-  }
-  .project-card.hero-card .project-title { font-size: 1.5rem; }
-  .project-desc {
-    font-size: 0.65rem; color: var(--text-body); line-height: 1.7;
-    margin-bottom: 1rem; max-width: 420px;
-    transform: translateY(10px); opacity: 0; transition: all 0.3s 0.1s;
-  }
-  .project-card:hover .project-desc,
-  .project-card:focus-visible .project-desc { transform: translateY(0); opacity: 1; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .tag {
-    font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.25rem 0.6rem;
-    border: 1px solid var(--border-blue);
-    color: var(--blue-mist); background: rgba(31,121,155,0.12);
-  }
-  body.parchment .tag { color: var(--brown-dark); background: rgba(122,74,26,0.1); }
-
-  /* ─── CARTOGRAPHER'S NOTE ─── */
-  .cart-note {
-    margin-top: 0.8rem; padding-top: 0.7rem;
-    border-top: 1px dashed rgba(168,212,230,0.2);
-    font-size: 0.58rem; font-style: italic;
-    color: var(--accent-cool); line-height: 1.6;
-    display: flex; gap: 0.4rem;
-  }
-  .cart-note::before { content: '◆'; color: var(--accent-red); font-style: normal; font-size: 0.5rem; margin-top: 0.15rem; }
-  body.parchment .cart-note { border-top-color: rgba(92,51,23,0.2); }
-
-  .map-topo  { background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 60%, var(--blue-surface) 100%); }
-  .map-web   { background: linear-gradient(135deg, #091d2e 0%, #0e2e44 60%, var(--blue-mid) 100%); }
-  .map-print { background: linear-gradient(160deg, #1a0e04 0%, #2e1800 50%, #1a0c02 100%); }
-  .map-mobile{ background: linear-gradient(135deg, #0a1828 0%, #0e2235 60%, #12162a 100%); }
-  .map-atlas { background: linear-gradient(135deg, #180800 0%, #2a1400 50%, var(--blue-deep) 100%); }
-  .map-gis   { background: linear-gradient(160deg, #071820 0%, #0d2838 50%, #101520 100%); }
-
-  /* ─── TECH STRIP ─── */
-  #stack { padding: 4rem 3rem; border-top: 1px solid var(--border); overflow: hidden; }
-  .stack-scroll {
-    display: flex; gap: 3rem; align-items: center;
-    animation: scrollStrip 30s linear infinite; width: max-content;
-  }
-  @keyframes scrollStrip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .stack-item {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--text-muted); white-space: nowrap; transition: color 0.2s;
-  }
-  .stack-item:hover { color: var(--accent-red); }
-  .stack-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-cool); flex-shrink: 0; }
-  .stack-item:hover .stack-dot { background: var(--accent-red); }
-
-  /* ─── TRAVERSE (timeline) ─── */
-  #background { padding: 6rem 3rem; border-top: 1px solid var(--border); }
-  .journey-inner { max-width: 1200px; margin: 0 auto; }
-  .journey-steps {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; margin-top: 4rem; border: 1px solid var(--border);
-  }
-  .journey-step {
-    padding: 2.5rem 2rem; border-right: 1px solid var(--border);
-    position: relative; transition: background 0.3s;
-  }
-  .journey-step:last-child { border-right: none; }
-  .journey-step:hover { background: rgba(31,121,155,0.1); }
-  .journey-step.next { background: rgba(217,79,43,0.06); }
-  .journey-year {
-    font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-warm); margin-bottom: 0.5rem; display: block;
-  }
-  .journey-step.next .journey-year { color: var(--accent-red); }
-  .journey-uni {
-    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-    color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.2;
-  }
-  .journey-city { font-size: 0.65rem; color: var(--accent-cool); letter-spacing: 0.1em; margin-bottom: 0.8rem; line-height: 1.6; }
-  .journey-desc { font-size: 0.67rem; line-height: 1.8; color: var(--text-body); }
-  .journey-step-line {
-    position: absolute; top: 2.5rem; right: -1px; width: 1px; height: 40px;
-    background: var(--accent-red); opacity: 0; transition: opacity 0.3s;
-  }
-  .journey-step:hover .journey-step-line { opacity: 0.7; }
-
-  /* ─── STATS (with icons) ─── */
-  #stats {
-    padding: 5rem 3rem;
-    background: rgba(31,121,155,0.07);
-    border-top: 1px solid var(--border);
-  }
-  body.parchment #stats { background: rgba(217,79,43,0.05); }
-  .stats-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; border: 1px solid var(--border);
-  }
-  .stat {
-    padding: 2.5rem 2rem; text-align: center;
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  }
-  .stat:last-child { border-right: none; }
-  .stat-icon {
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent-red); margin-bottom: 0.2rem;
-  }
-  .stat-icon svg { width: 100%; height: 100%; }
-  .stat-number {
-    font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
-    color: var(--accent-warm); display: block; line-height: 1; margin-bottom: 0.2rem;
-  }
-  .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-subtle); }
-
-  /* ─── CONTACT — PLOT A COURSE ─── */
-  #contact { padding: 7rem 3rem; border-top: 1px solid var(--border); }
-  .contact-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-  .contact-info p { font-size: 0.82rem; line-height: 2; color: var(--text-body); margin-bottom: 2rem; }
-  .contact-links { display: flex; flex-direction: column; gap: 0.6rem; }
-  .contact-link {
-    display: flex; align-items: center; gap: 1rem;
-    font-size: 0.7rem; color: var(--text-subtle); text-decoration: none;
-    padding: 0.9rem 1.2rem; border: 1px solid var(--border);
-    background: rgba(26,74,107,0.25);
-    transition: all 0.2s; letter-spacing: 0.05em;
-  }
-  body.parchment .contact-link { background: rgba(224,203,163,0.4); }
-  .contact-link:hover {
-    border-color: var(--accent-red); color: var(--accent-red);
-    background: rgba(217,79,43,0.08);
-  }
-  .contact-link-icon { color: var(--accent-warm); font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
-  .contact-link-label {
-    font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent-cool); display: block; margin-bottom: 0.2rem;
-  }
-  .contact-link-value { color: var(--text-subtle); font-size: 0.68rem; }
-
-  .cv-block {
-    margin-top: 2rem; padding: 1.5rem;
-    border: 1px solid var(--border);
-    background: rgba(26,74,107,0.3);
-  }
-  body.parchment .cv-block { background: rgba(224,203,163,0.4); }
-  .cv-block-label {
-    font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-cool); margin-bottom: 0.8rem; display: block;
-  }
-  .cv-block p { font-size: 0.72rem; color: var(--text-body); line-height: 1.7; margin-bottom: 1rem; }
-
-  .availability {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.5rem 1rem; border: 1px solid var(--border-blue);
-    color: var(--accent-cool); background: rgba(31,121,155,0.1);
-    margin-bottom: 1.5rem;
-  }
-  .availability::before {
-    content: ''; display: block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent-red); animation: pulse 2s ease-in-out infinite;
-    box-shadow: 0 0 0 0 var(--red-glow);
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--red-glow); }
-    50%       { opacity: 0.6; box-shadow: 0 0 0 6px rgba(217,79,43,0); }
-  }
+  .contact-list a:hover { border-color: var(--sandstone); }
+  .contact-list span { display: block; color: var(--shoal); font-size: 0.92rem; }
 
   /* ─── FOOTER ─── */
-  footer {
-    padding: 2rem 3rem; border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    position: relative; z-index: 1;
-  }
-  .footer-left { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-  .footer-copy { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.1em; }
-  .scale-bar { display: block; }
-  .footer-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .footer-nav a {
-    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--text-muted); text-decoration: none; transition: color 0.2s;
-  }
-  .footer-nav a:hover { color: var(--accent-red); }
+  footer { padding: 2rem 0; border-top: 1px solid var(--rule); color: var(--shoal); font-size: 0.95rem; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
   /* ─── LIGHTBOX ─── */
-  #lightbox {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.94); z-index: 9999;
-    align-items: center; justify-content: center;
+  .lightbox {
+    position: fixed; inset: 0; z-index: 100; display: none;
+    background: rgba(5,15,22,0.94); align-items: center; justify-content: center; padding: 1.5rem;
   }
-  #lightbox.open { display: flex; }
-  #lightbox-img {
-    max-width: 88vw; max-height: 82vh;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 80px rgba(0,0,0,0.8);
-  }
-  .lightbox-close {
-    position: absolute; top: 1.5rem; right: 1.5rem;
-    background: var(--card-overlay); border: 1px solid var(--border);
-    color: var(--accent-warm); cursor: pointer; width: 46px; height: 46px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem; transition: background 0.2s;
-  }
-  .lightbox-close:hover { background: rgba(217,79,43,0.25); }
-  .lightbox-hint {
-    position: absolute; bottom: 1.5rem;
-    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-muted);
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 92vw; max-height: 86vh; border-radius: 4px; }
+  .lightbox button {
+    position: absolute; top: 1rem; right: 1rem; font: inherit; font-weight: 700;
+    background: var(--paper); color: var(--ocean); border: none; border-radius: 4px;
+    padding: 0.55rem 1rem; cursor: pointer;
   }
 
-  /* ─── ANIMATIONS ─── */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
-    #contourLayer { display: none; }
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .hero .wrap, .about .wrap, .research .wrap, .contact .wrap { grid-template-columns: 1fr; }
+    #globe { max-width: 270px; }
   }
-
-  /* ══ TABLET ══ */
-  @media (max-width: 900px) {
-    body > nav { padding: 1rem 1.2rem; }
-    .nav-links, .nav-coords, .parchment-toggle { display: none; }
-    .nav-hamburger { display: flex; }
-    .hero-badge { display: none; }
-    #hero { padding: 7rem 1.2rem 3rem; }
-    .scroll-hint { left: 1.2rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    #about { padding: 5rem 1.2rem; }
-    .thesis-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    #research { padding: 5rem 1.2rem; }
-    .work-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
-    .projects-grid { grid-template-columns: repeat(4, 1fr); }
-    .project-card       { grid-column: span 2; grid-row: span 3; }
-    .project-card.hero-card { grid-column: span 4; grid-row: span 4; }
-    .project-card.wide  { grid-column: span 4; grid-row: span 3; }
-    .project-card.tall  { grid-column: span 2; grid-row: span 3; }
-    .project-card.short { grid-column: span 2; grid-row: span 2; }
-    #work { padding: 5rem 1.2rem; }
-    #stack { padding: 3rem 1.2rem; }
-    .journey-steps { grid-template-columns: 1fr 1fr; }
-    .journey-step:nth-child(2) { border-right: none; }
-    .journey-step:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-    #background { padding: 4rem 1.2rem; }
-    .stats-inner { grid-template-columns: 1fr 1fr; }
-    .stat:nth-child(2) { border-right: none; }
-    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-    #stats { padding: 4rem 1.2rem; }
-    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
-    #contact { padding: 5rem 1.2rem; }
-    footer { padding: 1.5rem 1.2rem; }
+  @media (max-width: 760px) {
+    .nav-toggle { display: inline-block; }
+    .nav-links {
+      display: none; position: absolute; top: 64px; left: 0; right: 0;
+      flex-direction: column; align-items: flex-start; gap: 0;
+      background: var(--ocean-deep); border-bottom: 1px solid var(--rule); padding: 0.5rem var(--gutter) 1rem;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 0.7rem 0; font-size: 1.05rem; }
+    .nav-links .nav-cv { display: inline-block; margin-top: 0.5rem; padding: 0.55rem 1rem; }
   }
-
-  /* ══ MOBILE ══ */
   @media (max-width: 600px) {
-    body > nav { padding: 0.85rem 1rem; }
-    #hero { padding: 6rem 1rem 3rem; }
-    .hero-eyebrow { font-size: 0.56rem; letter-spacing: 0.18em; margin-bottom: 1rem; }
-    .hero-name { font-size: clamp(2.8rem, 13vw, 4.2rem); }
-    .hero-title { font-size: clamp(1rem, 4.5vw, 1.25rem); margin-bottom: 1.2rem; }
-    .hero-desc { font-size: 0.78rem; line-height: 1.8; margin-bottom: 1.8rem; }
-    .btn { font-size: 0.62rem; padding: 0.75rem 1.4rem; }
-    .scroll-hint { left: 1rem; bottom: 1.2rem; }
-    #about { padding: 3.5rem 1rem; }
-    .about-text p { font-size: 0.8rem; }
-    .skills-grid { grid-template-columns: 1fr; }
-    .skill-cell { padding: 1rem 1.1rem; }
-    .section-heading { font-size: clamp(1.65rem, 7vw, 2.2rem); }
-    #research { padding: 3.5rem 1rem; }
-    .thesis-title { font-size: clamp(1.3rem, 5vw, 1.8rem); }
-    #stack { padding: 2.5rem 1rem; }
-    #work { padding: 3.5rem 1rem; }
-    .projects-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 110px; }
-    .project-card,
-    .project-card.hero-card,
-    .project-card.wide,
-    .project-card.tall,
-    .project-card.short { grid-column: span 2; grid-row: span 3; }
-    .project-desc { transform: translateY(0) !important; opacity: 1 !important; }
-    .project-overlay { padding: 1rem 1.1rem; }
-    .project-title { font-size: 0.96rem; }
-    .project-card.hero-card .project-title { font-size: 1.15rem; }
-    .cart-note { display: none; }
-    .filter-legend { padding: 0.5rem; }
-    .filter-tab { font-size: 0.55rem; padding: 0.35rem 0.6rem; }
-    .work-header { gap: 0.8rem; margin-bottom: 1.5rem; }
-    #background { padding: 3.5rem 1rem; }
-    .journey-steps { grid-template-columns: 1fr; }
-    .journey-step { border-right: none !important; border-bottom: 1px solid var(--border); padding: 1.5rem 1rem; }
-    .journey-step:last-child { border-bottom: none; }
-    #stats { padding: 3rem 1rem; }
-    .stat { padding: 1.4rem 0.8rem; }
-    .stat-number { font-size: 2rem; }
-    #contact { padding: 3.5rem 1rem; }
-    .contact-link { font-size: 0.67rem; padding: 0.8rem 1rem; }
-    footer { padding: 1.2rem 1rem; flex-direction: column; align-items: flex-start; gap: 0.7rem; }
-    .footer-nav { gap: 1rem; }
-    .lightbox-close { width: 48px; height: 48px; top: 0.8rem; right: 0.8rem; }
+    .grid { grid-template-columns: 1fr; }
+    body { font-size: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .status-dot { animation: none; }
+    .card-media img { transition: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- PARALLAX CONTOUR LAYER -->
-<div id="contourLayer" aria-hidden="true">
-  <svg viewBox="0 0 1200 1800" preserveAspectRatio="xMidYMin slice">
-    <g fill="none" stroke="var(--contour-line)" stroke-width="1">
-      <ellipse cx="300" cy="200" rx="200" ry="120"/>
-      <ellipse cx="300" cy="200" rx="280" ry="180"/>
-      <ellipse cx="300" cy="200" rx="370" ry="250"/>
-      <ellipse cx="950" cy="450" rx="240" ry="160"/>
-      <ellipse cx="950" cy="450" rx="330" ry="230"/>
-      <ellipse cx="950" cy="450" rx="430" ry="310"/>
-      <ellipse cx="200" cy="800" rx="260" ry="180"/>
-      <ellipse cx="200" cy="800" rx="360" ry="260"/>
-      <ellipse cx="200" cy="800" rx="470" ry="350"/>
-      <ellipse cx="1000" cy="1150" rx="220" ry="150"/>
-      <ellipse cx="1000" cy="1150" rx="310" ry="220"/>
-      <ellipse cx="1000" cy="1150" rx="410" ry="300"/>
-      <ellipse cx="350" cy="1500" rx="250" ry="170"/>
-      <ellipse cx="350" cy="1500" rx="350" ry="250"/>
-      <ellipse cx="350" cy="1500" rx="460" ry="340"/>
-    </g>
-  </svg>
-</div>
-
-<div class="cursor" id="cursor"></div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" onclick="closeLightboxOnBackdrop(event)">
-  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close image">✕</button>
-  <img id="lightbox-img" src="" alt="Map preview">
-  <div class="lightbox-hint">Tap outside or press ESC to close</div>
-</div>
-
 <!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">Radhika <span>Dhuri</span></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#work">Sheet Index</a></li>
-    <li><a href="#research">Field Notes</a></li>
-    <li><a href="#background">Traverse</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <div class="nav-coords" id="liveCoords">48.1374° N · 11.5755° E</div>
-  <button class="parchment-toggle" id="parchmentToggle" aria-label="Toggle parchment mode">
-    <span class="swatch"></span> Parchment
-  </button>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-
-<div class="nav-drawer" id="navDrawer" role="dialog" aria-label="Navigation menu">
-  <button class="drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
-  <ul class="drawer-links">
-    <li><a href="#about" onclick="closeDrawer()">About</a></li>
-    <li><a href="#work" onclick="closeDrawer()">Sheet Index</a></li>
-    <li><a href="#research" onclick="closeDrawer()">Field Notes</a></li>
-    <li><a href="#background" onclick="closeDrawer()">Traverse</a></li>
-    <li><a href="#contact" onclick="closeDrawer()">Contact</a></li>
-  </ul>
-  <button class="drawer-toggle" id="parchmentToggleDrawer" onclick="toggleParchment()">
-    <span class="swatch" style="width:10px;height:10px;border:1px solid currentColor;background:linear-gradient(135deg,#f0e2c4 50%,#0b2233 50%);display:inline-block;"></span>
-    Toggle Parchment
-  </button>
-  <div class="drawer-coords">
-    <strong>CARTOGRAPHY · GEOGRAPHY</strong>
-    <span id="drawerCoords">48.1374° N · 11.5755° E</span>
+<header class="nav">
+  <div class="wrap">
+    <a class="nav-name" href="#top">Radhika Dhuri</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a class="nav-cv" href="Radhika_Dhuri_CV.pdf" download>Download CV</a></li>
+    </ul>
   </div>
-</div>
+</header>
+
+<main id="top">
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-sat" aria-hidden="true"></div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow reveal">Cartography · Geography · GIS · Munich</div>
-    <h1 class="hero-name reveal reveal-delay-1">Radhika<em>Dhuri</em></h1>
-    <p class="hero-title reveal reveal-delay-2">From landscapes to legends</p>
-    <p class="hero-desc reveal reveal-delay-3">
-      Cartographer and geographer with an MSc in Cartography (Erasmus Mundus, 2026)
-      and a BA and MA in Geography. I turn satellite imagery and spatial data into maps
-      people can read, from print posters to web maps and mobile apps.
-    </p>
-    <div class="hero-cta reveal reveal-delay-3">
-      <a href="#work" class="btn btn-primary">View My Work ↓</a>
-      <a href="Radhika_Dhuri_CV.pdf" download class="btn btn-secondary">Download CV ↓</a>
+<section class="hero" aria-label="Introduction">
+  <div class="wrap">
+    <div>
+      <p class="hero-role">Cartographer and geographer in Munich</p>
+      <h1>Radhika Dhuri</h1>
+      <p class="hero-tagline">From landscapes to legends</p>
+      <p class="hero-text">
+        I make maps from satellite data, GIS analysis and careful design.
+        MSc in Cartography (2026), BA and MA in Geography.
+      </p>
+      <p class="status"><span class="status-dot" aria-hidden="true"></span>Available now and open to relocation</p>
+      <div class="actions">
+        <a class="btn btn-solid" href="#projects">See my projects</a>
+        <a class="btn btn-line" href="Radhika_Dhuri_CV.pdf" download>Download CV</a>
+      </div>
     </div>
+
+    <figure class="globe-figure">
+      <svg id="globe" viewBox="0 0 440 440" role="img" aria-label="Globe showing the places where I studied and mapped"></svg>
+      <figcaption class="globe-caption" aria-live="polite">
+        <div class="globe-place" id="globePlace">Munich, Germany</div>
+        <div class="globe-note" id="globeNote">MSc thesis and home base</div>
+      </figcaption>
+    </figure>
   </div>
-
-  <aside class="hero-badge" aria-label="Profile summary">
-    <canvas id="globeCanvas" width="360" height="360" aria-hidden="true"></canvas>
-    <div class="badge-title">Map Metadata</div>
-    <div class="badge-focus" id="globeFocus">Munich <span>· DE</span></div>
-    <div class="meta-row"><span class="meta-key">Author</span><span class="meta-val">R. Dhuri</span></div>
-    <div class="meta-row"><span class="meta-key">Focus</span><span class="meta-val">Cartography, Geography</span></div>
-    <div class="meta-row"><span class="meta-key">Data</span><span class="meta-val">Vector · Raster · Satellite</span></div>
-    <div class="meta-row"><span class="meta-key">Base</span><span class="meta-val">Munich, DE</span></div>
-    <div class="meta-row"><span class="meta-key">Status</span><span class="meta-val live">Available</span></div>
-  </aside>
-
-  <div class="scroll-hint">Scroll to explore</div>
 </section>
 
 <!-- ABOUT -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <div class="section-label">About</div>
-      <h2 class="section-heading">Where geography meets <em>cartography</em></h2>
-      <div class="about-programme-tag">Based in Munich · Open to relocation</div>
-      <p>
-        I am a cartographer with a geographer's background. I studied geography in India,
-        then completed the Erasmus Mundus MSc in Cartography at TU Munich, TU Wien and
-        TU Dresden in 2026.
-      </p>
-      <p>
-        I am most interested in remote sensing and in showing change over time on a map.
-        My MA dissertation mapped twenty years of urban heat in Pune from Landsat data.
-        My MSc thesis tracked moving star dunes in the Namib Sand Sea with Sentinel-2.
-      </p>
-      <p>
-        I care about how maps communicate. I enjoy the whole workflow, from processing raw
-        data in GIS and Python to designing the final map for print or screen. I am looking
-        for roles in cartography, GIS and geodata.
-      </p>
-      <a href="#work" class="btn btn-secondary" style="margin-top:1rem; display:inline-flex;">See my work →</a>
-    </div>
-    <div class="skills-grid reveal reveal-delay-2">
-      <div class="skill-cell"><div class="skill-name">Remote Sensing</div><div class="skill-detail">Sentinel-2 · Landsat · Google Earth Engine · ERDAS Imagine</div></div>
-      <div class="skill-cell"><div class="skill-name">GIS &amp; Analysis</div><div class="skill-detail">ArcGIS Pro · ArcMap · QGIS · PostGIS · GDAL/OGR</div></div>
-      <div class="skill-cell"><div class="skill-name">Map Design</div><div class="skill-detail">Adobe Illustrator · Figma · QGIS Print Layout</div></div>
-      <div class="skill-cell"><div class="skill-name">Web Mapping</div><div class="skill-detail">Leaflet · MapLibre GL JS · Mapbox GL JS · D3.js · GeoServer</div></div>
-      <div class="skill-cell"><div class="skill-name">Data &amp; Dev</div><div class="skill-detail">Python · R · SQL · JavaScript · Streamlit · Git</div></div>
-      <div class="skill-cell"><div class="skill-name">Mobile Apps</div><div class="skill-detail">Android Studio · Java · Figma</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- TECH STRIP -->
-<section id="stack" aria-hidden="true">
-  <div class="stack-scroll">
-    <span class="stack-item"><span class="stack-dot"></span>Sentinel-2</span>
-    <span class="stack-item"><span class="stack-dot"></span>Landsat</span>
-    <span class="stack-item"><span class="stack-dot"></span>ArcGIS Pro</span>
-    <span class="stack-item"><span class="stack-dot"></span>ArcMap</span>
-    <span class="stack-item"><span class="stack-dot"></span>QGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>ERDAS Imagine</span>
-    <span class="stack-item"><span class="stack-dot"></span>Google Earth Engine</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>GeoServer</span>
-    <span class="stack-item"><span class="stack-dot"></span>Python</span>
-    <span class="stack-item"><span class="stack-dot"></span>R</span>
-    <span class="stack-item"><span class="stack-dot"></span>Leaflet</span>
-    <span class="stack-item"><span class="stack-dot"></span>MapLibre</span>
-    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>Streamlit</span>
-    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
-    <span class="stack-item"><span class="stack-dot"></span>Figma</span>
-    <span class="stack-item"><span class="stack-dot"></span>Sentinel-2</span>
-    <span class="stack-item"><span class="stack-dot"></span>Landsat</span>
-    <span class="stack-item"><span class="stack-dot"></span>ArcGIS Pro</span>
-    <span class="stack-item"><span class="stack-dot"></span>ArcMap</span>
-    <span class="stack-item"><span class="stack-dot"></span>QGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>ERDAS Imagine</span>
-    <span class="stack-item"><span class="stack-dot"></span>Google Earth Engine</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>GeoServer</span>
-    <span class="stack-item"><span class="stack-dot"></span>Python</span>
-    <span class="stack-item"><span class="stack-dot"></span>R</span>
-    <span class="stack-item"><span class="stack-dot"></span>Leaflet</span>
-    <span class="stack-item"><span class="stack-dot"></span>MapLibre</span>
-    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>Streamlit</span>
-    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
-    <span class="stack-item"><span class="stack-dot"></span>Figma</span>
-  </div>
-</section>
-
-<!-- WORK — SHEET INDEX -->
-<section id="work">
-  <div class="work-header">
+<section class="about" id="about">
+  <div class="wrap">
     <div>
-      <div class="section-label reveal">Sheet Index</div>
-      <h2 class="section-heading reveal">Cartographic <em>Projects</em></h2>
+      <h2>About me</h2>
+      <p>
+        I studied geography in India, then completed the Erasmus Mundus MSc in Cartography
+        at TU Munich, TU Wien and TU Dresden.
+      </p>
+      <p>
+        I like maps that show change. My MA dissertation mapped 20 years of urban heat in Pune
+        from Landsat data. My MSc thesis tracked moving star dunes in Namibia with Sentinel-2.
+      </p>
+      <p>
+        I enjoy the whole process. I prepare the data in GIS or Python, then design the map for
+        print or screen. I am looking for roles in cartography, GIS and geodata.
+      </p>
     </div>
-    <div class="filter-legend reveal">
-      <button class="filter-tab active" data-cat="all" onclick="filterProjects('all',this)"><span class="swatch"></span>All</button>
-      <button class="filter-tab" data-cat="print" onclick="filterProjects('print',this)"><span class="swatch"></span>Print</button>
-      <button class="filter-tab" data-cat="web" onclick="filterProjects('web',this)"><span class="swatch"></span>Web</button>
-      <button class="filter-tab" data-cat="rs" onclick="filterProjects('rs',this)"><span class="swatch"></span>Remote Sensing</button>
-      <button class="filter-tab" data-cat="apps" onclick="filterProjects('apps',this)"><span class="swatch"></span>Apps</button>
+    <div class="skills">
+      <h3>GIS and remote sensing</h3>
+      <ul class="chips">
+        <li>ArcGIS Pro</li><li>ArcMap</li><li>QGIS</li><li>PostGIS</li><li>GDAL</li>
+        <li>Sentinel-2</li><li>Landsat</li><li>Google Earth Engine</li><li>ERDAS Imagine</li>
+      </ul>
+      <h3>Map design</h3>
+      <ul class="chips">
+        <li>Adobe Illustrator</li><li>Figma</li><li>Print layouts</li><li>Typography</li>
+      </ul>
+      <h3>Web and code</h3>
+      <ul class="chips">
+        <li>Python</li><li>R</li><li>SQL</li><li>JavaScript</li><li>Leaflet</li>
+        <li>MapLibre</li><li>D3.js</li><li>GeoServer</li><li>Streamlit</li><li>Git</li>
+      </ul>
     </div>
-  </div>
-
-  <div class="projects-grid" id="projectsGrid">
-
-    <!-- HERO CARD — thesis / atlas spread -->
-    <div class="project-card hero-card map-atlas reveal" data-cat="print" data-type="link" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 01 · ATLAS</div>
-      <div class="sheet-scale"><span class="north-arrow"></span> 1:50k</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/atlas_map.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Print · Atlas · TU Wien · 2025</div>
-        <div class="project-title">Atlas of Sustainability, ICA 2025</div>
-        <div class="project-desc">Co-authored the SDG 13 Climate Action spread of the Atlas of Sustainability, an official International Cartographic Association publication made in one week at TU Wien. Data prepared in QGIS, layout finished in Illustrator.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">SDG 13</span></div>
-        <div class="cart-note">A one-week sprint taught me more about layout discipline than any semester.</div>
-      </div>
-    </div>
-
-    <div class="project-card map-gis wide reveal reveal-delay-1" data-cat="rs" data-type="image" data-image="portfolio_websites/print_maps/uhi_lst_series.png">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 02 · RS</div>
-      <div class="sheet-scale"><span class="north-arrow"></span> 1:100k</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/uhi_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Remote Sensing · MA Dissertation · 2024</div>
-        <div class="project-title">Urban Heat Island, Pune Metropolitan Region</div>
-        <div class="project-desc">Mapped land surface temperature across the Pune Metropolitan Region from 2002 to 2022 using five Landsat scenes. Classified land cover, calculated NDVI and a thermal comfort index, and compared ten industrial and residential centres. Presented at the XVII International Conference of the Deccan Geographical Society of India, 2023.</div>
-        <div class="project-tags"><span class="tag">Landsat</span><span class="tag">ArcMap</span><span class="tag">ERDAS Imagine</span><span class="tag">LST</span></div>
-        <div class="cart-note">Twenty years of summer heat in one diverging palette — the reddest ward is the one I grew up in.</div>
-      </div>
-    </div>
-
-    <div class="project-card map-print tall reveal reveal-delay-2" data-cat="print" data-type="image" data-image="portfolio_websites/print_maps/map_creation_radhika-1.png">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 03 · HIST</div>
-      <div class="sheet-scale"><span class="north-arrow"></span> 1:5k</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/map_creation_radhika-1.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Print · Historical Map · TU Wien · 2025</div>
-        <div class="project-title">Vijaydurg Fort</div>
-        <div class="project-desc">Print poster of a Maratha naval fort with a fort plan, locator maps, a timeline and ship illustrations drawn to scale. Compiled from OpenStreetMap data and satellite imagery, finished in Illustrator.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">OSM</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal" data-cat="web" data-type="image" data-image="portfolio_websites/Thumbnails/cis_thumbnail.png">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 04 · WEB</div>
-      <div class="sheet-scale"><span class="north-arrow"></span> 1:10k</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/cis_thumbnail.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · TU Wien · 2025</div>
-        <div class="project-title">Family Amenities Web Map, Vienna</div>
-        <div class="project-desc">Helps parents find playgrounds, kindergartens and nearby cafés. Spatial queries run in PostGIS, layers served with GeoServer and shown in Leaflet.</div>
-        <div class="project-tags"><span class="tag">PostGIS</span><span class="tag">GeoServer</span><span class="tag">Leaflet</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-topo short reveal reveal-delay-1" data-cat="rs" data-type="link" data-url="https://github.com/Redrum13/remote_sensing">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 05 · RS</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Remote Sensing · TU Dresden · 2025</div>
-        <div class="project-title">Above Ground Biomass Estimation</div>
-        <div class="project-desc">Team project estimating forest biomass from remote sensing data with a Random Forest model in R. Team of four.</div>
-        <div class="project-tags"><span class="tag">R</span><span class="tag">Random Forest</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="image" data-image="portfolio_websites/print_maps/TM_map_Radhika-1.png">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 06 · TOPO</div>
-      <div class="sheet-scale"><span class="north-arrow"></span> 1:25k</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tm_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Print · Topographic · TU Dresden · 2025</div>
-        <div class="project-title">Topographic Map of Rabenau Grund, 1:25,000</div>
-        <div class="project-desc">Print map made in QGIS from a 1 m elevation model and OpenStreetMap data, with contours, hillshading and a UTM grid.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">DEM</span><span class="tag">1:25,000</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web wide reveal" data-cat="web" data-type="link" data-url="portfolio_websites/webmap_vs/2/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 07 · STORY</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/delhi_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Story Map · TU Wien · 2025</div>
-        <div class="project-title">Why is New Delhi the Capital?</div>
-        <div class="project-desc">Story map with a custom basemap style. Labels, roads and green areas adapt with zoom so the map never feels crowded. Cartographer's notes explain each design choice.</div>
-        <div class="project-tags"><span class="tag">MapLibre</span><span class="tag">Basemap Design</span><span class="tag">Storytelling</span></div>
-        <div class="cart-note">The hardest part of basemap design is knowing what to leave out.</div>
-      </div>
-    </div>
-
-    <div class="project-card map-gis reveal reveal-delay-1" data-cat="web" data-type="link" data-url="https://kidlanli.github.io/GovTech/">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 08 · DATA</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pw_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Data Analysis · TU Munich · 2025</div>
-        <div class="project-title">Climate Under Siege</div>
-        <div class="project-desc">One-week team project testing whether conflict raises climate vulnerability. Used PCA on global ACLED and ND-GAIN data, followed by a Myanmar case study. Team of five.</div>
-        <div class="project-tags"><span class="tag">PCA</span><span class="tag">ACLED</span><span class="tag">kepler.gl</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web short reveal reveal-delay-2" data-cat="web" data-type="link" data-url="portfolio_websites/2025lbs_group5/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 09 · QA</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/salzburg_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Data Quality · TU Wien · 2025</div>
-        <div class="project-title">Road Data Quality Check, Salzburg</div>
-        <div class="project-desc">Compares road attributes with traffic sign data for one-way streets, speed limits and weight limits. The map flags consistent, mismatched and missing attributes. Team of three.</div>
-        <div class="project-tags"><span class="tag">Data Quality</span><span class="tag">Web Map</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-mobile reveal" data-cat="apps" data-type="image" data-image="portfolio_websites/hobby_map/app_screenshots.png">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 10 · APP</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/hobby_corner_icon.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">App · Mobile Cartography · TU Dresden · 2025</div>
-        <div class="project-title">Hobby Corner App</div>
-        <div class="project-desc">Team project from Figma design to a working Android app with a map, events and a calendar. Team of four.</div>
-        <div class="project-tags"><span class="tag">Android Studio</span><span class="tag">Java</span><span class="tag">Figma</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-gis tall reveal reveal-delay-1" data-cat="web" data-type="link" data-url="portfolio_websites/geoviz_vs/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 11 · GEOVIZ</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tree_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Geovisualisation · TU Munich · 2025</div>
-        <div class="project-title">Linden Trees of Vienna</div>
-        <div class="project-desc">D3.js map of Vienna's linden trees. Circle size shows crown diameter and colour shows planting year.</div>
-        <div class="project-tags"><span class="tag">D3.js</span><span class="tag">Proportional Symbols</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-atlas reveal reveal-delay-2" data-cat="web" data-type="link" data-url="portfolio_websites/walk_in_english_garden/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 12 · ROUTE</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/walk_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · TU Munich · 2025</div>
-        <div class="project-title">English Garden Walking Circuits</div>
-        <div class="project-desc">Route finder for Munich's English Garden. Pick from nine circuits with time, distance and nearby stops. Includes GPS and a measuring tool. Built with a classmate.</div>
-        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Routing</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal" data-cat="web" data-type="link" data-url="portfolio_websites/multimedia_vs/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 13 · WARD</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pune_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · TU Wien · 2025</div>
-        <div class="project-title">Pune Election Wards 2024</div>
-        <div class="project-desc">Interactive ward map of Pune with highlighted roads, rivers and ward boundaries.</div>
-        <div class="project-tags"><span class="tag">Mapbox GL JS</span><span class="tag">Web Map</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web short reveal reveal-delay-1" data-cat="web" data-type="link" data-url="portfolio_websites/webmap_vs/1/index.html">
-      <div class="sheet-tick tl"></div><div class="sheet-tick tr"></div>
-      <div class="sheet-tick bl"></div><div class="sheet-tick br"></div>
-      <div class="sheet-number">Sheet 14 · THEME</div>
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/wm_tn.png');"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · TU Wien · 2025</div>
-        <div class="project-title">Climate Activism in Democracy</div>
-        <div class="project-desc">Multi-page web project on the link between climate action and democracy, with an interactive map.</div>
-        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span></div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- RESEARCH — FIELD NOTES -->
-<section id="research">
-  <div class="thesis-inner">
-    <a class="thesis-visual reveal" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener" aria-label="Open thesis dashboard">
-      <div class="thesis-visual-img" style="background-image: url('portfolio_websites/Thumbnails/thesis_tn.png');"></div>
-      <div class="thesis-visual-label">MSc Thesis · 2026</div>
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="wrap">
+    <div class="projects-head">
+      <div>
+        <h2>Projects</h2>
+        <p class="lead">Print maps, web maps and remote sensing work from my studies.</p>
+      </div>
+      <div class="legend" role="group" aria-label="Filter projects">
+        <button aria-pressed="true"  data-filter="all"><span class="swatch sw-all"></span>All</button>
+        <button aria-pressed="false" data-filter="print"><span class="swatch sw-print"></span>Print</button>
+        <button aria-pressed="false" data-filter="web"><span class="swatch sw-web"></span>Web</button>
+        <button aria-pressed="false" data-filter="rs"><span class="swatch sw-rs"></span>Remote sensing</button>
+        <button aria-pressed="false" data-filter="apps"><span class="swatch sw-apps"></span>Apps</button>
+      </div>
+    </div>
+
+    <!--
+      How a card works:
+      data-cat   = which filter shows it (print, web, rs, apps)
+      data-image = opens the image large on click
+      data-url   = opens a link in a new tab on click
+    -->
+    <div class="grid" id="grid">
+
+      <article class="card" data-cat="print" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/atlas_map.png" alt="Atlas spread on climate action"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-print"></span>Print, TU Wien, 2025</div>
+          <h3>Atlas of Sustainability</h3>
+          <p>Co-authored the climate action spread in an official atlas of the International Cartographic Association. Made in one week.</p>
+          <div class="card-tools">QGIS, Illustrator</div>
+          <span class="card-open">View atlas project</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="rs" data-image="portfolio_websites/print_maps/uhi_lst_series.png">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/uhi_tn.png" alt="Land surface temperature maps of Pune"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MA dissertation, 2024</div>
+          <h3>Urban heat in Pune, 2002 to 2022</h3>
+          <p>Mapped surface temperature over 20 years from Landsat images and compared ten industrial and residential areas.</p>
+          <div class="card-tools">Landsat, ArcMap, ERDAS Imagine</div>
+          <span class="card-open">View maps</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="print" data-image="portfolio_websites/print_maps/map_creation_radhika-1.png">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/map_creation_radhika-1.png" alt="Historical poster map of Vijaydurg Fort"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-print"></span>Print, TU Wien, 2025</div>
+          <h3>Vijaydurg Fort</h3>
+          <p>Poster of a Maratha sea fort with a fort plan, locator maps, a timeline and ship drawings to scale.</p>
+          <div class="card-tools">QGIS, Illustrator, OpenStreetMap</div>
+          <span class="card-open">View map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-image="portfolio_websites/Thumbnails/cis_thumbnail.png">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/cis_thumbnail.png" alt="Web map of family amenities in Vienna"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
+          <h3>Family amenities in Vienna</h3>
+          <p>Web map that helps parents find playgrounds, kindergartens and cafés nearby.</p>
+          <div class="card-tools">PostGIS, GeoServer, Leaflet</div>
+          <span class="card-open">View screenshot</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="rs" data-url="https://github.com/Redrum13/remote_sensing">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png" alt="Forest biomass estimation results"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, TU Dresden, 2025</div>
+          <h3>Forest biomass estimation</h3>
+          <p>Estimated forest biomass from satellite data with a Random Forest model. Team of four.</p>
+          <div class="card-tools">R, Random Forest</div>
+          <span class="card-open">View on GitHub</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="print" data-image="portfolio_websites/print_maps/TM_map_Radhika-1.png">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/tm_tn.png" alt="Topographic map of Rabenau Grund"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-print"></span>Print, TU Dresden, 2025</div>
+          <h3>Topographic map of Rabenau Grund</h3>
+          <p>A 1:25,000 map with contours, hillshading and a UTM grid, made from a 1 m elevation model.</p>
+          <div class="card-tools">QGIS, elevation model, OpenStreetMap</div>
+          <span class="card-open">View map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/webmap_vs/2/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/delhi_tn.png" alt="Story map of New Delhi"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
+          <h3>Why is New Delhi the capital?</h3>
+          <p>Story map with my own basemap style. Labels and roads change with zoom so the map never feels crowded.</p>
+          <div class="card-tools">MapLibre, basemap design</div>
+          <span class="card-open">Open web map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="https://kidlanli.github.io/GovTech/">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/pw_tn.png" alt="Climate and conflict project website"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Munich, 2025</div>
+          <h3>Climate under siege</h3>
+          <p>One-week team project on whether conflict makes countries more vulnerable to climate change. Team of five.</p>
+          <div class="card-tools">PCA, ACLED, ND-GAIN, kepler.gl</div>
+          <span class="card-open">Open website</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/2025lbs_group5/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/salzburg_tn.png" alt="Salzburg road data map"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
+          <h3>Road data check in Salzburg</h3>
+          <p>Compared road data with real traffic signs and mapped where they match, differ or are missing. Team of three.</p>
+          <div class="card-tools">Data quality, web map</div>
+          <span class="card-open">Open web map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="apps" data-image="portfolio_websites/hobby_map/app_screenshots.png">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/hobby_corner_icon.png" alt="Hobby Corner app"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-apps"></span>App, TU Dresden, 2025</div>
+          <h3>Hobby Corner app</h3>
+          <p>Android app with a map, events and a calendar, from Figma design to working app. Team of four.</p>
+          <div class="card-tools">Android Studio, Java, Figma</div>
+          <span class="card-open">View screens</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/geoviz_vs/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/tree_tn.png" alt="Map of linden trees in Vienna"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Munich, 2025</div>
+          <h3>Linden trees of Vienna</h3>
+          <p>Each circle is a tree. Size shows the crown and colour shows the planting year.</p>
+          <div class="card-tools">D3.js</div>
+          <span class="card-open">Open web map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/walk_in_english_garden/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/walk_tn.png" alt="Walking routes in the English Garden"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Munich, 2025</div>
+          <h3>Walks in the English Garden</h3>
+          <p>Pick one of nine walking routes in Munich's biggest park, with time, distance and nearby stops.</p>
+          <div class="card-tools">Leaflet, routing</div>
+          <span class="card-open">Open web map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/multimedia_vs/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/pune_tn.png" alt="Map of Pune election wards"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
+          <h3>Pune election wards</h3>
+          <p>Interactive map of the 2024 ward boundaries with roads and rivers.</p>
+          <div class="card-tools">Mapbox GL JS</div>
+          <span class="card-open">Open web map</span>
+        </div>
+      </article>
+
+      <article class="card" data-cat="web" data-url="portfolio_websites/webmap_vs/1/index.html">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/wm_tn.png" alt="Climate activism website"></div>
+        <div class="card-body">
+          <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
+          <h3>Climate activism in democracy</h3>
+          <p>A small website with a map on how climate action and democracy connect.</p>
+          <div class="card-tools">Leaflet, HTML, CSS</div>
+          <span class="card-open">Open website</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="research" id="research">
+  <div class="wrap">
+    <a class="research-image" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener">
+      <img loading="lazy" src="portfolio_websites/Thumbnails/thesis_tn.png" alt="Thesis dashboard showing star dune crestlines">
     </a>
-    <div class="thesis-content reveal reveal-delay-2">
-      <div class="section-label">Field Notes</div>
-      <h2 class="thesis-title">Cartographic Approach to Remotely Sensed <em>Star Dunes</em> and Environment Dynamics</h2>
-      <div class="thesis-meta">
-        <span class="thesis-tag">TU Munich</span>
-        <span class="thesis-tag">2026</span>
-        <span class="thesis-tag">Sentinel-2</span>
-        <span class="thesis-tag">Remote Sensing</span>
-        <span class="thesis-tag">Geovisualisation</span>
-      </div>
-      <p class="thesis-desc">
-        I built a reproducible Python workflow that extracts dune crestlines from multi-temporal
-        Sentinel-2 imagery of the Namib Sand Sea in Namibia, combined with wind observations.
-        I then tested different ways to map their migration over time, including how to show
-        uncertainty and data gaps honestly. The result is a cartographic framework for reading
-        dynamic desert landscapes.
-      </p>
-      <p class="thesis-supervisors">Supervised by Katharina Anders and Pimmbhattra Maydhisudhiwongs</p>
-      <a href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener" class="btn btn-secondary">Open Dashboard ↗</a>
-      <div class="thesis-university">
-        Defended at TU Munich, September 2026<br>
-        <strong>MSc Cartography, Erasmus Mundus Joint Degree</strong>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRAVERSE -->
-<section id="background">
-  <div class="journey-inner">
-    <div class="section-label reveal">Traverse</div>
-    <h2 class="section-heading reveal">From geography to <em>cartography</em></h2>
-    <div class="journey-steps">
-      <div class="journey-step reveal">
-        <span class="journey-year">2019 to 2022</span>
-        <div class="journey-uni">BA Geography</div>
-        <div class="journey-city">SNDT Women's University · India</div>
-        <div class="journey-desc">Broad base in physical and human geography. Practical training in cartography, map work and surveying. Highest score in the Geography major in the final year.</div>
-        <div class="journey-step-line"></div>
-      </div>
-      <div class="journey-step reveal reveal-delay-1">
-        <span class="journey-year">2022 to 2024</span>
-        <div class="journey-uni">MA Geography</div>
-        <div class="journey-city">Parvatibai Chowgule College · Goa University</div>
-        <div class="journey-desc">A department that combines geography with GIS and fieldwork. Dissertation on Pune's urban heat island from Landsat data, presented at the Deccan Geographical Society conference in 2023.</div>
-        <div class="journey-step-line"></div>
-      </div>
-      <div class="journey-step reveal reveal-delay-2">
-        <span class="journey-year">2024 to 2026</span>
-        <div class="journey-uni">MSc Cartography</div>
-        <div class="journey-city">Erasmus Mundus · Munich · Vienna · Dresden</div>
-        <div class="journey-desc">Map design, GIS and image analysis in Munich. Web mapping and location-based services in Vienna. Mobile and topographic cartography, geodata infrastructures and an Alpine field school in Dresden. Thesis at TU Munich.</div>
-        <div class="journey-step-line"></div>
-      </div>
-      <div class="journey-step next reveal reveal-delay-3">
-        <span class="journey-year">Next</span>
-        <div class="journey-uni">Open to Roles</div>
-        <div class="journey-city">Munich · Open to relocation</div>
-        <div class="journey-desc">Cartography, GIS, remote sensing and geodata. Available now.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS with icons -->
-<section id="stats">
-  <div class="stats-inner">
-    <div class="stat reveal">
-      <div class="stat-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>
-        </svg>
-      </div>
-      <span class="stat-number" data-target="3">0</span>
-      <span class="stat-label">Degrees</span>
-    </div>
-    <div class="stat reveal reveal-delay-1">
-      <div class="stat-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/>
-        </svg>
-      </div>
-      <span class="stat-number" data-target="3">0</span>
-      <span class="stat-label">Countries</span>
-    </div>
-    <div class="stat reveal reveal-delay-2">
-      <div class="stat-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="3" y="4" width="14" height="10"/><rect x="7" y="8" width="14" height="10"/>
-        </svg>
-      </div>
-      <span class="stat-number" data-target="14">0</span>
-      <span class="stat-label">Projects</span>
-    </div>
-    <div class="stat reveal reveal-delay-3">
-      <div class="stat-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/>
-          <path d="M12 12l4-3" stroke="currentColor"/>
-        </svg>
-      </div>
-      <span class="stat-number" data-target="7">0</span>
-      <span class="stat-label">Years in Geography</span>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT — PLOT A COURSE -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="contact-info reveal">
-      <div class="section-label">Plot a Course</div>
-      <h2 class="section-heading">Open to <em>opportunities</em></h2>
-      <div class="availability">Available now</div>
+    <div>
+      <h2>Research</h2>
+      <h3>Mapping moving star dunes in Namibia</h3>
       <p>
-        I am looking for roles in cartography, GIS, remote sensing and geodata,
-        including junior and graduate positions. I am based in Munich and open to relocation.
+        For my MSc thesis I built a Python workflow that finds dune crestlines in Sentinel-2
+        images of the Namib Sand Sea. I then tested ways to show how the dunes move over time,
+        including where the data is uncertain or missing.
       </p>
-      <div class="contact-links">
-        <a href="mailto:radhamaheshdhuri@gmail.com" class="contact-link">
-          <span class="contact-link-icon">✉</span>
-          <div>
-            <span class="contact-link-label">Email</span>
-            <span class="contact-link-value">radhamaheshdhuri@gmail.com</span>
-          </div>
-        </a>
-        <a href="https://de.linkedin.com/in/radhika-dhuri-11885a223" target="_blank" rel="noopener" class="contact-link">
-          <span class="contact-link-icon">◉</span>
-          <div>
-            <span class="contact-link-label">LinkedIn</span>
-            <span class="contact-link-value">linkedin.com/in/radhika-dhuri-11885a223</span>
-          </div>
-        </a>
-        <a href="https://github.com/Redrum13" target="_blank" rel="noopener" class="contact-link">
-          <span class="contact-link-icon">◈</span>
-          <div>
-            <span class="contact-link-label">GitHub</span>
-            <span class="contact-link-value">github.com/Redrum13</span>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div class="cv-block reveal reveal-delay-2">
-      <span class="cv-block-label">Curriculum Vitae</span>
-      <p>
-        My CV covers my education, projects, technical skills and languages.
-        Available as a PDF download.
+      <p class="meta">
+        Cartographic Approach to Remotely Sensed Star Dunes and Environment Dynamics.
+        TU Munich, defended September 2026. Supervised by Katharina Anders and Pimmbhattra Maydhisudhiwongs.
       </p>
-      <a href="Radhika_Dhuri_CV.pdf" download class="btn btn-primary" style="width:100%; justify-content:center;">
-        Download CV ↓
-      </a>
-      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-        <span class="cv-block-label">Location</span>
-        <p style="margin-bottom:0; color: var(--text-muted); font-size:0.72rem;">
-          Based in Munich, Germany<br>
-          Open to relocation
-        </p>
-      </div>
+      <a class="btn btn-solid" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener">Open the dashboard</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- BACKGROUND -->
+<section class="background" id="background">
+  <div class="wrap">
+    <h2>Background</h2>
+    <p class="lead">Seven years of geography, from fieldwork in India to cartography in Europe.</p>
+
+    <ol class="timeline">
+      <li>
+        <div class="tl-years">2019 to 2022</div>
+        <h3>BA Geography</h3>
+        <div class="tl-place">SNDT Women's University, India</div>
+        <p>Physical and human geography, with practical classes in map making and surveying. Top score in the Geography major.</p>
+      </li>
+      <li>
+        <div class="tl-years">2022 to 2024</div>
+        <h3>MA Geography</h3>
+        <div class="tl-place">Parvatibai Chowgule College, Goa University, India</div>
+        <p>A department known for combining geography with GIS and fieldwork. My dissertation studied urban heat in Pune with satellite data.</p>
+      </li>
+      <li>
+        <div class="tl-years">2024 to 2026</div>
+        <h3>MSc Cartography, Erasmus Mundus</h3>
+        <div class="tl-place">TU Munich, TU Wien, TU Dresden and University of Twente</div>
+        <p>Map design and GIS in Munich. Web mapping in Vienna. Mobile and topographic maps and an Alpine field school in Dresden. Thesis in Munich.</p>
+      </li>
+      <li class="now">
+        <div class="tl-years">Now</div>
+        <h3>Looking for my next role</h3>
+        <div class="tl-place">Based in Munich, open to relocation</div>
+        <p>Cartography, GIS, remote sensing and geodata.</p>
+      </li>
+    </ol>
+
+    <div class="talks">
+      <h3>Publications and talks</h3>
+      <ul>
+        <li>Co-author of the climate action spread, <em>Atlas of Sustainability</em>, International Cartographic Association, 2025.</li>
+        <li>Talk on urban heat in Pune at the XVII International Conference of the Deccan Geographical Society of India, 2023.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div>
+      <h2>Contact</h2>
+      <p class="lead">I am looking for roles in cartography, GIS, remote sensing and geodata. I would be glad to hear from you.</p>
+      <div class="actions" style="margin-top:1.6rem">
+        <a class="btn btn-solid" href="mailto:radhamaheshdhuri@gmail.com">Email me</a>
+        <a class="btn btn-line" href="Radhika_Dhuri_CV.pdf" download>Download CV</a>
+      </div>
+    </div>
+    <ul class="contact-list">
+      <li><a href="mailto:radhamaheshdhuri@gmail.com"><span>Email</span>radhamaheshdhuri@gmail.com</a></li>
+      <li><a href="https://de.linkedin.com/in/radhika-dhuri-11885a223" target="_blank" rel="noopener"><span>LinkedIn</span>Radhika Dhuri</a></li>
+      <li><a href="https://github.com/Redrum13" target="_blank" rel="noopener"><span>GitHub</span>Redrum13</a></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
 <footer>
-  <div class="footer-left">
-    <div class="footer-copy">© 2026 Radhika Dhuri · Cartography &amp; Geography</div>
-    <svg class="scale-bar" width="120" height="18" viewBox="0 0 120 18" aria-hidden="true">
-      <rect x="1" y="4" width="25" height="4" fill="#d94f2b"/>
-      <rect x="26" y="4" width="25" height="4" fill="none" stroke="#d94f2b" stroke-width="0.8"/>
-      <rect x="51" y="4" width="50" height="4" fill="#d94f2b"/>
-      <text x="1" y="17" fill="currentColor" font-size="6" font-family="DM Mono" opacity="0.6">0</text>
-      <text x="48" y="17" fill="currentColor" font-size="6" font-family="DM Mono" opacity="0.6">1</text>
-      <text x="96" y="17" fill="currentColor" font-size="6" font-family="DM Mono" opacity="0.6">2 km</text>
-    </svg>
+  <div class="wrap">
+    <span>© 2026 Radhika Dhuri</span>
+    <span>Globe data: Natural Earth</span>
   </div>
-  <nav class="footer-nav">
-    <a href="#about">About</a>
-    <a href="#work">Sheet Index</a>
-    <a href="#research">Field Notes</a>
-    <a href="#background">Traverse</a>
-    <a href="#contact">Contact</a>
-  </nav>
 </footer>
 
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Map preview">
+  <button id="lightboxClose">Close</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <script>
-// ─── CURSOR + LIVE COORDS ───
-const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-  const lat = (48.1374 + (0.5 - e.clientY / window.innerHeight) * 0.08).toFixed(4);
-  const lng = (11.5755 + (e.clientX / window.innerWidth  - 0.5) * 0.2 ).toFixed(4);
-  const coordStr = `${lat}° N · ${lng}° E`;
-  document.getElementById('liveCoords').textContent   = coordStr;
-  document.getElementById('drawerCoords').textContent = coordStr;
+/* ─── Mobile menu ─── */
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open);
 });
-document.querySelectorAll('.project-card, .btn, .contact-link, .thesis-visual').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
+
+/* ─── Hide images that are not uploaded yet ─── */
+document.querySelectorAll('img[loading]').forEach(img => {
+  img.addEventListener('error', () => { img.style.visibility = 'hidden'; });
 });
 
-// ─── PARCHMENT MODE ───
-function toggleParchment() {
-  document.body.classList.toggle('parchment');
-  const on = document.body.classList.contains('parchment');
-  try { localStorage.setItem('parchment', on ? '1' : '0'); } catch(e){}
-  // redraw globe in new colours
-  if (window._drawGlobe) window._drawGlobe();
-}
-// restore preference
-try {
-  if (localStorage.getItem('parchment') === '1') document.body.classList.add('parchment');
-} catch(e){}
-document.getElementById('parchmentToggle').addEventListener('click', toggleParchment);
+/* ─── Project filter ─── */
+document.querySelectorAll('.legend button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.legend button').forEach(b => b.setAttribute('aria-pressed', b === btn));
+    document.querySelectorAll('.card').forEach(card => {
+      card.hidden = !(f === 'all' || card.dataset.cat === f);
+    });
+  });
+});
 
-// ─── HAMBURGER / DRAWER ───
-const hamburger = document.getElementById('navHamburger');
-const drawer    = document.getElementById('navDrawer');
-const overlay   = document.getElementById('drawerOverlay');
-hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
-function openDrawer()  { drawer.classList.add('open');    overlay.classList.add('open');    hamburger.classList.add('open');    document.body.style.overflow = 'hidden'; }
-function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open'); document.body.style.overflow = ''; }
-
-// ─── LIGHTBOX ───
+/* ─── Cards: open image or link (mouse and keyboard) ─── */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
 function openLightbox(src, alt) {
-  const img = document.getElementById('lightbox-img');
-  img.src = src;
-  img.alt = alt || 'Map preview';
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  lightboxImg.src = src; lightboxImg.alt = alt;
+  lightbox.classList.add('open');
+  document.getElementById('lightboxClose').focus();
 }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
-function closeLightboxOnBackdrop(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); closeDrawer(); } });
+function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-// ─── PROJECT CARDS: click or keyboard ───
-document.querySelectorAll('.project-card').forEach(card => {
-  const title = card.querySelector('.project-title').textContent;
-  card.setAttribute('tabindex', '0');
+document.querySelectorAll('.card').forEach(card => {
+  const title = card.querySelector('h3').textContent;
+  card.tabIndex = 0;
   card.setAttribute('role', 'button');
   card.setAttribute('aria-label', title);
-  const activate = () => {
-    if (card.dataset.type === 'image') openLightbox(card.dataset.image, title);
-    else window.open(card.dataset.url, '_blank', 'noopener');
-  };
-  card.addEventListener('click', activate);
+  const go = () => card.dataset.image
+    ? openLightbox(card.dataset.image, title)
+    : window.open(card.dataset.url, '_blank', 'noopener');
+  card.addEventListener('click', go);
   card.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
   });
 });
 
-// ─── SCROLL REVEAL ───
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+/* ─── Globe (real Natural Earth data, orthographic projection) ─── */
+(function () {
+  if (!window.d3 || !window.topojson) return;
 
-// ─── COUNT-UP STATS ───
-const statsObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const el = e.target, target = parseInt(el.dataset.target);
-      let current = 0;
-      const step  = Math.max(1, Math.ceil(target / 40));
-      const timer = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = current;
-        if (current >= target) clearInterval(timer);
-      }, 60);
-      statsObserver.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-number[data-target]').forEach(el => statsObserver.observe(el));
-
-// ─── FILTER ───
-function filterProjects(cat, btn) {
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.project-card').forEach(card => {
-    if (cat === 'all' || card.dataset.cat === cat) {
-      card.style.display = '';
-      card.style.opacity = '0'; card.style.transform = 'translateY(20px)';
-      setTimeout(() => { card.style.transition = 'opacity 0.4s, transform 0.4s'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
-    } else { card.style.display = 'none'; }
-  });
-}
-
-// ─── HERO REVEAL ON LOAD ───
-window.addEventListener('load', () => {
-  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
-    setTimeout(() => el.classList.add('visible'), 200 + i * 150);
-  });
-});
-
-// ─── PARALLAX CONTOUR LAYER ───
-const contourLayer = document.getElementById('contourLayer');
-let ticking = false;
-function updateParallax() {
-  const y = window.scrollY * 0.1;
-  contourLayer.style.transform = `translate3d(0, ${-y}px, 0)`;
-  ticking = false;
-}
-window.addEventListener('scroll', () => {
-  if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
-}, { passive: true });
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  contourLayer.style.display = 'none';
-}
-
-/* ═══════════════════════════════════════════════
-   ROTATING ORTHOGRAPHIC GLOBE (canvas)
-   Cycles Germany → Austria → India based on scroll
-   ═══════════════════════════════════════════════ */
-(function() {
-  const canvas = document.getElementById('globeCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const SIZE = 180;
-  canvas.width  = SIZE * dpr * 2;
-  canvas.height = SIZE * dpr * 2;
-  canvas.style.width  = SIZE + 'px';
-  canvas.style.height = SIZE + 'px';
-  ctx.scale(dpr * 2, dpr * 2);
-
-  const W = SIZE, H = SIZE, CX = W/2, CY = H/2, R = W/2 - 8;
-
-  // Foci along the scroll: Munich → Vienna → Pune
-  const FOCI = [
-    { lat: 48.14, lon: 11.58, name: 'Munich',   country: 'DE' },
-    { lat: 48.21, lon: 16.37, name: 'Vienna',   country: 'AT' },
-    { lat: 18.52, lon: 73.86, name: 'Pune',     country: 'IN' }
+  const PLACES = [
+    { name: 'Pune, India',              note: 'Urban heat dissertation',          lon: 73.86, lat: 18.52 },
+    { name: 'Goa, India',               note: 'MA Geography',                      lon: 73.95, lat: 15.28 },
+    { name: 'Munich, Germany',          note: 'MSc thesis and home base',          lon: 11.58, lat: 48.14 },
+    { name: 'Vienna, Austria',          note: 'Web mapping and the ICA atlas',     lon: 16.37, lat: 48.21 },
+    { name: 'Dresden, Germany',         note: 'Topographic and mobile maps',       lon: 13.74, lat: 51.05 },
+    { name: 'Namib Sand Sea, Namibia',  note: 'Thesis study area',                 lon: 15.30, lat: -24.73 }
   ];
+  // ISO numeric codes: India, Germany, Austria, Namibia
+  const HIGHLIGHT = new Set(['356', '276', '040', '516']);
 
-  // Simplified world landmass outline (very rough, for gesture only)
-  const LAND = [
-    // [lon, lat] pairs, closed polygons
-    [[-10,36],[0,42],[10,45],[20,42],[28,41],[35,37],[40,40],[45,42],[50,45],[60,45],[70,40],[80,30],[90,25],[100,22],[110,20],[120,22],[122,30],[120,35],[118,40],[125,42],[130,45],[140,50],[145,55],[140,60],[130,65],[120,70],[100,75],[80,75],[60,72],[40,70],[30,70],[20,68],[10,60],[5,55],[0,50],[-5,45],[-10,40],[-10,36]],
-    [[-15,10],[-5,5],[5,5],[10,0],[15,-10],[18,-20],[20,-30],[18,-35],[15,-30],[10,-20],[5,-10],[-5,0],[-15,5],[-15,10]],
-    [[-80,10],[-75,0],[-70,-10],[-65,-20],[-60,-30],[-58,-40],[-65,-50],[-70,-55],[-75,-50],[-80,-40],[-82,-30],[-85,-20],[-88,-10],[-85,0],[-80,5],[-80,10]],
-    [[110,-10],[115,-15],[120,-20],[130,-25],[140,-30],[150,-35],[155,-40],[150,-45],[140,-42],[130,-35],[120,-25],[115,-18],[110,-10]],
-    [[-20,65],[-10,66],[0,68],[15,70],[30,72],[45,72],[60,70],[70,65],[60,60],[40,58],[20,60],[0,62],[-15,63],[-20,65]]
-  ];
-
-  let currentFocus = 0;
-  let animFocus = 0;
-  let rotLon = FOCI[0].lon;
-  let rotLat = FOCI[0].lat;
-
-  // scroll → focus index
-  function focusFromScroll() {
-    const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-    const t = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-    // three focus points mapped across the page
-    if (t < 0.33) currentFocus = 0;
-    else if (t < 0.66) currentFocus = 1;
-    else currentFocus = 2;
-    const f = FOCI[currentFocus];
-    document.getElementById('globeFocus').innerHTML = `${f.name} <span>· ${f.country}</span>`;
-  }
-  window.addEventListener('scroll', focusFromScroll, { passive: true });
-
-  function project(lon, lat) {
-    // orthographic projection centred on (rotLon, rotLat)
-    const toRad = d => d * Math.PI / 180;
-    const lonR = toRad(lon - rotLon);
-    const latR = toRad(lat);
-    const lat0R = toRad(rotLat);
-    const cosc = Math.sin(lat0R) * Math.sin(latR) + Math.cos(lat0R) * Math.cos(latR) * Math.cos(lonR);
-    if (cosc < 0) return null; // behind globe
-    const x = Math.cos(latR) * Math.sin(lonR);
-    const y = Math.cos(lat0R) * Math.sin(latR) - Math.sin(lat0R) * Math.cos(latR) * Math.cos(lonR);
-    return { x: CX + x * R, y: CY - y * R };
-  }
-
-  window._drawGlobe = function drawGlobe() {
-    const isParchment = document.body.classList.contains('parchment');
-    const strokeLand = isParchment ? '#7a4a1a' : '#c4884a';
-    const strokeGrat = isParchment ? 'rgba(122,74,26,0.18)' : 'rgba(31,121,155,0.22)';
-    const strokeMark = isParchment ? '#b83a1a' : '#d94f2b';
-    const fillGlobe  = isParchment ? 'rgba(224,203,163,0.4)' : 'rgba(18,54,80,0.55)';
-
-    ctx.clearRect(0, 0, W, H);
-
-    // globe fill
-    ctx.beginPath();
-    ctx.arc(CX, CY, R, 0, Math.PI * 2);
-    ctx.fillStyle = fillGlobe;
-    ctx.fill();
-    ctx.strokeStyle = isParchment ? 'rgba(122,74,26,0.6)' : 'rgba(196,136,74,0.65)';
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-
-    // graticule (lat / lon grid)
-    ctx.strokeStyle = strokeGrat;
-    ctx.lineWidth = 0.6;
-    for (let lat = -60; lat <= 60; lat += 30) {
-      ctx.beginPath();
-      let first = true;
-      for (let lon = -180; lon <= 180; lon += 4) {
-        const p = project(lon, lat);
-        if (!p) { first = true; continue; }
-        if (first) { ctx.moveTo(p.x, p.y); first = false; }
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.stroke();
-    }
-    for (let lon = -180; lon < 180; lon += 30) {
-      ctx.beginPath();
-      let first = true;
-      for (let lat = -90; lat <= 90; lat += 4) {
-        const p = project(lon, lat);
-        if (!p) { first = true; continue; }
-        if (first) { ctx.moveTo(p.x, p.y); first = false; }
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.stroke();
-    }
-
-    // landmasses
-    ctx.strokeStyle = strokeLand;
-    ctx.lineWidth = 1;
-    LAND.forEach(poly => {
-      ctx.beginPath();
-      let first = true;
-      poly.forEach(pt => {
-        const p = project(pt[0], pt[1]);
-        if (!p) { first = true; return; }
-        if (first) { ctx.moveTo(p.x, p.y); first = false; }
-        else ctx.lineTo(p.x, p.y);
-      });
-      ctx.stroke();
-    });
-
-    // markers for the three focus cities
-    FOCI.forEach((f, i) => {
-      const p = project(f.lon, f.lat);
-      if (!p) return;
-      const isCurrent = i === currentFocus;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, isCurrent ? 4.5 : 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = isCurrent ? strokeMark : strokeLand;
-      ctx.fill();
-      if (isCurrent) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
-        ctx.strokeStyle = strokeMark;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    });
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    sea:   css.getPropertyValue('--ocean-lift').trim(),
+    land:  '#2f5a74',
+    mine:  css.getPropertyValue('--sandstone').trim(),
+    edge:  css.getPropertyValue('--paper').trim(),
+    grid:  'rgba(169,199,214,0.22)',
+    red:   css.getPropertyValue('--survey-red').trim()
   };
 
-  // animation loop: lerp towards focus + slow ambient rotation
-  let ambient = 0;
-  function loop() {
-    const f = FOCI[currentFocus];
-    // smoothly interpolate toward the current focus
-    rotLon += (f.lon - rotLon) * 0.04;
-    rotLat += (f.lat - rotLat) * 0.04;
-    // add a very slight ambient drift
-    ambient += 0.05;
-    window._drawGlobe();
-    requestAnimationFrame(loop);
+  const size = 440, r = 196;
+  const svg = d3.select('#globe');
+  const projection = d3.geoOrthographic().scale(r).translate([size / 2, size / 2]).clipAngle(90);
+  const path = d3.geoPath(projection);
+  const graticule = d3.geoGraticule10();
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const gSea   = svg.append('path').datum({ type: 'Sphere' }).attr('fill', C.sea);
+  const gGrid  = svg.append('path').datum(graticule).attr('fill', 'none').attr('stroke', C.grid).attr('stroke-width', 0.6);
+  const gLand  = svg.append('g');
+  const gMarks = svg.append('g');
+  const gRim   = svg.append('path').datum({ type: 'Sphere' }).attr('fill', 'none').attr('stroke', C.edge).attr('stroke-opacity', 0.5);
+
+  let current = 2; // start at Munich
+  let countries = null;
+
+  function render() {
+    gSea.attr('d', path);
+    gGrid.attr('d', path);
+    gRim.attr('d', path);
+    if (countries) gLand.selectAll('path').attr('d', path);
+
+    const centre = projection.invert([size / 2, size / 2]);
+    const marks = gMarks.selectAll('g').data(PLACES);
+    const enter = marks.enter().append('g');
+    enter.append('circle').attr('class', 'halo').attr('r', 11).attr('fill', 'none').attr('stroke', C.red).attr('stroke-width', 1.5);
+    enter.append('circle').attr('class', 'dot').attr('stroke', C.edge).attr('stroke-width', 1);
+    marks.merge(enter).each(function (d, i) {
+      const visible = d3.geoDistance([d.lon, d.lat], centre) < Math.PI / 2 - 0.05;
+      const [x, y] = projection([d.lon, d.lat]);
+      const g = d3.select(this).attr('transform', `translate(${x},${y})`).style('display', visible ? null : 'none');
+      g.select('.dot').attr('r', i === current ? 6 : 3.5).attr('fill', i === current ? C.red : C.edge);
+      g.select('.halo').style('display', i === current ? null : 'none');
+    });
   }
-  loop();
-  focusFromScroll();
+
+  function setCaption(p) {
+    document.getElementById('globePlace').textContent = p.name;
+    document.getElementById('globeNote').textContent = p.note;
+  }
+
+  function rotateTo(i) {
+    current = i;
+    const p = PLACES[i];
+    setCaption(p);
+    const target = [-p.lon, -p.lat * 0.75];
+    if (reduced) { projection.rotate(target); render(); return; }
+    const interp = d3.interpolate(projection.rotate(), target);
+    d3.transition().duration(1800).ease(d3.easeCubicInOut)
+      .tween('rotate', () => t => { projection.rotate(interp(t)); render(); });
+  }
+
+  projection.rotate([-PLACES[current].lon, -PLACES[current].lat * 0.75]);
+  render();
+
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(world => {
+    countries = topojson.feature(world, world.objects.countries).features;
+    gLand.selectAll('path').data(countries).enter().append('path')
+      .attr('fill', d => HIGHLIGHT.has(d.id) ? C.mine : C.land)
+      .attr('stroke', C.sea).attr('stroke-width', 0.5);
+    render();
+    setInterval(() => {
+      if (document.hidden) return;
+      rotateTo((current + 1) % PLACES.length);
+    }, 4500);
+  }).catch(() => { /* globe stays as sea and grid if data cannot load */ });
 })();
 </script>
 </body>
