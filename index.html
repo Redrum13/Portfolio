@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Radhika Dhuri — MSc Cartography Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radhika Dhuri | Cartography &amp; Geography</title>
+<meta name="description" content="Portfolio of Radhika Dhuri, cartographer and geographer. Print maps, web maps, remote sensing and GIS projects. Based in Munich.">
+<meta property="og:title" content="Radhika Dhuri | Cartography &amp; Geography">
+<meta property="og:description" content="From landscapes to legends. Print maps, web maps, remote sensing and GIS projects.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://redrum13.github.io/Portfolio/">
+<meta property="og:image" content="https://redrum13.github.io/Portfolio/portfolio_websites/Thumbnails/thesis_tn.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
@@ -12,39 +19,35 @@
      COLOUR SYSTEM
      Background family  → blue (water)
      Text / UI family   → brown (land / leather)
-     All colours live here — nothing hardcoded below
   ═══════════════════════════════════════════════ */
   :root {
-    /* Blues — background & surface hierarchy */
-    --blue-deep:    #0b2233;   /* page background — deep ocean */
-    --blue-mid:     #123650;   /* section alt background */
-    --blue-surface: #1a4a6b;   /* cards, panels */
-    --blue-lift:    #1f799b;   /* primary accent, active states */
-    --blue-light:   #5aaac8;   /* secondary accent, hover glows */
-    --blue-mist:    #a8d4e6;   /* subtle tints, borders */
+    --blue-deep:    #0b2233;
+    --blue-mid:     #123650;
+    --blue-surface: #1a4a6b;
+    --blue-lift:    #1f799b;
+    --blue-light:   #5aaac8;
+    --blue-mist:    #a8d4e6;
 
-    /* Browns — text & UI land elements */
-    --brown-ink:    #2b1a0a;   /* darkest — not used on dark bg */
-    --brown-dark:   #5c3317;   /* dark brown for borders on light */
-    --brown-mid:    #8b5a2b;   /* mid brown, secondary text on light */
-    --brown-warm:   #c4884a;   /* warm tan — primary accent on dark */
-    --brown-sand:   #deb887;   /* main body text on dark bg */
-    --brown-cream:  #f5e6cc;   /* headings / high-contrast text */
+    --brown-ink:    #2b1a0a;
+    --brown-dark:   #5c3317;
+    --brown-mid:    #8b5a2b;
+    --brown-warm:   #c4884a;
+    --brown-sand:   #deb887;
+    --brown-cream:  #f5e6cc;
 
-    /* Semantic aliases — used in the CSS below */
     --bg:           var(--blue-deep);
     --bg-alt:       var(--blue-mid);
     --bg-card:      var(--blue-surface);
     --bg-lift:      var(--blue-lift);
 
-    --text-primary:   var(--brown-cream);   /* headings — contrast ~12:1 on --bg */
-    --text-body:      var(--brown-sand);    /* body copy — contrast ~9:1 on --bg  */
-    --text-subtle:    var(--blue-mist);     /* labels, coords — contrast ~7:1 on --bg */
-    --text-muted:     #8ab8cc;             /* de-emphasised — still ≥7:1 on --bg  */
+    --text-primary:   var(--brown-cream);
+    --text-body:      var(--brown-sand);
+    --text-subtle:    var(--blue-mist);
+    --text-muted:     #8ab8cc;
 
-    --accent-warm:    var(--brown-warm);    /* gold/amber — titles, icons on dark  */
-    --accent-cool:    var(--blue-lift);     /* azure — active tabs, links          */
-    --accent-hover:   var(--blue-light);    /* lighter azure for hover states      */
+    --accent-warm:    var(--brown-warm);
+    --accent-cool:    var(--blue-lift);
+    --accent-hover:   var(--blue-light);
 
     --border:         rgba(196,136,74,0.25);
     --border-blue:    rgba(31,121,155,0.35);
@@ -134,14 +137,12 @@
   .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
   .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-  /* ─── DRAWER OVERLAY ─── */
+  /* ─── DRAWER ─── */
   .nav-drawer-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.6); z-index: 299; opacity: 0; transition: opacity 0.3s;
   }
   .nav-drawer-overlay.open { display: block; opacity: 1; }
-
-  /* ─── SLIDE DRAWER ─── */
   .nav-drawer {
     position: fixed; top: 0; right: 0; bottom: 0;
     width: 78vw; max-width: 300px;
@@ -187,6 +188,14 @@
       radial-gradient(ellipse 80% 60% at 70% 50%, rgba(31,121,155,0.22) 0%, transparent 70%),
       radial-gradient(ellipse 40% 40% at 20% 80%, rgba(196,136,74,0.12) 0%, transparent 60%);
   }
+  /* Faint satellite image under the grid. Add your own Sentinel-2 crop at this path. */
+  .hero-sat {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: url('portfolio_websites/Thumbnails/hero_dunes.png');
+    background-size: cover; background-position: center;
+    opacity: 0.1; filter: grayscale(0.4) contrast(1.1);
+    mix-blend-mode: luminosity;
+  }
   .contour-lines { position: absolute; inset: 0; overflow: hidden; z-index: 0; opacity: 0.08; }
   .contour-lines svg { width: 100%; height: 100%; }
   .hero-content { position: relative; z-index: 2; max-width: 750px; }
@@ -225,30 +234,34 @@
   .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid rgba(245,230,204,0.35); }
   .btn-secondary:hover { border-color: var(--accent-cool); color: var(--accent-cool); }
 
-  /* Erasmus badge */
+  /* Map metadata panel */
   .hero-badge {
     position: absolute; right: 6rem; top: 50%;
     transform: translateY(-50%);
-    border: 1px solid var(--border); padding: 1.8rem 2rem;
+    border: 1px solid var(--border); padding: 1.6rem 1.8rem;
     background: rgba(18,54,80,0.7); backdrop-filter: blur(8px); z-index: 2;
     animation: floatBadge 6s ease-in-out infinite;
-    text-align: center; min-width: 180px;
+    min-width: 230px;
   }
   @keyframes floatBadge {
     0%, 100% { transform: translateY(-50%) translateY(0); }
     50%       { transform: translateY(-50%) translateY(-12px); }
   }
-  .badge-compass { width: 90px; height: 90px; margin: 0 auto 1rem; display: block; }
-  .badge-programme {
-    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent-cool); margin-bottom: 0.5rem;
+  .badge-compass { width: 70px; height: 70px; margin: 0 auto 1rem; display: block; }
+  .badge-title {
+    font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent-warm); text-align: center;
+    padding-bottom: 0.7rem; margin-bottom: 0.7rem; border-bottom: 1px solid var(--border);
   }
-  .badge-unis {
-    font-family: 'Playfair Display', serif; font-size: 0.75rem;
-    color: var(--text-primary); line-height: 1.6; margin-bottom: 0.5rem;
+  .meta-row {
+    display: flex; justify-content: space-between; gap: 1rem;
+    font-size: 0.6rem; letter-spacing: 0.06em; padding: 0.35rem 0;
+    border-bottom: 1px dashed rgba(168,212,230,0.15);
   }
-  .badge-unis span { color: var(--accent-warm); font-style: italic; display: block; }
-  .badge-year { font-size: 0.58rem; color: var(--text-muted); letter-spacing: 0.1em; }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.52rem; }
+  .meta-val { color: var(--text-primary); text-align: right; }
+  .meta-val.live { color: var(--accent-cool); }
 
   .scroll-hint {
     position: absolute; bottom: 2.5rem; left: 3rem;
@@ -300,8 +313,8 @@
   .skill-name { font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 500; color: var(--text-primary); margin-bottom: 0.3rem; text-transform: uppercase; }
   .skill-detail { font-size: 0.62rem; color: var(--accent-cool); line-height: 1.6; }
 
-  /* ─── THESIS ─── */
-  #thesis {
+  /* ─── RESEARCH ─── */
+  #research {
     padding: 6rem 3rem;
     border-top: 1px solid var(--border);
     background: rgba(18,54,80,0.3);
@@ -309,19 +322,20 @@
   .thesis-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
   .thesis-visual {
     border: 1px solid var(--border);
-    aspect-ratio: 4/3; position: relative; overflow: hidden;
+    aspect-ratio: 4/3; position: relative; overflow: hidden; display: block;
     background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 50%, var(--blue-surface) 100%);
   }
-  .thesis-visual-inner {
-    position: absolute; inset: 0; opacity: 0.5;
-    background-image: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(31,121,155,0.5) 0%, transparent 70%);
+  .thesis-visual-img {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0.9; transition: transform 0.6s ease;
   }
-  .thesis-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.25; }
+  .thesis-visual:hover .thesis-visual-img { transform: scale(1.04); }
   .thesis-visual-label {
     position: absolute; bottom: 1rem; left: 1rem;
     font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
     color: var(--accent-warm); border: 1px solid var(--border);
-    padding: 0.3rem 0.6rem; background: rgba(11,34,51,0.8);
+    padding: 0.3rem 0.6rem; background: rgba(11,34,51,0.85);
   }
   .thesis-title {
     font-family: 'Playfair Display', serif;
@@ -338,13 +352,14 @@
     color: var(--accent-cool); background: rgba(31,121,155,0.12);
   }
   .thesis-desc { font-size: 0.8rem; line-height: 2; color: var(--text-body); margin-bottom: 1.5rem; }
+  .thesis-supervisors { font-size: 0.66rem; color: var(--text-subtle); margin-bottom: 1.5rem; letter-spacing: 0.04em; }
   .thesis-university {
     font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.1em;
-    border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;
+    border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1.5rem;
   }
   .thesis-university strong { color: var(--accent-warm); }
 
-  /* ─── PORTFOLIO ─── */
+  /* ─── WORK ─── */
   #work { padding: 7rem 3rem; background: rgba(18,54,80,0.25); border-top: 1px solid var(--border); }
   .work-header { max-width: 1200px; margin: 0 auto 4rem; display: flex; align-items: flex-end; justify-content: space-between; }
   .filter-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
@@ -367,13 +382,14 @@
     cursor: pointer; aspect-ratio: 4/3;
     display: flex; flex-direction: column; justify-content: flex-end;
   }
-  .project-card.featured { grid-column: span 2; aspect-ratio: auto; min-height: 380px; }
+  .project-card:focus-visible { outline: 2px solid var(--accent-warm); outline-offset: -2px; }
   .project-img {
     position: absolute; inset: 0; background-size: cover; background-position: center;
     transition: transform 0.6s ease, filter 0.4s;
     filter: saturate(0.6) brightness(0.35);
   }
-  .project-card:hover .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.15); }
+  .project-card:hover .project-img,
+  .project-card:focus-visible .project-img { transform: scale(1.06); filter: saturate(0.85) brightness(0.15); }
   .project-overlay {
     position: relative; z-index: 2; padding: 1.8rem;
     background: linear-gradient(to top, var(--card-overlay) 0%, transparent 100%);
@@ -393,7 +409,8 @@
     margin-bottom: 1rem; max-width: 380px;
     transform: translateY(10px); opacity: 0; transition: all 0.3s 0.1s;
   }
-  .project-card:hover .project-desc { transform: translateY(0); opacity: 1; }
+  .project-card:hover .project-desc,
+  .project-card:focus-visible .project-desc { transform: translateY(0); opacity: 1; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .tag {
     font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
@@ -402,7 +419,6 @@
     color: var(--blue-mist); background: rgba(31,121,155,0.12);
   }
 
-  /* card bg variants */
   .map-topo  { background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 60%, var(--blue-surface) 100%); }
   .map-web   { background: linear-gradient(135deg, #091d2e 0%, #0e2e44 60%, var(--blue-mid) 100%); }
   .map-print { background: linear-gradient(160deg, #1a0e04 0%, #2e1800 50%, #1a0c02 100%); }
@@ -414,7 +430,7 @@
   #stack { padding: 4rem 3rem; border-top: 1px solid var(--border); overflow: hidden; }
   .stack-scroll {
     display: flex; gap: 3rem; align-items: center;
-    animation: scrollStrip 25s linear infinite; width: max-content;
+    animation: scrollStrip 30s linear infinite; width: max-content;
   }
   @keyframes scrollStrip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .stack-item {
@@ -425,8 +441,8 @@
   .stack-item:hover { color: var(--accent-warm); }
   .stack-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-cool); flex-shrink: 0; }
 
-  /* ─── JOURNEY ─── */
-  #journey { padding: 6rem 3rem; border-top: 1px solid var(--border); }
+  /* ─── BACKGROUND (timeline) ─── */
+  #background { padding: 6rem 3rem; border-top: 1px solid var(--border); }
   .journey-inner { max-width: 1200px; margin: 0 auto; }
   .journey-steps {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -438,6 +454,7 @@
   }
   .journey-step:last-child { border-right: none; }
   .journey-step:hover { background: rgba(31,121,155,0.1); }
+  .journey-step.next { background: rgba(196,136,74,0.06); }
   .journey-year {
     font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
     color: var(--accent-warm); margin-bottom: 0.5rem; display: block;
@@ -446,7 +463,7 @@
     font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
     color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.2;
   }
-  .journey-city { font-size: 0.65rem; color: var(--accent-cool); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .journey-city { font-size: 0.65rem; color: var(--accent-cool); letter-spacing: 0.1em; margin-bottom: 0.8rem; line-height: 1.6; }
   .journey-desc { font-size: 0.67rem; line-height: 1.8; color: var(--text-body); }
   .journey-step-line {
     position: absolute; top: 2.5rem; right: -1px; width: 1px; height: 40px;
@@ -462,7 +479,7 @@
   }
   .stats-inner {
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(5, 1fr);
+    display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 0; border: 1px solid var(--border);
   }
   .stat { padding: 2.5rem 2rem; text-align: center; border-right: 1px solid var(--border); }
@@ -524,8 +541,11 @@
   footer {
     padding: 2rem 3rem; border-top: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    position: relative; z-index: 1;
   }
+  .footer-left { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
   .footer-copy { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.1em; }
+  .scale-bar { display: block; }
   .footer-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
   .footer-nav a {
     font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -577,15 +597,18 @@
     .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     #about { padding: 5rem 1.2rem; }
     .thesis-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    #thesis { padding: 5rem 1.2rem; }
+    #research { padding: 5rem 1.2rem; }
     .work-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
     .projects-grid { grid-template-columns: 1fr 1fr; }
-    .project-card.featured { grid-column: span 2; min-height: 280px; }
     #work { padding: 5rem 1.2rem; }
     #stack { padding: 3rem 1.2rem; }
     .journey-steps { grid-template-columns: 1fr 1fr; }
-    #journey { padding: 4rem 1.2rem; }
-    .stats-inner { grid-template-columns: repeat(3, 1fr); }
+    .journey-step:nth-child(2) { border-right: none; }
+    .journey-step:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    #background { padding: 4rem 1.2rem; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
     #stats { padding: 4rem 1.2rem; }
     .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
     #contact { padding: 5rem 1.2rem; }
@@ -607,28 +630,23 @@
     .skills-grid { grid-template-columns: 1fr; }
     .skill-cell { padding: 1rem 1.1rem; }
     .section-heading { font-size: clamp(1.65rem, 7vw, 2.2rem); }
-    #thesis { padding: 3.5rem 1rem; }
+    #research { padding: 3.5rem 1rem; }
     .thesis-title { font-size: clamp(1.3rem, 5vw, 1.8rem); }
     #stack { padding: 2.5rem 1rem; }
     #work { padding: 3.5rem 1rem; }
     .projects-grid { grid-template-columns: 1fr; }
-    .project-card.featured { grid-column: span 1; min-height: 220px; }
     .project-card { aspect-ratio: 16/10; }
     .project-desc { transform: translateY(0) !important; opacity: 1 !important; }
     .project-overlay { padding: 1rem 1.1rem; }
     .project-title { font-size: 0.96rem; }
     .filter-tab { font-size: 0.55rem; padding: 0.4rem 0.7rem; }
     .work-header { gap: 0.8rem; margin-bottom: 1.5rem; }
-    #journey { padding: 3.5rem 1rem; }
+    #background { padding: 3.5rem 1rem; }
     .journey-steps { grid-template-columns: 1fr; }
-    .journey-step { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem 1rem; }
+    .journey-step { border-right: none !important; border-bottom: 1px solid var(--border); padding: 1.5rem 1rem; }
     .journey-step:last-child { border-bottom: none; }
     #stats { padding: 3rem 1rem; }
-    .stats-inner { grid-template-columns: 1fr 1fr; }
-    .stat { padding: 1.4rem 0.8rem; border-bottom: 1px solid var(--border); }
-    .stat:nth-child(odd)  { border-right: 1px solid var(--border); }
-    .stat:nth-child(even) { border-right: none; }
-    .stat:nth-last-child(-n+2) { border-bottom: none; }
+    .stat { padding: 1.4rem 0.8rem; }
     .stat-number { font-size: 2rem; }
     #contact { padding: 3.5rem 1rem; }
     .contact-link { font-size: 0.67rem; padding: 0.8rem 1rem; }
@@ -654,39 +672,38 @@
   <a href="#" class="nav-logo">Radhika <span>Dhuri</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#thesis">Thesis</a></li>
     <li><a href="#work">Work</a></li>
-    <li><a href="#journey">Journey</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#background">Background</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="nav-coords" id="liveCoords">51.0504° N · 13.7373° E</div>
+  <div class="nav-coords" id="liveCoords">48.1374° N · 11.5755° E</div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- DRAWER OVERLAY -->
 <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
-<!-- SLIDE DRAWER -->
 <div class="nav-drawer" id="navDrawer" role="dialog" aria-label="Navigation menu">
   <button class="drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
   <ul class="drawer-links">
     <li><a href="#about" onclick="closeDrawer()">About</a></li>
-    <li><a href="#thesis" onclick="closeDrawer()">Thesis</a></li>
     <li><a href="#work" onclick="closeDrawer()">Work</a></li>
-    <li><a href="#journey" onclick="closeDrawer()">Journey</a></li>
+    <li><a href="#research" onclick="closeDrawer()">Research</a></li>
+    <li><a href="#background" onclick="closeDrawer()">Background</a></li>
     <li><a href="#contact" onclick="closeDrawer()">Contact</a></li>
   </ul>
   <div class="drawer-coords">
-    <strong>MSC CARTOGRAPHY · ERASMUS</strong>
-    <span id="drawerCoords">51.0504° N · 13.7373° E</span>
+    <strong>CARTOGRAPHY · GEOGRAPHY</strong>
+    <span id="drawerCoords">48.1374° N · 11.5755° E</span>
   </div>
 </div>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
+  <div class="hero-sat" aria-hidden="true"></div>
   <div class="contour-lines">
     <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
       <ellipse cx="900" cy="400" rx="200" ry="150" fill="none" stroke="#c4884a" stroke-width="1.5"/>
@@ -700,24 +717,22 @@
   </div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow reveal">MSc Cartography · Erasmus Mundus · Class of 2024/26</div>
+    <div class="hero-eyebrow reveal">Cartography · Geography · GIS · Munich</div>
     <h1 class="hero-name reveal reveal-delay-1">Radhika<em>Dhuri</em></h1>
-    <p class="hero-title reveal reveal-delay-2">Mapping the world — one projection at a time</p>
+    <p class="hero-title reveal reveal-delay-2">From landscapes to legends</p>
     <p class="hero-desc reveal reveal-delay-3">
-      Graduating cartography student in the Erasmus Mundus MSc Cartography programme,
-      having studied across Technical University Munich, Technical University Vienna, Technical University
-      Dresden, and University of Twente (ITC).
-      I work across the full spectrum — from handcrafted print maps to interactive web
-      maps and mobile applications — and I'm looking for my first role in geospatial design or GIS.
+      Cartographer and geographer with an MSc in Cartography (Erasmus Mundus, 2026)
+      and a BA and MA in Geography. I turn satellite imagery and spatial data into maps
+      people can read, from print posters to web maps and mobile apps.
     </p>
     <div class="hero-cta reveal reveal-delay-3">
       <a href="#work" class="btn btn-primary">View My Work ↓</a>
-      <a href="Radhika Dhuri Student CV Resume.pdf" download class="btn btn-secondary">Download CV ↓</a>
+      <a href="Radhika_Dhuri_CV.pdf" download class="btn btn-secondary">Download CV ↓</a>
     </div>
   </div>
 
-  <div class="hero-badge">
-    <svg class="badge-compass" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+  <aside class="hero-badge" aria-label="Profile summary">
+    <svg class="badge-compass" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <circle cx="45" cy="45" r="42" fill="none" stroke="rgba(196,136,74,0.45)" stroke-width="1"/>
       <circle cx="45" cy="45" r="35" fill="none" stroke="rgba(31,121,155,0.35)" stroke-width="0.5"/>
       <text x="45" y="12" text-anchor="middle" fill="#c4884a" font-size="8" font-family="DM Mono" letter-spacing="1">N</text>
@@ -732,13 +747,13 @@
       <polygon points="45,74 42,45 45,38 48,45" fill="#a8d4e6" opacity="0.5"/>
       <circle cx="45" cy="45" r="3.5" fill="#0b2233" stroke="#c4884a" stroke-width="1.2"/>
     </svg>
-    <div class="badge-programme">Erasmus Mundus</div>
-    <div class="badge-unis">
-      MSc Cartography
-      <span>TU Munich · TU Vienna<br>TU Dresden · U Twente (ITC)</span>
-    </div>
-    <div class="badge-year">Graduating Summer 2026</div>
-  </div>
+    <div class="badge-title">Map Metadata</div>
+    <div class="meta-row"><span class="meta-key">Author</span><span class="meta-val">R. Dhuri</span></div>
+    <div class="meta-row"><span class="meta-key">Focus</span><span class="meta-val">Cartography, Geography</span></div>
+    <div class="meta-row"><span class="meta-key">Data</span><span class="meta-val">Vector · Raster · Satellite</span></div>
+    <div class="meta-row"><span class="meta-key">Base</span><span class="meta-val">Munich, DE</span></div>
+    <div class="meta-row"><span class="meta-key">Status</span><span class="meta-val live">Available</span></div>
+  </aside>
 
   <div class="scroll-hint">Scroll to explore</div>
 </section>
@@ -748,105 +763,77 @@
   <div class="about-grid">
     <div class="about-text reveal">
       <div class="section-label">About</div>
-      <h2 class="section-heading">A student who <em>loves maps</em></h2>
-      <div class="about-programme-tag">Erasmus Mundus MSc Cartography</div>
+      <h2 class="section-heading">Where geography meets <em>cartography</em></h2>
+      <div class="about-programme-tag">Based in Munich · Open to relocation</div>
       <p>
-        I'm a master's student in the Erasmus Mundus MSc Cartography programme —
-        one of the few joint degree programmes in the world spanning four technical
-        universities across Europe. The programme has taken me from Munich to Vienna,
-        Dresden, and back to Munich for thesis, each semester building on a different pillar of cartographic practice.
+        I am a cartographer with a geographer's background. I studied geography in India,
+        then completed the Erasmus Mundus MSc in Cartography at TU Munich, TU Wien and
+        TU Dresden in 2026.
       </p>
       <p>
-        My interests sit at the intersection of cartographic design and digital technology.
-        I care deeply about how maps communicate — who they include, what they emphasise,
-        and how they guide the reader. I enjoy working across both the analytical rigour
-        of GIS and the visual craft of map design.
+        I am most interested in remote sensing and in showing change over time on a map.
+        My MA dissertation mapped twenty years of urban heat in Pune from Landsat data.
+        My MSc thesis tracked moving star dunes in the Namib Sand Sea with Sentinel-2.
       </p>
       <p>
-        I'm currently finishing my master's thesis and looking for junior positions,
-        graduate roles, or internships in cartography, geospatial design, or GIS development.
+        I care about how maps communicate. I enjoy the whole workflow, from processing raw
+        data in GIS and Python to designing the final map for print or screen. I am looking
+        for roles in cartography, GIS and geodata.
       </p>
       <a href="#work" class="btn btn-secondary" style="margin-top:1rem; display:inline-flex;">See my work →</a>
     </div>
     <div class="skills-grid reveal reveal-delay-2">
-      <div class="skill-cell"><div class="skill-name">GIS &amp; Analysis</div><div class="skill-detail">QGIS · ArcGIS Pro · PostGIS · GDAL/OGR</div></div>
-      <div class="skill-cell"><div class="skill-name">Print Cartography</div><div class="skill-detail">Adobe Illustrator · Figma · Mapbox Studio</div></div>
-      <div class="skill-cell"><div class="skill-name">Web Mapping</div><div class="skill-detail">Leaflet.js · Mapbox GL JS · D3.js · GitHub Pages</div></div>
-      <div class="skill-cell"><div class="skill-name">Mobile Apps</div><div class="skill-detail">Android Studio · Java</div></div>
-      <div class="skill-cell"><div class="skill-name">Remote Sensing</div><div class="skill-detail">Google Earth Engine · Landsat USGS · Sentinel Hub</div></div>
-      <div class="skill-cell"><div class="skill-name">Data &amp; Dev</div><div class="skill-detail">Python · R · JavaScript · Git · PostgreSQL · GeoJSON</div></div>
+      <div class="skill-cell"><div class="skill-name">Remote Sensing</div><div class="skill-detail">Sentinel-2 · Landsat · Google Earth Engine · ERDAS Imagine</div></div>
+      <div class="skill-cell"><div class="skill-name">GIS &amp; Analysis</div><div class="skill-detail">ArcGIS Pro · ArcMap · QGIS · PostGIS · GDAL/OGR</div></div>
+      <div class="skill-cell"><div class="skill-name">Map Design</div><div class="skill-detail">Adobe Illustrator · Figma · QGIS Print Layout</div></div>
+      <div class="skill-cell"><div class="skill-name">Web Mapping</div><div class="skill-detail">Leaflet · MapLibre GL JS · Mapbox GL JS · D3.js · GeoServer</div></div>
+      <div class="skill-cell"><div class="skill-name">Data &amp; Dev</div><div class="skill-detail">Python · R · SQL · JavaScript · Streamlit · Git</div></div>
+      <div class="skill-cell"><div class="skill-name">Mobile Apps</div><div class="skill-detail">Android Studio · Java · Figma</div></div>
     </div>
   </div>
 </section>
 
-<!-- TECH STRIP -->
-<section id="stack">
+<!-- TECH STRIP (list repeated twice for a seamless loop) -->
+<section id="stack" aria-hidden="true">
   <div class="stack-scroll">
-    <span class="stack-item"><span class="stack-dot"></span>QGIS</span>
+    <span class="stack-item"><span class="stack-dot"></span>Sentinel-2</span>
+    <span class="stack-item"><span class="stack-dot"></span>Landsat</span>
     <span class="stack-item"><span class="stack-dot"></span>ArcGIS Pro</span>
-    <span class="stack-item"><span class="stack-dot"></span>Leaflet.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>R</span>
-    <span class="stack-item"><span class="stack-dot"></span>GitHub Pages</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>GDAL</span>
-    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>Python</span>
-    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
-    <span class="stack-item"><span class="stack-dot"></span>Google Earth Engine</span>
-    <span class="stack-item"><span class="stack-dot"></span>Figma</span>
-    <span class="stack-item"><span class="stack-dot"></span>Android Studio</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostgreSQL</span>
+    <span class="stack-item"><span class="stack-dot"></span>ArcMap</span>
     <span class="stack-item"><span class="stack-dot"></span>QGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>ArcGIS Pro</span>
-    <span class="stack-item"><span class="stack-dot"></span>Leaflet.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>R</span>
-    <span class="stack-item"><span class="stack-dot"></span>GitHub Pages</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
-    <span class="stack-item"><span class="stack-dot"></span>GDAL</span>
-    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
-    <span class="stack-item"><span class="stack-dot"></span>Python</span>
-    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
+    <span class="stack-item"><span class="stack-dot"></span>ERDAS Imagine</span>
     <span class="stack-item"><span class="stack-dot"></span>Google Earth Engine</span>
+    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
+    <span class="stack-item"><span class="stack-dot"></span>GeoServer</span>
+    <span class="stack-item"><span class="stack-dot"></span>Python</span>
+    <span class="stack-item"><span class="stack-dot"></span>R</span>
+    <span class="stack-item"><span class="stack-dot"></span>Leaflet</span>
+    <span class="stack-item"><span class="stack-dot"></span>MapLibre</span>
+    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
+    <span class="stack-item"><span class="stack-dot"></span>Streamlit</span>
+    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
     <span class="stack-item"><span class="stack-dot"></span>Figma</span>
-    <span class="stack-item"><span class="stack-dot"></span>Android Studio</span>
-    <span class="stack-item"><span class="stack-dot"></span>PostgreSQL</span>
+    <span class="stack-item"><span class="stack-dot"></span>Sentinel-2</span>
+    <span class="stack-item"><span class="stack-dot"></span>Landsat</span>
+    <span class="stack-item"><span class="stack-dot"></span>ArcGIS Pro</span>
+    <span class="stack-item"><span class="stack-dot"></span>ArcMap</span>
+    <span class="stack-item"><span class="stack-dot"></span>QGIS</span>
+    <span class="stack-item"><span class="stack-dot"></span>ERDAS Imagine</span>
+    <span class="stack-item"><span class="stack-dot"></span>Google Earth Engine</span>
+    <span class="stack-item"><span class="stack-dot"></span>PostGIS</span>
+    <span class="stack-item"><span class="stack-dot"></span>GeoServer</span>
+    <span class="stack-item"><span class="stack-dot"></span>Python</span>
+    <span class="stack-item"><span class="stack-dot"></span>R</span>
+    <span class="stack-item"><span class="stack-dot"></span>Leaflet</span>
+    <span class="stack-item"><span class="stack-dot"></span>MapLibre</span>
+    <span class="stack-item"><span class="stack-dot"></span>D3.js</span>
+    <span class="stack-item"><span class="stack-dot"></span>Streamlit</span>
+    <span class="stack-item"><span class="stack-dot"></span>Adobe Illustrator</span>
+    <span class="stack-item"><span class="stack-dot"></span>Figma</span>
   </div>
 </section>
 
-<!-- THESIS -->
-<section id="thesis">
-  <div class="thesis-inner">
-    <div class="thesis-visual reveal">
-      <div class="thesis-visual-inner" style="background-image: url('portfolio_websites/Thumbnails/start_thesis_tn.png'); background-size: cover; background-position: center; opacity: 0.15;"></div>
-      <div class="thesis-visual-label">Master's Thesis · 2026</div>
-    </div>
-    <div class="thesis-content reveal reveal-delay-2">
-      <div class="section-label">Thesis</div>
-      <h2 class="thesis-title">Cartographic Approach to Remotely sensed <em>Star Dunes</em> and Environment Dynamics</h2>
-      <div class="thesis-meta">
-        <span class="thesis-tag">TU Munich</span>
-        <span class="thesis-tag">2026</span>
-        <span class="thesis-tag">Katherina Anders and Pimmbhattra Maydhisudhiwongs</span>
-        <span class="thesis-tag">Geovisualisation</span>
-      </div>
-      <p class="thesis-desc">
-        This thesis investigates how dune crestline migration and environmental dynamics can be effectively visualized using
-        remote sensing data and cartographic techniques. Using multi-temporal Sentinel-2 imagery and wind observations from
-        the Namib Sand Sea in Namibia, I develop a reproducible workflow to extract dune crestlines and represent their changes
-        over time. The research evaluates different spatiotemporal visualization methods, including approaches for communicating
-        uncertainty and data gaps.
-        The goal is to contribute a cartographic framework that improves the interpretation of dynamic desert landscapes.
-      </p>
-      <div class="thesis-university">
-        In progress to fulfill the requirements for the
-        <strong>MSc Cartography, Erasmus Mundus Joint Degree</strong><br>
-        TU Munich · TU Vienna · TU Dresden · University of Twente (ITC)
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
+<!-- WORK -->
 <section id="work">
   <div class="work-header">
     <div>
@@ -857,187 +844,226 @@
       <button class="filter-tab active" onclick="filterProjects('all',this)">All</button>
       <button class="filter-tab" onclick="filterProjects('print',this)">Print</button>
       <button class="filter-tab" onclick="filterProjects('web',this)">Web</button>
-      <button class="filter-tab" onclick="filterProjects('mobile',this)">Mobile</button>
-      <button class="filter-tab" onclick="filterProjects('other',this)">Other</button>
+      <button class="filter-tab" onclick="filterProjects('rs',this)">Remote Sensing</button>
+      <button class="filter-tab" onclick="filterProjects('apps',this)">Apps</button>
     </div>
   </div>
+
+  <!--
+    data-cat  = which filter shows the card (print, web, rs, apps)
+    data-type = what a click does: "image" opens the lightbox, "link" opens a new tab
+  -->
   <div class="projects-grid" id="projectsGrid">
 
-    <div class="project-card featured map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
-      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/thesis_tn.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-atlas reveal" data-cat="print" data-type="link" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/atlas_map.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Python · Thesis · TU Munich (ITC)</div>
-        <div class="project-title">Thesis Dashboard: Ongoing</div>
-        <div class="project-desc">Web Map Dashboard created to support star dune dynamics cartographic visualization. Currently in development as part of my master's thesis, built using Python libraries such as Streamlit and Matplotlib to visualize data extracted using Sentinel-2 satellite imagery and dune crestline migration patterns.</div>
-        <div class="project-tags"><span class="tag">Google Earth Engine</span><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Dashboard</span></div>
+        <div class="project-type">Print · Atlas · TU Wien · 2025</div>
+        <div class="project-title">Atlas of Sustainability, ICA 2025</div>
+        <div class="project-desc">Co-authored the SDG 13 Climate Action spread of the Atlas of Sustainability, an official International Cartographic Association publication made in one week at TU Wien. Data prepared in QGIS, layout finished in Illustrator.</div>
+        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">SDG 13</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-2" data-cat="other" data-type="web" data-url="https://github.com/Redrum13/remote_sensing">
-      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-gis reveal reveal-delay-1" data-cat="rs" data-type="image" data-image="portfolio_websites/print_maps/uhi_lst_series.png">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/uhi_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">R · Remote Sensing · TU Dresden</div>
-        <div class="project-title">Above Ground Biomass (AGB) Estimation</div>
-        <div class="project-desc">Estimated AGB using remote sensing data and machine learning (Random Forest) algorithms in R environment. Team project of 4 students.</div>
+        <div class="project-type">Remote Sensing · MA Dissertation · 2024</div>
+        <div class="project-title">Urban Heat Island, Pune Metropolitan Region</div>
+        <div class="project-desc">Mapped land surface temperature across the Pune Metropolitan Region from 2002 to 2022 using five Landsat scenes. Classified land cover, calculated NDVI and a thermal comfort index, and compared ten industrial and residential centres. Presented at the XVII International Conference of the Deccan Geographical Society of India, 2023.</div>
+        <div class="project-tags"><span class="tag">Landsat</span><span class="tag">ArcMap</span><span class="tag">ERDAS Imagine</span><span class="tag">LST</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="image" data-image="portfolio_websites/print_maps/map_creation_radhika-1.png">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/map_creation_radhika-1.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Print · Historical Map · TU Wien · 2025</div>
+        <div class="project-title">Vijaydurg Fort</div>
+        <div class="project-desc">Print poster of a Maratha naval fort with a fort plan, locator maps, a timeline and ship illustrations drawn to scale. Compiled from OpenStreetMap data and satellite imagery, finished in Illustrator.</div>
+        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">OSM</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-web reveal" data-cat="web" data-type="image" data-image="portfolio_websites/Thumbnails/cis_thumbnail.png">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/cis_thumbnail.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Web · TU Wien · 2025</div>
+        <div class="project-title">Family Amenities Web Map, Vienna</div>
+        <div class="project-desc">Helps parents find playgrounds, kindergartens and nearby cafés. Spatial queries run in PostGIS, layers served with GeoServer and shown in Leaflet.</div>
+        <div class="project-tags"><span class="tag">PostGIS</span><span class="tag">GeoServer</span><span class="tag">Leaflet</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-topo reveal reveal-delay-1" data-cat="rs" data-type="link" data-url="https://github.com/Redrum13/remote_sensing">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Remote Sensing · TU Dresden · 2025</div>
+        <div class="project-title">Above Ground Biomass Estimation</div>
+        <div class="project-desc">Team project estimating forest biomass from remote sensing data with a Random Forest model in R. Team of four.</div>
         <div class="project-tags"><span class="tag">R</span><span class="tag">Random Forest</span><span class="tag">Remote Sensing</span></div>
       </div>
     </div>
 
-    <div class="project-card map-mobile reveal reveal-delay-2" data-cat="mobile" data-type="print" data-image="portfolio_websites\hobby_map\app_screenshots.png">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/hobby_corner_icon.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="image" data-image="portfolio_websites/print_maps/TM_map_Radhika-1.png">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tm_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Mobile · Assignment Project · TU Dresden</div>
+        <div class="project-type">Print · Topographic · TU Dresden · 2025</div>
+        <div class="project-title">Topographic Map of Rabenau Grund, 1:25,000</div>
+        <div class="project-desc">Print map made in QGIS from a 1 m elevation model and OpenStreetMap data, with contours, hillshading and a UTM grid.</div>
+        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">DEM</span><span class="tag">1:25,000</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-web reveal" data-cat="web" data-type="link" data-url="portfolio_websites/webmap_vs/2/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/delhi_tn.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Web · Story Map · TU Wien · 2025</div>
+        <div class="project-title">Why is New Delhi the Capital?</div>
+        <div class="project-desc">Story map with a custom basemap style. Labels, roads and green areas adapt with zoom so the map never feels crowded. Cartographer's notes explain each design choice.</div>
+        <div class="project-tags"><span class="tag">MapLibre</span><span class="tag">Basemap Design</span><span class="tag">Storytelling</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-gis reveal reveal-delay-1" data-cat="web" data-type="link" data-url="https://kidlanli.github.io/GovTech/">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pw_tn.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Web · Data Analysis · TU Munich · 2025</div>
+        <div class="project-title">Climate Under Siege</div>
+        <div class="project-desc">One-week team project testing whether conflict raises climate vulnerability. Used PCA on global ACLED and ND-GAIN data, followed by a Myanmar case study. Team of five.</div>
+        <div class="project-tags"><span class="tag">PCA</span><span class="tag">ACLED</span><span class="tag">ND-GAIN</span><span class="tag">kepler.gl</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-web reveal reveal-delay-2" data-cat="web" data-type="link" data-url="portfolio_websites/2025lbs_group5/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/salzburg_tn.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">Web · Data Quality · TU Wien · 2025</div>
+        <div class="project-title">Road Data Quality Check, Salzburg</div>
+        <div class="project-desc">Compares road attributes with traffic sign data for one-way streets, speed limits and weight limits. The map flags consistent, mismatched and missing attributes. Team of three.</div>
+        <div class="project-tags"><span class="tag">Data Quality</span><span class="tag">Web Map</span><span class="tag">GitLab</span></div>
+      </div>
+    </div>
+
+    <div class="project-card map-mobile reveal" data-cat="apps" data-type="image" data-image="portfolio_websites/hobby_map/app_screenshots.png">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/hobby_corner_icon.png');"></div>
+      <div class="project-overlay">
+        <div class="project-type">App · Mobile Cartography · TU Dresden · 2025</div>
         <div class="project-title">Hobby Corner App</div>
-        <div class="project-desc">Created a map-based app in a team of 4 as part of a mobile app development assignment.</div>
+        <div class="project-desc">Team project from Figma design to a working Android app with a map, events and a calendar. Team of four.</div>
         <div class="project-tags"><span class="tag">Android Studio</span><span class="tag">Java</span><span class="tag">Figma</span></div>
       </div>
     </div>
 
-    <div class="project-card map-print reveal reveal-delay-3" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\TM_ map_Radhika-1.png">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tm_tn.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-gis reveal reveal-delay-1" data-cat="web" data-type="link" data-url="portfolio_websites/geoviz_vs/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tree_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Print · Topographic · TU Dresden</div>
-        <div class="project-title">Topographic Map of Tharandt</div>
-        <div class="project-desc">Detailed topographic map of the Tharandt Forest region produced at 1:10,000 scale. Contour lines, land cover classification, and hydrography generated entirely in QGIS.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Topographic</span><span class="tag">1:10 000</span></div>
+        <div class="project-type">Web · Geovisualisation · TU Munich · 2025</div>
+        <div class="project-title">Linden Trees of Vienna</div>
+        <div class="project-desc">D3.js map of Vienna's linden trees. Circle size shows crown diameter and colour shows planting year.</div>
+        <div class="project-tags"><span class="tag">D3.js</span><span class="tag">Proportional Symbols</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-2" data-cat="print" data-type="web" data-url="https://github.com/uwcartlab/Vienna-DC-2025">
-      <div class="project-img map-topo" style="background-image: url('portfolio_websites/Thumbnails/atlas_map.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-atlas reveal reveal-delay-2" data-cat="web" data-type="link" data-url="portfolio_websites/walk_in_english_garden/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/walk_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Print · Atlas · TU Vienna</div>
-        <div class="project-title">Sustainable Atlas Contribution in a Map</div>
-        <div class="project-desc">Contribution to one map in a print atlas produced as part of the Map Design Challenge Week in Vienna. The 16 SDG Goals Thematic Map produced in QGIS and finalised in Adobe Illustrator for printing.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Print</span></div>
+        <div class="project-type">Web · TU Munich · 2025</div>
+        <div class="project-title">English Garden Walking Circuits</div>
+        <div class="project-desc">Route finder for Munich's English Garden. Pick from nine circuits with time, distance and nearby stops. Includes GPS and a measuring tool. Built with a classmate.</div>
+        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Routing</span><span class="tag">Team of 2</span></div>
       </div>
     </div>
 
-    <div class="project-card map-print reveal reveal-delay-2" data-cat="print" data-type="print" data-image="portfolio_websites\print_maps\map_creation_radhika-1.png">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/map_creation_radhika-1.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-web reveal" data-cat="web" data-type="link" data-url="portfolio_websites/multimedia_vs/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pune_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Print · Tourist Map · TU Vienna</div>
-        <div class="project-title">Map for Vijaydurg Fort</div>
-        <div class="project-desc">A tourist historical site map created as part of a map design project during the Vienna semester. Compiled using OpenStreetMap data and satellite imagery, refined in Adobe Illustrator. Designed for print in A4 format.</div>
-        <div class="project-tags"><span class="tag">OSM</span><span class="tag">QGIS</span><span class="tag">Illustrator</span><span class="tag">A4 Print</span></div>
+        <div class="project-type">Web · TU Wien · 2025</div>
+        <div class="project-title">Pune Election Wards 2024</div>
+        <div class="project-desc">Interactive ward map of Pune with highlighted roads, rivers and ward boundaries.</div>
+        <div class="project-tags"><span class="tag">Mapbox GL JS</span><span class="tag">Web Map</span></div>
       </div>
     </div>
 
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="print" data-image="portfolio_websites\CIS_project\placeholder.png">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/cis_thumbnail.png'); background-size: cover; background-position: center;"></div>
+    <div class="project-card map-web reveal reveal-delay-1" data-cat="web" data-type="link" data-url="portfolio_websites/webmap_vs/1/index.html">
+      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/wm_tn.png');"></div>
       <div class="project-overlay">
-        <div class="project-type">Web · Project · TU Vienna</div>
-        <div class="project-title">Web Map of Vienna</div>
-        <div class="project-desc">Developed during the Vienna semester, this web map integrates layered OpenStreetMap datasets managed in PostgreSQL. Features custom interactive controls, thematic visualization, and responsive design.</div>
-        <div class="project-tags"><span class="tag">PostgreSQL</span><span class="tag">Thematic</span><span class="tag">OSM</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\2025lbs_group5\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/salzburg_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Project · TU Vienna</div>
-        <div class="project-title">Web map of Salzburg</div>
-        <div class="project-desc">Created in a team of 3. Interactive thematic webmap built in Vienna semester, featuring layered datasets from the official Salzburg road dataset website.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">Thematic</span><span class="tag">GitLab</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\multimedia_vs\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pune_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Assignment · TU Vienna</div>
-        <div class="project-title">Web map of Pune Talukas</div>
-        <div class="project-desc">Interactive thematic webmap built in Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
-        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\2\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/delhi_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Assignment · TU Vienna</div>
-        <div class="project-title">Web Map of New Delhi</div>
-        <div class="project-desc">Interactive thematic webmap built in TU Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
-        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-web reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\webmap_vs\1\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/wm_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Assignment · TU Vienna</div>
-        <div class="project-title">Web Development Assignment</div>
-        <div class="project-desc">Interactive thematic webmap built in TU Vienna semester, featuring layered datasets, custom controls, and responsive design.</div>
-        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">Thematic</span><span class="tag">GitHub</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="https://kidlanli.github.io/GovTech/">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/pw_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Mobile · Project Week · TU Munich</div>
-        <div class="project-title">Project Week — Climate &amp; Risk</div>
-        <div class="project-desc">A one-week intensive project building an informative website about Conflict and Climate Risk. Team project of four students.</div>
-        <div class="project-tags"><span class="tag">ArcGIS Runtime</span><span class="tag">Field GIS</span><span class="tag">SQLite</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-gis reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\geoviz_vs\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/tree_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Assignment · TU Munich</div>
-        <div class="project-title">Trees in Vienna</div>
-        <div class="project-desc">Interactive choropleth map tracking urban tree coverage across Vienna's districts built with D3.js.</div>
-        <div class="project-tags"><span class="tag">QGIS</span><span class="tag">D3.js</span></div>
-      </div>
-    </div>
-
-    <div class="project-card map-atlas reveal reveal-delay-3" data-cat="web" data-type="web" data-url="portfolio_websites\walk_in_english_garden\index.html">
-      <div class="project-img" style="background-image: url('portfolio_websites/Thumbnails/walk_tn.png'); background-size: cover; background-position: center;"></div>
-      <div class="project-overlay">
-        <div class="project-type">Web · Project · TU Munich</div>
-        <div class="project-title">A Walk in the English Garden</div>
-        <div class="project-desc">A web map narrative built with Leaflet JS, guiding the user through the best paths in the English Garden in Munich.</div>
-        <div class="project-tags"><span class="tag">Leaflet JS</span><span class="tag">Scrollytelling</span><span class="tag">JS</span></div>
+        <div class="project-type">Web · TU Wien · 2025</div>
+        <div class="project-title">Climate Activism in Democracy</div>
+        <div class="project-desc">Multi-page web project on the link between climate action and democracy, with an interactive map.</div>
+        <div class="project-tags"><span class="tag">Leaflet</span><span class="tag">HTML/CSS</span><span class="tag">Thematic</span></div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- JOURNEY -->
-<section id="journey">
+<!-- RESEARCH -->
+<section id="research">
+  <div class="thesis-inner">
+    <a class="thesis-visual reveal" href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener" aria-label="Open thesis dashboard">
+      <div class="thesis-visual-img" style="background-image: url('portfolio_websites/Thumbnails/thesis_tn.png');"></div>
+      <div class="thesis-visual-label">MSc Thesis · 2026</div>
+    </a>
+    <div class="thesis-content reveal reveal-delay-2">
+      <div class="section-label">Featured Research</div>
+      <h2 class="thesis-title">Cartographic Approach to Remotely Sensed <em>Star Dunes</em> and Environment Dynamics</h2>
+      <div class="thesis-meta">
+        <span class="thesis-tag">TU Munich</span>
+        <span class="thesis-tag">2026</span>
+        <span class="thesis-tag">Sentinel-2</span>
+        <span class="thesis-tag">Remote Sensing</span>
+        <span class="thesis-tag">Geovisualisation</span>
+      </div>
+      <p class="thesis-desc">
+        I built a reproducible Python workflow that extracts dune crestlines from multi-temporal
+        Sentinel-2 imagery of the Namib Sand Sea in Namibia, combined with wind observations.
+        I then tested different ways to map their migration over time, including how to show
+        uncertainty and data gaps honestly. The result is a cartographic framework for reading
+        dynamic desert landscapes.
+      </p>
+      <p class="thesis-supervisors">Supervised by Katharina Anders and Pimmbhattra Maydhisudhiwongs</p>
+      <a href="https://cartographic-star-dune-dynamics-thesis.streamlit.app/" target="_blank" rel="noopener" class="btn btn-secondary">Open Dashboard ↗</a>
+      <div class="thesis-university">
+        Defended at TU Munich, September 2026<br>
+        <strong>MSc Cartography, Erasmus Mundus Joint Degree</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BACKGROUND -->
+<section id="background">
   <div class="journey-inner">
-    <div class="section-label reveal">Academic Path</div>
-    <h2 class="section-heading reveal">The Erasmus <em>Journey</em></h2>
+    <div class="section-label reveal">Background</div>
+    <h2 class="section-heading reveal">From geography to <em>cartography</em></h2>
     <div class="journey-steps">
       <div class="journey-step reveal">
-        <span class="journey-year">Year 1 · Semester 1</span>
-        <div class="journey-uni">TU Munich</div>
-        <div class="journey-city">Munich, Germany</div>
-        <div class="journey-desc">Foundations of cartographic theory, map design principles, coordinate reference systems, and introductory GIS. Cartographic visualisation and semiotics.</div>
+        <span class="journey-year">2019 to 2022</span>
+        <div class="journey-uni">BA Geography</div>
+        <div class="journey-city">SNDT Women's University · India</div>
+        <div class="journey-desc">Broad base in physical and human geography. Practical training in cartography, map work and surveying. Highest score in the Geography major in the final year.</div>
         <div class="journey-step-line"></div>
       </div>
       <div class="journey-step reveal reveal-delay-1">
-        <span class="journey-year">Year 1 · Semester 2</span>
-        <div class="journey-uni">TU Vienna</div>
-        <div class="journey-city">Vienna, Austria</div>
-        <div class="journey-desc">Web cartography, geovisualisation, and advanced GIS analysis. Interactive map design, Leaflet.js, and spatial data infrastructures.</div>
+        <span class="journey-year">2022 to 2024</span>
+        <div class="journey-uni">MA Geography</div>
+        <div class="journey-city">Parvatibai Chowgule College · Goa University</div>
+        <div class="journey-desc">A department that combines geography with GIS and fieldwork. Dissertation on Pune's urban heat island from Landsat data, presented at the Deccan Geographical Society conference in 2023.</div>
         <div class="journey-step-line"></div>
       </div>
       <div class="journey-step reveal reveal-delay-2">
-        <span class="journey-year">Year 2 · Semester 3</span>
-        <div class="journey-uni">TU Dresden</div>
-        <div class="journey-city">Dresden, Germany</div>
-        <div class="journey-desc">Advanced cartographic design, print production, atlas cartography, and mobile mapping. Thesis preparation and interdisciplinary research methods.</div>
+        <span class="journey-year">2024 to 2026</span>
+        <div class="journey-uni">MSc Cartography</div>
+        <div class="journey-city">Erasmus Mundus · Munich · Vienna · Dresden</div>
+        <div class="journey-desc">Map design, GIS and image analysis in Munich. Web mapping and location-based services in Vienna. Mobile and topographic cartography, geodata infrastructures and an Alpine field school in Dresden. Thesis at TU Munich.</div>
         <div class="journey-step-line"></div>
       </div>
-      <div class="journey-step reveal reveal-delay-3">
-        <span class="journey-year">Year 2 · Semester 4</span>
-        <div class="journey-uni">TU Munich (ITC)</div>
-        <div class="journey-city">Munich, Germany</div>
-        <div class="journey-desc">Elective modules in geoinformatics, spatial analysis, and cartographic communication. Master's thesis research and writing.</div>
+      <div class="journey-step next reveal reveal-delay-3">
+        <span class="journey-year">Next</span>
+        <div class="journey-uni">Open to Roles</div>
+        <div class="journey-city">Munich · Open to relocation</div>
+        <div class="journey-desc">Cartography, GIS, remote sensing and geodata. Available now.</div>
       </div>
     </div>
   </div>
@@ -1046,11 +1072,10 @@
 <!-- STATS -->
 <section id="stats">
   <div class="stats-inner">
-    <div class="stat reveal"><span class="stat-number" data-target="2">0</span><span class="stat-label">Years of Study</span></div>
-    <div class="stat reveal reveal-delay-1"><span class="stat-number" data-target="4">0</span><span class="stat-label">Universities</span></div>
-    <div class="stat reveal reveal-delay-2"><span class="stat-number" data-target="3">0</span><span class="stat-label">Countries</span></div>
-    <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="14">0</span><span class="stat-label">Projects</span></div>
-    <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="2026">0</span><span class="stat-label">Graduating</span></div>
+    <div class="stat reveal"><span class="stat-number" data-target="3">0</span><span class="stat-label">Degrees</span></div>
+    <div class="stat reveal reveal-delay-1"><span class="stat-number" data-target="3">0</span><span class="stat-label">Countries</span></div>
+    <div class="stat reveal reveal-delay-2"><span class="stat-number" data-target="14">0</span><span class="stat-label">Projects</span></div>
+    <div class="stat reveal reveal-delay-3"><span class="stat-number" data-target="7">0</span><span class="stat-label">Years in Geography</span></div>
   </div>
 </section>
 
@@ -1060,11 +1085,10 @@
     <div class="contact-info reveal">
       <div class="section-label">Get in Touch</div>
       <h2 class="section-heading">Open to <em>opportunities</em></h2>
-      <div class="availability">Available from Winter 2026/27</div>
+      <div class="availability">Available now</div>
       <p>
-        I'm looking for junior cartographer roles, GIS analyst positions, graduate
-        schemes, and job opportunities in geospatial design, web mapping, or data
-        visualisation. I'm open to opportunities across Europe and beyond.
+        I am looking for roles in cartography, GIS, remote sensing and geodata,
+        including junior and graduate positions. I am based in Munich and open to relocation.
       </p>
       <div class="contact-links">
         <a href="mailto:radhamaheshdhuri@gmail.com" class="contact-link">
@@ -1094,17 +1118,17 @@
     <div class="cv-block reveal reveal-delay-2">
       <span class="cv-block-label">Curriculum Vitae</span>
       <p>
-        My CV includes my full academic background, soft skills, technical skills, and language proficiencies.
+        My CV covers my education, projects, technical skills and languages.
         Available as a PDF download.
       </p>
-      <a href="Radhika Dhuri Student CV Resume.pdf" download class="btn btn-primary" style="width:100%; justify-content:center;">
+      <a href="Radhika_Dhuri_CV.pdf" download class="btn btn-primary" style="width:100%; justify-content:center;">
         Download CV ↓
       </a>
       <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
         <span class="cv-block-label">Location</span>
         <p style="margin-bottom:0; color: var(--text-muted); font-size:0.72rem;">
-          Currently based in Munich, Germany<br>
-          Open to relocation across Europe
+          Based in Munich, Germany<br>
+          Open to relocation
         </p>
       </div>
     </div>
@@ -1113,29 +1137,39 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-copy">© 2026 Radhika Dhuri · MSc Cartography · Erasmus Mundus</div>
+  <div class="footer-left">
+    <div class="footer-copy">© 2026 Radhika Dhuri · Cartography &amp; Geography</div>
+    <svg class="scale-bar" width="120" height="18" viewBox="0 0 120 18" aria-hidden="true">
+      <rect x="1" y="4" width="25" height="4" fill="#c4884a"/>
+      <rect x="26" y="4" width="25" height="4" fill="none" stroke="#c4884a" stroke-width="0.8"/>
+      <rect x="51" y="4" width="50" height="4" fill="#c4884a"/>
+      <text x="1" y="17" fill="#8ab8cc" font-size="6" font-family="DM Mono">0</text>
+      <text x="48" y="17" fill="#8ab8cc" font-size="6" font-family="DM Mono">1</text>
+      <text x="96" y="17" fill="#8ab8cc" font-size="6" font-family="DM Mono">2 km</text>
+    </svg>
+  </div>
   <nav class="footer-nav">
     <a href="#about">About</a>
-    <a href="#thesis">Thesis</a>
     <a href="#work">Work</a>
-    <a href="#journey">Journey</a>
+    <a href="#research">Research</a>
+    <a href="#background">Background</a>
     <a href="#contact">Contact</a>
   </nav>
 </footer>
 
 <script>
-// ─── Cursor
+// ─── Cursor and live coordinates (centred on Munich)
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top  = e.clientY + 'px';
-  const lat = (51.0504 + (e.clientY / window.innerHeight - 0.5) * 0.08).toFixed(4);
-  const lng = (13.7373 + (e.clientX / window.innerWidth  - 0.5) * 0.2 ).toFixed(4);
+  const lat = (48.1374 + (0.5 - e.clientY / window.innerHeight) * 0.08).toFixed(4);
+  const lng = (11.5755 + (e.clientX / window.innerWidth  - 0.5) * 0.2 ).toFixed(4);
   const coordStr = `${lat}° N · ${lng}° E`;
   document.getElementById('liveCoords').textContent   = coordStr;
   document.getElementById('drawerCoords').textContent = coordStr;
 });
-document.querySelectorAll('.project-card, .btn, .contact-link').forEach(el => {
+document.querySelectorAll('.project-card, .btn, .contact-link, .thesis-visual').forEach(el => {
   el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
   el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
 });
@@ -1149,20 +1183,31 @@ function openDrawer()  { drawer.classList.add('open');    overlay.classList.add(
 function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open'); document.body.style.overflow = ''; }
 
 // ─── Lightbox
-document.querySelectorAll('.project-card[data-type="print"]').forEach(card => {
-  card.addEventListener('click', () => {
-    document.getElementById('lightbox-img').src = card.dataset.image;
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
-});
+function openLightbox(src, alt) {
+  const img = document.getElementById('lightbox-img');
+  img.src = src;
+  img.alt = alt || 'Map preview';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
 function closeLightboxOnBackdrop(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); closeDrawer(); } });
 
-// ─── Web cards
-document.querySelectorAll('.project-card[data-type="web"]').forEach(card => {
-  card.addEventListener('click', () => window.open(card.dataset.url, '_blank'));
+// ─── Project cards: click or keyboard (Enter / Space)
+document.querySelectorAll('.project-card').forEach(card => {
+  const title = card.querySelector('.project-title').textContent;
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', title);
+  const activate = () => {
+    if (card.dataset.type === 'image') openLightbox(card.dataset.image, title);
+    else window.open(card.dataset.url, '_blank', 'noopener');
+  };
+  card.addEventListener('click', activate);
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+  });
 });
 
 // ─── Scroll reveal
@@ -1182,7 +1227,7 @@ const statsObserver = new IntersectionObserver(entries => {
         current = Math.min(current + step, target);
         el.textContent = current;
         if (current >= target) clearInterval(timer);
-      }, target > 100 ? 15 : 35);
+      }, 60);
       statsObserver.unobserve(el);
     }
   });
