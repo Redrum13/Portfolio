@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rabenau Grund | Folding hiking map | Radhika Dhuri</title>
+<meta name="description" content="Interactive unfolding of a 1:25,000 hiking map of Rabenau Grund by Radhika Dhuri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #0f2a3d; --ocean-lift: #163a54;
+    --paper: #f2ead8; --shoal: #a9c7d6; --sandstone: #e2b071;
+    --rule: rgba(169,199,214,0.18);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    --speed: 1.2s;          /* how long one unfolding step takes */
+    --u: 2px;               /* pixels per millimetre, set by the script */
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ocean); color: var(--paper); font-family: var(--sans);
+    font-size: 1.0625rem; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+  a { color: var(--sandstone); }
+  :focus-visible { outline: 3px solid var(--sandstone); outline-offset: 3px; }
+
+  header { border-bottom: 1px solid var(--rule); }
+  .bar { max-width: 1700px; margin: 0 auto; padding: 0.9rem clamp(1rem, 4vw, 2rem);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .back { text-decoration: none; font-weight: 700; }
+  .bar span { color: var(--shoal); font-size: 0.95rem; }
+
+  main { flex: 1; max-width: 1700px; width: 100%; margin: 0 auto;
+    padding: clamp(1rem, 2.5vw, 1.6rem) clamp(0.75rem, 2vw, 1.5rem) 2rem; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; }
+  .intro { color: var(--shoal); max-width: 62ch; margin: 0.3rem 0 1rem; }
+
+  /* ─── Stage: sized by the script to fit the screen ─── */
+  .viewport { perspective: 3000px; perspective-origin: 50% 35%; margin: 0 auto; position: relative; z-index: 0; }
+  .controls { position: relative; z-index: 1; }
+  .stage { position: relative; transform-origin: 0 0; pointer-events: none;
+    transition: transform var(--speed) cubic-bezier(.6,.05,.3,1); }
+  .stage, .cell { transform-style: preserve-3d; }
+
+  .cell { position: absolute; top: 0; left: 0;
+    transition: transform var(--speed) cubic-bezier(.6,.05,.3,1); }
+  .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  /* Each panel overlaps its neighbours by a hair so no gap shows at the folds */
+  .face.front { transform: translateZ(0.5px); background-image: url('map.jpg'); background-repeat: no-repeat;
+    right: -1px; bottom: -1px; }
+  .face.back  { transform: rotateY(180deg) translateZ(0.5px); background: #f6f3ea; }
+  .stage.closed .face.front { box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+  /* Once fully open, the panels are covered by the whole map in one piece,
+     so no fold lines are left behind */
+  .whole { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none;
+    background: url('map.jpg') center / 100% 100% no-repeat;
+    opacity: 0; transition: opacity 0.35s ease; }
+  .whole.show { opacity: 1; }
+
+  /* Hinges: rows hang from the cell above, columns from the cell to the left */
+  .cell.row { top: 100%; transform-origin: 50% 0; }
+  .cell.col { left: 100%; transform-origin: 0 50%; }
+
+  /* Folded rows: row 2 tucks behind row 1, row 3 folds back over it */
+  .stage.rows-folded .cell.row.r1 { transform: rotateX(-180deg) translateZ(1.2px); }
+  .stage.rows-folded .cell.row.r2 { transform: rotateX(180deg)  translateZ(-1.2px); }
+  /* Accordion across the width: each column folds the other way */
+  .stage.cols-folded .cell.col.c1 { transform: rotateY(180deg)  translateZ(1.2px); }
+  .stage.cols-folded .cell.col.c2 { transform: rotateY(-180deg) translateZ(-1.2px); }
+  .stage.cols-folded .cell.col.c3 { transform: rotateY(180deg)  translateZ(1.2px); }
+  .stage.cols-folded .cell.col.c4 { transform: rotateY(-180deg) translateZ(-1.2px); }
+  .stage.cols-folded .cell.col.c5 { transform: rotateY(180deg)  translateZ(1.2px); }
+  /* While the map is still a strip, the folded columns stay out of sight */
+  .stage.cols-hidden .cell.col.c1 { visibility: hidden; }
+
+  /* ─── Controls ─── */
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.7rem; margin-top: 1rem; }
+  .btn { font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none;
+    padding: 0.7rem 1.2rem; border-radius: 4px; border: 2px solid var(--sandstone);
+    background: var(--sandstone); color: var(--ocean); }
+  .btn:hover { background: var(--paper); border-color: var(--paper); }
+  .btn.line { background: transparent; color: var(--paper); border-color: rgba(242,234,216,0.45); }
+  .btn.line:hover { border-color: var(--paper); }
+  .btn[disabled] { opacity: 0.4; cursor: default; }
+  .caption { text-align: center; margin-top: 0.9rem; min-height: 3.2em; }
+  .caption strong { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; display: block; }
+  .caption span { color: var(--shoal); }
+
+  footer { border-top: 1px solid var(--rule); color: var(--shoal); font-size: 0.92rem; }
+  footer .bar { justify-content: center; }
+  @media (prefers-reduced-motion: reduce) { :root { --speed: 0.01s; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="back" href="../../index.html#projects">← Back to projects</a>
+    <span>Radhika Dhuri, print cartography</span>
+  </div>
+</header>
+
+<main>
+  <h1>Rabenau Grund, a folding hiking map</h1>
+  <p class="intro">A 1:25,000 hiking map that folds down to pocket size. Unfold it to see the whole sheet.</p>
+
+  <div class="viewport" id="viewport">
+    <div class="stage closed rows-folded cols-folded cols-hidden" id="stage" role="img"
+         aria-label="Folded hiking map showing the title panel"></div>
+    <div class="whole" id="whole" aria-hidden="true"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="unfold" type="button">Unfold the map</button>
+    <a class="btn line" href="map.jpg" target="_blank" rel="noopener">Open full size</a>
+  </div>
+  <p class="caption" id="caption"></p>
+</main>
+
+<footer><div class="bar">© 2026 Radhika Dhuri</div></footer>
+
+<script>
+/* Fold lines in millimetres, measured from the trimmed sheet (white margin removed) */
+const COLS = [0, 75.2, 153.1, 228.0, 303.0, 377.9, 405.9];
+const ROWS = [0, 107.8, 215.9, 283.1];
+const W_MM = COLS[COLS.length - 1], H_MM = ROWS[ROWS.length - 1];
+/* Space kept free for the title and buttons. A smaller number makes the map bigger. */
+const RESERVED_PX = 230;
+
+const stage = document.getElementById('stage');
+const viewport = document.getElementById('viewport');
+const btn = document.getElementById('unfold');
+const caption = document.getElementById('caption');
+const whole = document.getElementById('whole');
+
+/* Build the sheet as nested panels: each row hangs from the one above,
+   each column hangs from the top panel of the column to its left. */
+function makeCell(c, r) {
+  const el = document.createElement('div');
+  el.className = 'cell';
+  const x = COLS[c], y = ROWS[r], w = COLS[c + 1] - x, h = ROWS[r + 1] - y;
+  el.style.width = `calc(${w} * var(--u))`;
+  el.style.height = `calc(${h} * var(--u))`;
+  const front = document.createElement('div');
+  front.className = 'face front';
+  front.style.backgroundSize = `calc(${W_MM} * var(--u)) calc(${H_MM} * var(--u))`;
+  front.style.backgroundPosition = `calc(${-x} * var(--u)) calc(${-y} * var(--u))`;
+  const back = document.createElement('div');
+  back.className = 'face back';
+  el.append(front, back);
+  return el;
+}
+function makeColumn(c) {
+  const top = makeCell(c, 0);
+  let parent = top;
+  for (let r = 1; r < ROWS.length - 1; r++) {
+    const cell = makeCell(c, r);
+    cell.classList.add('row', 'r' + r);
+    parent.appendChild(cell);
+    parent = cell;
+  }
+  if (c < COLS.length - 2) {
+    const next = makeColumn(c + 1);
+    next.classList.add('col', 'c' + (c + 1));
+    top.appendChild(next);
+  }
+  return top;
+}
+stage.appendChild(makeColumn(0));
+
+/* Size everything to the screen */
+let u = 2;
+function fit() {
+  const maxW = viewport.parentElement.clientWidth;
+  const maxH = Math.max(260, window.innerHeight - RESERVED_PX);
+  u = Math.min(maxW / W_MM, maxH / H_MM);
+  document.documentElement.style.setProperty('--u', u + 'px');
+  stage.style.width = W_MM * u + 'px';
+  stage.style.height = H_MM * u + 'px';
+  viewport.style.width = W_MM * u + 'px';
+  whole.style.width = W_MM * u + 'px';
+  whole.style.height = H_MM * u + 'px';
+  place(state, true);
+}
+
+/* Move and zoom the sheet so the folded part sits in the middle */
+const COVER_ZOOM = 2;
+function place(s, instant) {
+  const W = W_MM * u, H = H_MM * u;
+  const cw = COLS[1] * u, rh = ROWS[1] * u;
+  let t = 'none';
+  if (s === 0) t = `translate(${W / 2 - COVER_ZOOM * cw / 2}px, ${H / 2 - COVER_ZOOM * rh / 2}px) scale(${COVER_ZOOM})`;
+  if (s === 1) t = `translate(${W / 2 - cw / 2}px, 0)`;
+  if (instant) { stage.style.transition = 'none'; stage.style.transform = t; stage.offsetWidth; stage.style.transition = ''; }
+  else stage.style.transform = t;
+}
+
+const TEXT = [
+  ['Folded: the cover', 'Title, scale, photo and legend on the front panel.'],
+  ['Unfolding the length', 'The strip opens down to the inset map and the data sources.'],
+  ['Fully open: Rabenau Grund at 1:25,000', 'Contours, hillshading, hiking routes and a UTM grid, from a 1 m elevation model.']
+];
+let state = 0, busy = false;
+const STEP_MS = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--speed')) * 1000;
+
+function setCaption(s) {
+  caption.innerHTML = `<strong>${TEXT[s][0]}</strong><span>${TEXT[s][1]}</span>`;
+}
+
+function unfold() {
+  if (busy) return; busy = true; btn.disabled = true;
+  state = 1; setCaption(1);
+  stage.classList.remove('closed', 'rows-folded'); place(1);
+  setTimeout(() => {
+    state = 2; setCaption(2);
+    stage.classList.remove('cols-hidden', 'cols-folded'); place(2);
+    stage.setAttribute('aria-label', 'Fully opened hiking map of Rabenau Grund');
+    setTimeout(() => { whole.classList.add('show'); busy = false; btn.disabled = false; btn.textContent = 'Fold it again'; }, STEP_MS());
+  }, STEP_MS() + 150);
+}
+
+function fold() {
+  if (busy) return; busy = true; btn.disabled = true;
+  whole.classList.remove('show');
+  state = 1; setCaption(1);
+  stage.classList.add('cols-folded'); place(1);
+  setTimeout(() => {
+    stage.classList.add('cols-hidden', 'rows-folded', 'closed');
+    state = 0; setCaption(0); place(0);
+    stage.setAttribute('aria-label', 'Folded hiking map showing the title panel');
+    setTimeout(() => { busy = false; btn.disabled = false; btn.textContent = 'Unfold the map'; }, STEP_MS());
+  }, STEP_MS() + 150);
+}
+
+btn.addEventListener('click', () => (state === 2 ? fold() : unfold()));
+viewport.addEventListener('click', () => { if (state === 0) unfold(); });
+window.addEventListener('resize', fit);
+setCaption(0);
+fit();
+</script>
+</body>
+</html>

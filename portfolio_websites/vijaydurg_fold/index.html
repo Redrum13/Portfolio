@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vijaydurg Fort | Folding map | Radhika Dhuri</title>
+<meta name="description" content="Interactive view of a three-panel folding map of Vijaydurg Fort by Radhika Dhuri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #0f2a3d; --ocean-deep: #0a1f2e; --ocean-lift: #163a54;
+    --paper: #f2ead8; --shoal: #a9c7d6; --sandstone: #e2b071;
+    --rule: rgba(169,199,214,0.18);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    --speed: 1.1s;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ocean); color: var(--paper); font-family: var(--sans);
+    font-size: 1.0625rem; line-height: 1.6; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  a { color: var(--sandstone); }
+  :focus-visible { outline: 3px solid var(--sandstone); outline-offset: 3px; }
+
+  header { border-bottom: 1px solid var(--rule); }
+  .bar { max-width: 1700px; margin: 0 auto; padding: 0.9rem clamp(1rem, 4vw, 2rem);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .back { text-decoration: none; font-weight: 700; }
+  .bar span { color: var(--shoal); font-size: 0.95rem; }
+
+  main { flex: 1; max-width: 1700px; width: 100%; margin: 0 auto;
+    padding: clamp(1rem, 2.5vw, 1.6rem) clamp(0.75rem, 2vw, 1.5rem) 2rem; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; }
+  .intro { color: var(--shoal); max-width: 62ch; margin: 0.3rem 0 1rem; }
+
+  /* ─── The sheet ─── */
+  .viewport { perspective: 2600px; perspective-origin: 50% 40%;
+    max-width: max(320px, calc((100vh - 215px) * 3507 / 2480)); margin: 0 auto; }
+  .sheet {
+    position: relative; width: 100%; aspect-ratio: 3507 / 2480;
+    transform-style: preserve-3d;
+    transition: transform var(--speed) cubic-bezier(.6,.05,.3,1);
+  }
+  .sheet.turned { transform: rotateY(180deg); }
+
+  .panel {
+    position: absolute; top: 0; width: calc(100% / 3); height: 100%;
+    transform-style: preserve-3d;
+    transition: transform var(--speed) cubic-bezier(.6,.05,.3,1);
+  }
+  .face {
+    position: absolute; inset: 0;
+    background-repeat: no-repeat; background-size: 300% 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+  .face.back { transform: rotateY(180deg); }
+  .in  { background-image: url('inside.jpg'); }
+  .out { background-image: url('outside.jpg'); }
+  /* Thirds of each scan. The outside scan is the mirror of the inside,
+     so the panel behind inside-left is outside-right, and so on. */
+  .in.l  { background-position: 0% 0; }   .out.r { background-position: 100% 0; }
+  .in.m  { background-position: 50% 0; }  .out.m { background-position: 50% 0; }
+  .in.r  { background-position: 100% 0; } .out.l { background-position: 0% 0; }
+
+  /* Middle panel stays put. Its back is the timeline. */
+  .p-mid   { left: calc(100% / 3); }
+  /* Left flap: inside-left, backed by the ships panel. Hinge on its right edge. */
+  .p-left  { left: 0; transform-origin: 100% 50%; }
+  /* Right flap: inside-right, backed by the cover. Hinge on its left edge. */
+  .p-right { left: calc(200% / 3); transform-origin: 0% 50%; }
+
+  /* Fold states. translateZ keeps the stacking order right: cover on top. */
+  .p-left  { transform: rotateY(0deg)    translateZ(-4px); }
+  .p-right { transform: rotateY(0deg)    translateZ(-10px); }
+  /* Left flap swings over the front with +180deg, right flap with -180deg.
+     Flipping the signs would make the flaps pass behind the sheet. */
+  .sheet.s0 .p-left, .sheet.s1 .p-left { transform: rotateY(180deg)  translateZ(-4px); }
+  .sheet.s0 .p-right                   { transform: rotateY(-180deg) translateZ(-10px); }
+
+  /* Soft shading on a flap while it moves */
+  .face::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, rgba(0,0,0,0.12), transparent 30%);
+    opacity: 0; transition: opacity var(--speed);
+  }
+  .p-right .face::after { background: linear-gradient(270deg, rgba(0,0,0,0.12), transparent 30%); }
+
+  /* ─── Controls ─── */
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 0.7rem; margin-top: 1rem; }
+  .btn {
+    font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer;
+    padding: 0.7rem 1.2rem; border-radius: 4px; border: 2px solid var(--sandstone);
+    background: var(--sandstone); color: var(--ocean);
+  }
+  .btn:hover { background: var(--paper); border-color: var(--paper); }
+  .btn.line { background: transparent; color: var(--paper); border-color: rgba(242,234,216,0.45); }
+  .btn.line:hover { border-color: var(--paper); }
+  .btn[disabled] { opacity: 0.35; cursor: default; }
+  .btn[disabled]:hover { background: transparent; border-color: rgba(242,234,216,0.45); }
+
+  .steps { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.1rem; list-style: none; }
+  .steps li { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); }
+  .steps li.on { background: var(--sandstone); }
+
+  .caption { text-align: center; margin-top: 0.9rem; min-height: 3.2em; }
+  .caption strong { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; display: block; }
+  .caption span { color: var(--shoal); }
+
+  .hint { text-align: center; color: var(--shoal); font-size: 0.92rem; margin-top: 0.6rem; }
+
+  footer { border-top: 1px solid var(--rule); color: var(--shoal); font-size: 0.92rem; }
+  footer .bar { justify-content: center; }
+
+  @media (prefers-reduced-motion: reduce) { :root { --speed: 0.01s; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="back" href="../../index.html#projects">← Back to projects</a>
+    <span>Radhika Dhuri, print cartography</span>
+  </div>
+</header>
+
+<main>
+  <h1>Vijaydurg Fort, a folding map</h1>
+  <p class="intro">This print map folds into three panels. Open it the way you would open the paper:
+    first the cover, then the inside fold. Turn it over at any point to see the back.</p>
+
+  <div class="viewport">
+    <div class="sheet s0" id="sheet" role="img" aria-live="polite" aria-label="">
+      <div class="panel p-mid">
+        <div class="face front in m"></div>
+        <div class="face back out m"></div>
+      </div>
+      <div class="panel p-left">
+        <div class="face front in l"></div>
+        <div class="face back out r"></div>
+      </div>
+      <div class="panel p-right">
+        <div class="face front in r"></div>
+        <div class="face back out l"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn line" id="prev" type="button">Fold back</button>
+    <button class="btn" id="next" type="button">Open the cover</button>
+    <button class="btn line" id="turn" type="button">Turn over</button>
+  </div>
+  <ol class="steps" aria-hidden="true"><li></li><li></li><li></li><li></li></ol>
+  <p class="caption" id="caption"></p>
+  <p class="hint">You can also use the arrow keys, or tap the map.</p>
+</main>
+
+<footer><div class="bar">© 2026 Radhika Dhuri</div></footer>
+
+<script>
+const sheet = document.getElementById('sheet');
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const turn = document.getElementById('turn');
+const caption = document.getElementById('caption');
+const dots = [...document.querySelectorAll('.steps li')];
+
+/* Every view is a fold state (0 closed, 1 cover open, 2 fully open)
+   seen from the front or from the back. */
+const CAPTIONS = {
+  '0f': ['Closed: the cover',
+         'The Maratha naval base, with locator maps of India and the Konkan coast.',
+         'Closed folding map showing the brown cover of Vijaydurg Fort'],
+  '1f': ['First fold open: the ships',
+         'Maratha and colonial ships drawn to scale, next to the fort entrance.',
+         'Cover opened, showing the ship panel and the right part of the fort map'],
+  '2f': ['Fully open: the fort',
+         'The full map of Vijaydurg with the sea battle tactics and the submerged wall.',
+         'Fully opened map of Vijaydurg Fort'],
+  '0b': ['Back of the folded map: the timeline',
+         'The rise and fall of Vijaydurg Fort, from 1694 to 1756.',
+         'Back of the folded map showing the timeline of Vijaydurg Fort'],
+  '1b': ['Half open, seen from the back',
+         'The cover and the timeline, with the ship panel still folded in.',
+         'Back of the half-open map showing the cover and the timeline'],
+  '2b': ['Fully open, seen from the back',
+         'The whole outside of the sheet: cover, timeline and ships side by side.',
+         'Back of the fully opened map showing the cover, the timeline and the ship panel']
+};
+/* The guided tour, in the order of the real paper */
+const TOUR = [[0, false], [1, false], [2, false], [0, true]];
+const NEXT_LABEL = ['Open the cover', 'Open the next fold', 'Close and turn over', 'Start again'];
+let fold = 0, back = false, step = 0;
+
+function render() {
+  sheet.classList.remove('s0', 's1', 's2');
+  sheet.classList.add('s' + fold);
+  sheet.classList.toggle('turned', back);
+  const [title, text, alt] = CAPTIONS[fold + (back ? 'b' : 'f')];
+  sheet.setAttribute('aria-label', alt);
+  caption.innerHTML = `<strong>${title}</strong><span>${text}</span>`;
+  const onTour = TOUR.findIndex(([f, b]) => f === fold && b === back);
+  dots.forEach((d, j) => d.classList.toggle('on', j === onTour));
+  prev.disabled = step === 0 && !back;
+  next.textContent = NEXT_LABEL[step];
+  turn.textContent = back ? 'Turn to the front' : 'Turn over';
+}
+
+function goTo(n) {
+  step = (n + TOUR.length) % TOUR.length;
+  [fold, back] = TOUR[step];
+  render();
+}
+
+next.addEventListener('click', () => goTo(step + 1));
+prev.addEventListener('click', () => {
+  if (back && step !== 3) { back = false; render(); }   // undo a free turn first
+  else goTo(step - 1);
+});
+/* Turn over keeps the current fold, so an open map shows all three outside panels */
+turn.addEventListener('click', () => {
+  back = !back;
+  if (step === 3 && !back) step = 0;                   // the closed back flips to the cover
+  render();
+});
+sheet.addEventListener('click', () => goTo(step + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') goTo(step + 1);
+  if (e.key === 'ArrowLeft' && (step > 0 || back)) prev.click();
+});
+render();
+</script>
+</body>
+</html>
