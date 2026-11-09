@@ -3,466 +3,491 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tilia cordata · Vienna</title>
+  <title>Urban Forest · Vienna Innere Stadt</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #c8cfc0; /*   #1a1c18    */
-      --surface:   #b2c9a0; /*   #21241e    */
-      --border:    #7db87d; /*   #2e3229    */
-      --text:      #1a1c18; /*   #c8cfc0    */
-      --muted:     #6b7564; /*   #6b7564    */
-      --accent:    #2e3229; /*   #7db87d    */
-      --accent2:   #21241e; /*   #b2c9a0    */
-      --tooltip-bg:#b2c9a0;
-      --radius:    6px;
+      --bg: #c8cfc0;
+      --surface: #b2c9a0;
+      --border: #7db87d;
+      --text: #1a1c18;
+      --muted: #434d3e;          /* darkened from #6b7564 for WCAG AA contrast on --surface */
+      --accent: #2e3229;
+      --accent2: #21241e;
+      --tooltip-bg: #b2c9a0;
+      --radius: 6px;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-mono:  'DM Mono', monospace;
+      --font-mono: 'DM Mono', monospace;
     }
-
-    html, body {
-      width: 100%; height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-serif);
-      overflow: hidden;
-    }
-
-    /* ── layout ── */
-    .shell {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      grid-template-rows: 100vh;
-      width: 100vw;
-      height: 100vh;
-    }
-
+    html, body { width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-serif); overflow: hidden; }
+    .shell { display: grid; grid-template-columns: 300px 1fr; grid-template-rows: 100vh; width: 100vw; height: 100vh; }
     @media (max-width: 720px) {
-      html, body { overflow: auto; }
-      .shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        height: auto;
-        min-height: 100vh;
-      }
+      html, body { overflow: visible; height: auto; }
+      #sidebar { overflow: visible; }
+      .shell { grid-template-columns: 1fr; grid-template-rows: auto auto; height: auto; min-height: 100vh; }
     }
 
-    /* ── sidebar ── */
-    #sidebar {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 32px 24px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      overflow-y: auto;
-      z-index: 10;
-    }
+    /* ── Sidebar ── */
+    #sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 28px 24px 20px; display: flex; flex-direction: column; gap: 22px; overflow-y: auto; z-index: 10; }
+    @media (max-width: 720px) { #sidebar { border-right: none; border-bottom: 1px solid var(--border); order: 2; } #mapContainer { order: 1; } }
+    .eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    #sidebar h1 { font-size: 1.75rem; font-weight: 300; line-height: 1.15; color: var(--accent2); letter-spacing: 0.01em; margin-top: 6px; }
+    #sidebar h1 em { font-style: italic; color: var(--accent); }
+    #sidebar h1 .common { display: block; font-size: 1.1rem; color: var(--muted); margin-top: 2px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+    .stat { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em; }
+    .stat b { display: block; font-family: var(--font-serif); font-weight: 400; font-size: 1.35rem; color: var(--accent2); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+    .desc { font-size: 0.78rem; font-weight: 300; line-height: 1.7; color: var(--muted); font-family: var(--font-mono); }
+    .desc span { color: var(--accent2); }
+    .rule { border: none; border-top: 1px solid var(--border); }
+    .legend-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    #legend { width: 100%; }
 
-    .eyebrow {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+    /* ── Genus picker ── */
+    .picker { display: flex; flex-direction: column; gap: 8px; flex: 1 0 auto; min-height: 280px; }
+    .picker #genusList { flex: 1 1 0; min-height: 200px; max-height: none; }
+    @media (max-width: 720px) { .picker { min-height: 0; } .picker #genusList { flex: none; max-height: 300px; } }
+    .picker-head { display: flex; justify-content: space-between; align-items: baseline; }
+    .search { position: relative; }
+    .search input { width: 100%; font-family: var(--font-mono); font-size: 12px; color: var(--text); background: rgba(255,255,255,0.35); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px 8px 30px; outline: none; transition: border-color .15s, background .15s; }
+    .search input::placeholder { color: var(--muted); opacity: .8; }
+    .search input:focus-visible { border-color: var(--accent); background: rgba(255,255,255,0.55); box-shadow: 0 0 0 2px rgba(46,50,41,.15); }
+    .search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+    #genusList { list-style: none; max-height: 248px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); background: rgba(255,255,255,0.18); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    #genusList li { position: relative; }
+    #genusList li + li { border-top: 1px solid rgba(125,184,125,.35); }
+    #genusList label { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 7px 10px; cursor: pointer; min-height: 40px; isolation: isolate; }
+    #genusList input { position: absolute; opacity: 0; pointer-events: none; }
+    #genusList .bar { position: absolute; inset: 0 auto 0 0; background: rgba(125,184,125,.28); z-index: -1; transition: background .15s; }
+    #genusList .name { font-size: 1rem; font-style: italic; color: var(--accent2); line-height: 1.1; }
+    #genusList .name small { display: block; font-family: var(--font-mono); font-style: normal; font-size: 10px; color: var(--muted); margin-top: 2px; }
+    #genusList .count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    #genusList label:hover .bar { background: rgba(125,184,125,.5); }
+    #genusList input:checked + label { background: var(--accent2); }
+    #genusList input:checked + label .bar { background: rgba(178,201,160,.18); }
+    #genusList input:checked + label .name,
+    #genusList input:checked + label .count,
+    #genusList input:checked + label .name small { color: #e6ecdf; }
+    #genusList input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: -2px; }
+    #genusList .empty { padding: 12px 10px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 
-    #sidebar h1 {
-      font-size: 1.55rem;
-      font-weight: 300;
-      line-height: 1.25;
-      color: var(--accent2);
-      letter-spacing: 0.01em;
-    }
+    .credits { margin-top: auto; padding-top: 12px; font-size: 9px; line-height: 1.6; letter-spacing: .1em; }
 
-    #sidebar h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    /* ── Map ── */
+    #mapContainer { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+    @media (max-width: 720px) { #mapContainer { height: 70vh; min-height: 340px; } }
+    #mapContainer svg { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+    #mapContainer svg:active { cursor: grabbing; }
+    .trees circle { cursor: pointer; }
+    .tooltip { position: absolute; left: 0; top: 0; pointer-events: none; background: var(--tooltip-bg); border: 1px solid var(--border); border-left: 2px solid var(--accent); color: var(--text); font-family: var(--font-mono); font-size: 11px; line-height: 1.65; padding: 10px 14px; border-radius: var(--radius); box-shadow: 0 6px 18px rgba(26,28,24,.14); opacity: 0; transition: opacity 0.15s ease; max-width: 240px; white-space: normal; z-index: 5; }
+    .tooltip strong { display: block; color: var(--accent2); font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 15px; line-height: 1.2; margin-bottom: 4px; }
+    .tooltip .k { color: var(--muted); }
 
-    .desc {
-      font-size: 0.85rem;
-      font-weight: 300;
-      line-height: 1.7;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
+    #zoom-buttons { position: absolute; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 0; z-index: 20; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 14px rgba(26,28,24,.12); }
+    #zoom-buttons button { width: 40px; height: 40px; font-size: 18px; line-height: 1; cursor: pointer; border: none; background: var(--surface); color: var(--accent2); font-family: var(--font-mono); transition: background 0.15s, color 0.15s; display: flex; align-items: center; justify-content: center; }
+    #zoom-buttons button + button { border-top: 1px solid var(--border); }
+    #zoom-buttons button:hover { background: var(--border); color: var(--accent); }
+    #zoom-buttons button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+    .hint { position: absolute; left: 16px; bottom: 16px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; color: var(--muted); background: rgba(200,207,192,.8); padding: 4px 8px; border-radius: var(--radius); pointer-events: none; }
 
-    .desc span {
-      color: var(--accent2);
-    }
-
-    /* ── divider ── */
-    .rule {
-      border: none;
-      border-top: 1px solid var(--border);
-    }
-
-    /* ── legend ── */
-    .legend-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    #legend { /* svg legend container */
-      width: 100%;
-    }
-
-    /* ── map ── */
-    #mapContainer {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-    }
-
-    @media (max-width: 720px) {
-      #mapContainer {
-        height: 65vw;
-        min-height: 300px;
-      }
-    }
-
-    #mapContainer svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* ── tooltip ── */
-    .tooltip {
-      position: absolute;
-      pointer-events: none;
-      background: var(--tooltip-bg);
-      border: 1px solid var(--border);
-      border-left: 2px solid var(--accent);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      line-height: 1.65;
-      padding: 10px 14px;
-      border-radius: var(--radius);
-      backdrop-filter: blur(6px);
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      max-width: 220px;
-      white-space: normal;
-    }
-
-    .tooltip strong {
-      display: block;
-      color: var(--accent2);
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    /* ── zoom buttons ── */
-    #zoom-buttons {
-      position: fixed;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      z-index: 20;
-    }
-
-    #zoom-buttons button {
-      width: 36px;
-      height: 36px;
-      font-size: 18px;
-      line-height: 1;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      color: var(--accent2);
-      font-family: var(--font-mono);
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    #zoom-buttons button:hover {
-      background: var(--border);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── loading indicator ── */
-    #loading {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; }
-      50%       { opacity: 1; }
-    }
+    #loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); pointer-events: none; }
+    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
     #loading span { animation: pulse 1.8s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   </style>
 </head>
-
 <body>
   <div class="shell">
-
-    <!-- ── Sidebar ── -->
     <aside id="sidebar">
-      <div>
-        <p class="eyebrow">Urban Forest · Vienna</p>
-        <h1><em>Tilia cordata</em><br>family</h1>
-      </div>
+      <header>
+        <p class="eyebrow">Urban Forest · Vienna Innere Stadt</p>
+        <h1 id="title"><em>Tilia</em><span class="common">Linden</span></h1>
+        <div class="stats" aria-live="polite">
+          <div class="stat"><b id="statTrees">–</b>trees</div>
+          <div class="stat"><b id="statSpecies">–</b>taxa</div>
+          <div class="stat"><b id="statYear">–</b>median planted</div>
+        </div>
+      </header>
+
+      <section class="picker" aria-labelledby="pickerLabel">
+        <div class="picker-head">
+          <p class="legend-label" id="pickerLabel" style="margin:0">Tree genus</p>
+          <p class="legend-label" id="genusCount" style="margin:0"></p>
+        </div>
+        <div class="search">
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="5" cy="5" r="3.8" fill="none" stroke="#434d3e" stroke-width="1.2"/><path d="M8 8l3 3" stroke="#434d3e" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <input id="genusSearch" type="search" placeholder="Search genus or common name" aria-label="Search genus or common name" autocomplete="off">
+        </div>
+        <ul id="genusList" role="radiogroup" aria-labelledby="pickerLabel"></ul>
+      </section>
 
       <p class="desc">
-        Circle <span>size</span> encodes crown diameter.
+        Circle <span>size</span> encodes crown diameter class (1–8).
         Color <span>hue</span> reflects planting year —
         lighter tones for older trees, deeper green for recent plantings.
-        Older trees tend toward larger canopies.
       </p>
-
       <hr class="rule">
-
       <div>
         <p class="legend-label">Planting year</p>
         <div id="legend"></div>
       </div>
+      <p class="eyebrow credits">
+        Trees: Stadt Wien — data.wien.gv.at (CC BY 4.0)<br>
+        Streets &amp; buildings: © OpenStreetMap contributors (ODbL)
+      </p>
     </aside>
-
-    <!-- ── Map ── -->
-    <main id="mapContainer">
+    <main id="mapContainer" aria-label="Map of trees in Vienna Innere Stadt">
       <div id="loading"><span>loading map data…</span></div>
+      <div id="zoom-buttons">
+        <button type="button" id="zoomInBtn" aria-label="Zoom in" title="Zoom in">+</button>
+        <button type="button" id="zoomOutBtn" aria-label="Zoom out" title="Zoom out">−</button>
+        <button type="button" id="zoomResetBtn" aria-label="Reset view" title="Reset view" style="font-size:15px">⤢</button>
+      </div>
+      <p class="hint">scroll / pinch to zoom · drag to pan</p>
     </main>
-
-  </div>
-
-  <!-- zoom controls -->
-  <div id="zoom-buttons">
-    <button onclick="zoomIn()" title="Zoom in">+</button>
-    <button onclick="zoomOut()" title="Zoom out">−</button>
   </div>
 
   <script>
-  /* ─────────────────────────────────────────
-     CONFIG
-  ───────────────────────────────────────── */
-  const W = 1000, H = 450;
+  const container = document.getElementById("mapContainer");
+  let W = container.clientWidth  || 1000;
+  let H = container.clientHeight || 600;
+  const PAD = 28;
 
-  const COLOR_DOMAIN = [0, 1900, 2000, 2021];
-  const COLOR_RANGE  = ["#b2e2e2","#c2e699","#78c679","#238443"];
-  const treeColor    = d3.scaleLinear().domain(COLOR_DOMAIN).range(COLOR_RANGE);
-  const treeRadius   = d3.scalePow().exponent(2).domain([0, 8]).range([1.5, 25]);
+  /* ── Color scale: planting year ── */
+  const COLOR_DOMAIN = [1800, 1900, 2000, 2021];
+  const COLOR_RANGE  = ["#b2e2e2", "#c2e699", "#78c679", "#238443"];
+  const treeColor    = d3.scaleLinear().domain(COLOR_DOMAIN).range(COLOR_RANGE).clamp(true);
 
-  /* ─────────────────────────────────────────
-     SVG SETUP
-  ───────────────────────────────────────── */
+  /* ── Radius scale: crown class 1–8 → screen pixels (0 / unknown → 4) ── */
+  const treeRadius = d3.scaleOrdinal()
+    .domain([1, 2, 3, 4, 5, 6, 7, 8])
+    .range([3, 5, 8, 12, 16, 20, 24, 28])
+    .unknown(4);
+
+  const baseR  = d => treeRadius(d.properties.KRONENDURCHMESSER);
+  const fillOf = d => treeColor(d.properties.PFLANZJAHR || 1900);
+
+  /* ── Genus helpers ── */
+  const COMMON = {
+    Acer: "Maple", Celtis: "Hackberry", Tilia: "Linden", Platanus: "Plane tree", Prunus: "Cherry & plum",
+    Aesculus: "Horse chestnut", Sophora: "Pagoda tree", Pinus: "Pine", Ulmus: "Elm", Taxus: "Yew",
+    Koelreuteria: "Golden rain tree", Fraxinus: "Ash", Robinia: "Black locust", Quercus: "Oak",
+    Carpinus: "Hornbeam", Pyrus: "Pear", Magnolia: "Magnolia", Populus: "Poplar", Betula: "Birch",
+    Gleditsia: "Honey locust", Tamarix: "Tamarisk", Fagus: "Beech", Paulownia: "Foxglove tree",
+    Cercis: "Judas tree", Catalpa: "Catalpa", Cornus: "Dogwood", Picea: "Spruce", Ginkgo: "Ginkgo",
+    Sambucus: "Elder", Pterocarya: "Wingnut", Morus: "Mulberry", Liriodendron: "Tulip tree",
+    Gymnocladus: "Coffeetree", Hibiscus: "Hibiscus", Crataegus: "Hawthorn", Ailanthus: "Tree of heaven",
+    Malus: "Apple", Cladrastis: "Yellowwood", Platycladus: "Oriental arborvitae", Thuja: "Arborvitae",
+    Juglans: "Walnut", Salix: "Willow", Cupressocyparis: "Leyland cypress", Corylus: "Hazel",
+    Maclura: "Osage orange", Metasequoia: "Dawn redwood", Chamaecyparis: "False cypress", Zelkova: "Zelkova",
+    Liquidambar: "Sweetgum", Broussonetia: "Paper mulberry", Buxus: "Box", Elaeagnus: "Oleaster",
+    Ostrya: "Hop-hornbeam", Amelanchier: "Serviceberry", Alnus: "Alder", Chitalpa: "Chitalpa",
+    Sequoiadendron: "Giant sequoia", Juniperus: "Juniper", Carya: "Hickory", Sorbus: "Rowan",
+    Castanea: "Sweet chestnut", Larix: "Larch", Cedrus: "Cedar", Abies: "Fir", Parrotia: "Ironwood"
+  };
+  const UNSPECIFIED = "Unspecified";
+  function genusOf(d) {
+    const s = String((d.properties && d.properties.GATTUNG_ART) || "").trim();
+    if (!s || /^jungbaum/i.test(s) || /^nicht/i.test(s)) return UNSPECIFIED;
+    const tokens = s.split(/\s+/);
+    const g = (tokens[0] === "x" || tokens[0] === "×") ? tokens[1] : tokens[0];
+    return g ? g.charAt(0).toUpperCase() + g.slice(1) : UNSPECIFIED;
+  }
+  const commonOf = g => g === UNSPECIFIED ? "Young tree, species tbd" : (COMMON[g] || "");
+
+  /* ── Fix polygon winding for d3-geo ──
+     d3 expects clockwise exterior rings (spherical convention). OSM exports mix
+     orientations; counter-clockwise rings are read as "globe minus building" and
+     flood the whole view, which is why the buildings didn't appear. */
+  function rewindFeature(f) {
+    const g = f.geometry;
+    if (!g) return f;
+    const fixPolygon = rings => {
+      if (d3.geoArea({ type: "Polygon", coordinates: rings }) > 2 * Math.PI) {
+        return rings.map(r => r.slice().reverse());
+      }
+      return rings;
+    };
+    if (g.type === "Polygon") g.coordinates = fixPolygon(g.coordinates);
+    else if (g.type === "MultiPolygon") g.coordinates = g.coordinates.map(fixPolygon);
+    return f;
+  }
+
+  /* ── SVG setup ── */
   const svg = d3.select("#mapContainer")
-    .append("svg")
+    .insert("svg", "#zoom-buttons")
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .attr("viewBox", `0 0 ${W} ${H}`);
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img")
+    .attr("aria-label", "Tree map");
 
-  const zoomGroup = svg.append("g").attr("class", "zoom-group");
-  const streetLayer = zoomGroup.append("g").attr("class", "streets");
-  const treeLayer   = zoomGroup.append("g").attr("class", "trees");
+  const zoomGroup     = svg.append("g").attr("class", "zoom-group");
+  const buildingLayer = zoomGroup.append("g").attr("class", "buildings");
+  const streetLayer   = zoomGroup.append("g").attr("class", "streets");
+  const treeLayer     = zoomGroup.append("g").attr("class", "trees");
 
-  const projection = d3.geoEquirectangular().scale(2500).translate([W/2, H/2]);
-  const path = d3.geoPath().projection(projection);
+  const projection = d3.geoMercator();
+  const path       = d3.geoPath().projection(projection);
 
-  /* ─────────────────────────────────────────
-     TOOLTIP
-  ───────────────────────────────────────── */
-  const tooltip = d3.select("#mapContainer")
-    .append("div")
-    .attr("class", "tooltip");
+  const tooltip = d3.select("#mapContainer").append("div").attr("class", "tooltip").attr("role", "status");
 
-  /* ─────────────────────────────────────────
-     ZOOM
-  ───────────────────────────────────────── */
+  /* ── Zoom: circles & strokes keep constant screen size so the legend stays true ── */
+  let currentK = 1;
   const zoom = d3.zoom()
-    .scaleExtent([2, 10])
+    .scaleExtent([1, 24])
     .on("zoom", (event) => {
       zoomGroup.attr("transform", event.transform);
+      if (event.transform.k !== currentK) {
+        currentK = event.transform.k;
+        treeLayer.selectAll("circle")
+          .attr("r", d => baseR(d) / currentK)
+          .attr("stroke-width", 0.6 / currentK);
+      }
     });
+  svg.call(zoom).on("dblclick.zoom", null);
 
-  svg.call(zoom);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const dur = ms => reduceMotion ? 0 : ms;
+  d3.select("#zoomInBtn").on("click",    () => svg.transition().duration(dur(320)).call(zoom.scaleBy, 2));
+  d3.select("#zoomOutBtn").on("click",   () => svg.transition().duration(dur(320)).call(zoom.scaleBy, 0.5));
+  d3.select("#zoomResetBtn").on("click", () => svg.transition().duration(dur(450)).call(zoom.transform, d3.zoomIdentity));
 
-  function zoomIn()  { svg.transition().duration(320).call(zoom.scaleBy, 2); }
-  function zoomOut() { svg.transition().duration(320).call(zoom.scaleBy, 0.5); }
-
-  /* ─────────────────────────────────────────
-     LOAD DATA
-  ───────────────────────────────────────── */
+  /* ── Load local files (streets optional so a missing file doesn't blank the map) ── */
   Promise.all([
-    d3.json("https://raw.githubusercontent.com/RassCrom/geovisual_vienna_trees/refs/heads/main/streets-oldtown.geojson.geojson"),
-    d3.json("https://raw.githubusercontent.com/RassCrom/geovisual_vienna_trees/main/streets.geojson")
-  ]).then(([streets, trees]) => {
+    d3.json("wien_str.geojson").catch(err => { console.warn("streets not loaded:", err); return null; }),
+    d3.json("wien_bau.geojson"),
+    d3.json("inner_stadt_baum.geojson")
+  ]).then(([streets, buildings, trees]) => {
 
     d3.select("#loading").remove();
 
-    // fit projection to streets extent
-    projection.fitSize([W, H], streets);
+    buildings.features.forEach(rewindFeature);
 
-    svg.call(zoom.scaleBy, 1.55);  // adds one zoom level
-    // streets
-    streetLayer.selectAll("path")
-      .data(streets.features)
-      .enter().append("path")
+    /* Fit to the trees + buildings (the study area), with padding */
+    const fitTarget = { type: "FeatureCollection", features: [...trees.features, ...buildings.features] };
+    projection.fitExtent([[PAD, PAD], [W - PAD, H - PAD]], fitTarget);
+    zoom.translateExtent([[-W * 0.5, -H * 0.5], [W * 1.5, H * 1.5]]);
+
+    /* ── Buildings ── */
+    buildingLayer.selectAll("path")
+      .data(buildings.features)
+      .join("path")
         .attr("d", path)
-        .attr("fill", "none")
-        .attr("stroke", "#3a3f35")
-        .attr("stroke-width", 0.6)
-        .attr("stroke-opacity", 0.9);
+        .attr("fill", "#9aab8c")
+        .attr("fill-opacity", 0.3)
+        .attr("stroke", "#ffffff")
+        .attr("stroke-width", 0.4)
+        .attr("stroke-opacity", 0.1)
+        .attr("vector-effect", "non-scaling-stroke");
 
-    // trees
-    const tilias = trees.features.filter(d =>
-      d.properties.TreeType === "Tilia cordata (Winterlinde)" ||
-      d.properties.TreeType === "Tilia cordata 'Greenspire' (Stadtlinde)" ||
-      d.properties.TreeType === "Tilia cordata 'Rancho' (Kleinblättrige Winterlinde)"
-    );
+    /* ── Streets ── */
+    if (streets && streets.features) {
+      streetLayer.selectAll("path")
+        .data(streets.features.filter(f => f.geometry && !/Polygon/.test(f.geometry.type)))
+        .join("path")
+          .attr("d", path)
+          .attr("fill", "none")
+          .attr("stroke", "#9aab8c")
+          .attr("stroke-width", 0.8)
+          .attr("stroke-opacity", 0.9)
+          .attr("vector-effect", "non-scaling-stroke");
+    }
 
-    treeLayer.selectAll("circle")
-      .data(tilias)
-      .enter().append("circle")
-        .attr("cx", d => projection(d.geometry.coordinates)[0])
-        .attr("cy", d => projection(d.geometry.coordinates)[1])
-        .attr("r",  d => treeRadius(d.properties.TreeCrownDiameter))
-        .attr("fill",         d => treeColor(d.properties.PlantingYear))
-        .attr("fill-opacity", 0.78)
-        .attr("stroke", "#1a1c18")
-        .attr("stroke-width", 0.6)
-        .attr("stroke-opacity", 0.7)
-        .on("mouseover", function(event, d) {
-          const r0 = treeRadius(d.properties.TreeCrownDiameter);
+    /* ── Pre-project trees, tag genus ── */
+    const allTrees = trees.features.filter(f => f.geometry && f.geometry.coordinates);
+    allTrees.forEach(f => {
+      const [x, y] = projection(f.geometry.coordinates);
+      f.x = x; f.y = y;
+      f.genus = genusOf(f);
+    });
 
-          d3.select(this)
-            .raise()
-            .transition().duration(220).ease(d3.easeCubicOut)
-              .attr("r", Math.max(r0 * 1.6, 8))
-              .attr("fill", "#9fe89f")
-              .attr("stroke", "#c8cfc0")
-              .attr("stroke-width", 1.2)
-              .attr("fill-opacity", 1);
+    /* ── Genus list ── */
+    const byGenus = d3.rollups(allTrees, v => v.length, d => d.genus)
+      .sort((a, b) => (a[0] === UNSPECIFIED) - (b[0] === UNSPECIFIED) || b[1] - a[1]);
+    const maxCount = d3.max(byGenus, d => d[1]);
+    const options = [["__all__", allTrees.length], ...byGenus];
+    d3.select("#genusCount").text(`${byGenus.length} genera`);
 
-          tooltip
-            .html(`<strong>${d.properties.TreeType}</strong>
-                   Planted: ${d.properties.PlantingYear}<br>
-                   Crown: ${d.properties.TreeCrownDiameter_txt}`)
-            .style("left", (event.offsetX + 14) + "px")
-            .style("top",  (event.offsetY + 14) + "px")
-            .style("opacity", 1);
-        })
-        .on("mousemove", function(event) {
-          tooltip
-            .style("left", (event.offsetX + 14) + "px")
-            .style("top",  (event.offsetY + 14) + "px");
-        })
-        .on("mouseout", function(event, d) {
-          d3.select(this)
-            .transition().duration(350).ease(d3.easeCubicOut)
-              .attr("r",            d => treeRadius(d.properties.TreeCrownDiameter))
-              .attr("fill",         d => treeColor(d.properties.PlantingYear))
-              .attr("fill-opacity", 0.78)
-              .attr("stroke", "#1a1c18")
-              .attr("stroke-width", 0.6);
+    const initial = (() => {
+      const h = decodeURIComponent(location.hash.slice(1));
+      if (h === "all") return "__all__";
+      return byGenus.some(([g]) => g === h) ? h : (byGenus.some(([g]) => g === "Tilia") ? "Tilia" : "__all__");
+    })();
 
-          tooltip.style("opacity", 0);
+    const list = d3.select("#genusList");
+    const items = list.selectAll("li").data(options, d => d[0]).join("li");
+    items.append("input")
+      .attr("type", "radio").attr("name", "genus")
+      .attr("id", d => `g-${d[0]}`)
+      .attr("value", d => d[0])
+      .property("checked", d => d[0] === initial)
+      .on("change", (e, d) => select(d[0]));
+    const labels = items.append("label").attr("for", d => `g-${d[0]}`);
+    labels.append("span").attr("class", "bar")
+      .style("width", d => d[0] === "__all__" ? "100%" : `${(d[1] / maxCount) * 100}%`);
+    labels.append("span").attr("class", "name")
+      .html(d => d[0] === "__all__"
+        ? `All genera<small>Every tree in the district</small>`
+        : `${d[0]}<small>${commonOf(d[0]) || "&nbsp;"}</small>`);
+    labels.append("span").attr("class", "count").text(d => d3.format(",")(d[1]));
+    list.append("li").attr("class", "empty").attr("hidden", true).text("No genus matches.");
+
+    /* search filter */
+    d3.select("#genusSearch").on("input", function () {
+      const q = this.value.trim().toLowerCase();
+      let shown = 0;
+      items.attr("hidden", d => {
+        const hit = !q || d[0] === "__all__" || d[0].toLowerCase().includes(q) || commonOf(d[0]).toLowerCase().includes(q);
+        if (hit && d[0] !== "__all__") shown++;
+        return hit ? null : true;
+      });
+      list.select(".empty").attr("hidden", shown ? true : null);
+    });
+
+    /* ── Draw / update trees for a genus ── */
+    function select(genus) {
+      const data = genus === "__all__" ? allTrees : allTrees.filter(d => d.genus === genus);
+      // larger crowns first so small trees stay visible on top
+      data.sort((a, b) => baseR(b) - baseR(a));
+
+      history.replaceState(null, "", `#${genus === "__all__" ? "all" : encodeURIComponent(genus)}`);
+
+      // header + stats
+      const title = d3.select("#title").html("");
+      if (genus === "__all__") {
+        title.append("em").text("All genera");
+        title.append("span").attr("class", "common").text("Vienna's inner-city trees");
+      } else {
+        title.append("em").text(genus);
+        title.append("span").attr("class", "common").text(commonOf(genus) || " ");
+      }
+      const taxa  = new Set(data.map(d => d.properties.GATTUNG_ART)).size;
+      const years = data.map(d => d.properties.PFLANZJAHR).filter(y => y > 0);
+      d3.select("#statTrees").text(d3.format(",")(data.length));
+      d3.select("#statSpecies").text(taxa);
+      d3.select("#statYear").text(years.length ? Math.round(d3.median(years)) : "—");
+      document.title = `${genus === "__all__" ? "All trees" : genus} · Vienna Innere Stadt`;
+
+      treeLayer.selectAll("circle")
+        .data(data, d => d.properties.OBJECTID ?? d.properties.BAUM_ID)
+        .join(
+          enter => enter.append("circle")
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 0)
+            .attr("fill", fillOf)
+            .attr("fill-opacity", 0.78)
+            .attr("stroke", "#1a1c18")
+            .attr("stroke-opacity", 0.7)
+            .attr("stroke-width", 0.6 / currentK)
+            .call(e => e.transition().duration(dur(400)).delay(() => reduceMotion ? 0 : Math.random() * 200)
+              .attr("r", d => baseR(d) / currentK)),
+          update => update,
+          exit => exit.transition().duration(dur(200)).attr("r", 0).remove()
+        )
+        .order()
+        .on("mouseover", onOver)
+        .on("mousemove", moveTooltip)
+        .on("mouseout",  onOut);
+    }
+
+    select(initial);
+
+    function onOver(event, d) {
+      const r0 = baseR(d);
+      d3.select(this)
+        .raise()
+        .interrupt()
+        .transition().duration(dur(220)).ease(d3.easeCubicOut)
+          .attr("r", Math.max(r0 * 1.6, 8) / currentK)
+          .attr("fill", "#9fe89f")
+          .attr("stroke", "#c8cfc0")
+          .attr("stroke-width", 1.2 / currentK)
+          .attr("fill-opacity", 1);
+
+      const p = d.properties;
+      const year  = p.PFLANZJAHR > 0 ? p.PFLANZJAHR : (p.PFLANZJAHR_TXT || "unknown");
+      const crown = p.KRONENDURCHMESSER > 0 ? `${p.KRONENDURCHMESSER} · ${p.KRONENDURCHMESSER_TXT}` : "unknown";
+      tooltip.html("");
+      tooltip.append("strong").text(p.GATTUNG_ART || "Unknown");
+      [["Planted", year], ["Crown", crown], ["Height", p.BAUMHOEHE_TXT || "—"], ["Street", p.OBJEKT_STRASSE || "—"]]
+        .forEach(([k, v]) => {
+          const row = tooltip.append("div");
+          row.append("span").attr("class", "k").text(`${k}  `);
+          row.append("span").text(v);
         });
+      tooltip.style("opacity", 1);
+      moveTooltip(event);
+    }
+
+    function moveTooltip(event) {
+      const [mx, my] = d3.pointer(event, container);
+      const node = tooltip.node();
+      const tw = node.offsetWidth, th = node.offsetHeight;
+      const cw = container.clientWidth, ch = container.clientHeight;
+      const x = mx + 16 + tw > cw ? mx - tw - 16 : mx + 16;
+      const y = my + 16 + th > ch ? my - th - 16 : my + 16;
+      tooltip.style("transform", `translate(${Math.max(4, x)}px, ${Math.max(4, y)}px)`);
+    }
+
+    function onOut(event, d) {
+      d3.select(this)
+        .interrupt()
+        .transition().duration(dur(350)).ease(d3.easeCubicOut)
+          .attr("r", baseR(d) / currentK)
+          .attr("fill", fillOf(d))
+          .attr("fill-opacity", 0.78)
+          .attr("stroke", "#1a1c18")
+          .attr("stroke-width", 0.6 / currentK);
+      tooltip.style("opacity", 0);
+    }
 
   }).catch(err => {
-    d3.select("#loading span").text("failed to load data");
+    d3.select("#loading span").text("Failed to load data — check file names and paths");
     console.error(err);
   });
 
-  /* ─────────────────────────────────────────
-     LEGEND  (inline SVG in sidebar)
-  ───────────────────────────────────────── */
+  /* ── Legend (unchanged) ── */
   (function buildLegend() {
     const lw = 240, lh = 180;
-    const lg = d3.select("#legend")
-      .append("svg")
-      .attr("width", lw)
-      .attr("height", lh)
-      .style("overflow", "visible");
+    const lg = d3.select("#legend").append("svg")
+      .attr("width", lw).attr("height", lh).style("overflow", "visible");
 
-    const legendColor = d3.scaleLinear()
-      .domain([0, 1800, 2000, 2021])
-      .range(COLOR_RANGE);
+    const legendColor = d3.scaleLinear().domain(COLOR_DOMAIN).range(COLOR_RANGE);
 
     const yearLabels = ["pre‑1900", "1900", "2000", "2021"];
-    const yearValues = [0, 1900, 2000, 2021];
+    const yearValues = [1800, 1900, 2000, 2021];
     const cx = 14, gapX = 58;
 
-    // color legend
     yearValues.forEach((v, i) => {
-      lg.append("circle")
-        .attr("cx", cx + i * gapX)
-        .attr("cy", 14)
-        .attr("r", 7)
-        .attr("fill", legendColor(v))
-        .attr("stroke", "#3a3f35")
-        .attr("stroke-width", 0.8);
-
-      lg.append("text")
-        .attr("x", cx + i * gapX)
-        .attr("y", 30)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#6b7564")
-        .attr("font-family", "'DM Mono', monospace")
-        .attr("font-size", "8px")
+      lg.append("circle").attr("cx", cx + i * gapX).attr("cy", 14).attr("r", 7)
+        .attr("fill", legendColor(v)).attr("stroke", "#3a3f35").attr("stroke-width", 0.8);
+      lg.append("text").attr("x", cx + i * gapX).attr("y", 30).attr("text-anchor", "middle")
+        .attr("fill", "#6b7564").attr("font-family", "'DM Mono', monospace").attr("font-size", "8px")
         .text(yearLabels[i]);
     });
 
-    // size legend
     const sizeLabels = [1, 4, 8];
-    const sizeScale  = d3.scalePow().exponent(2).domain([0,8]).range([3,18]);
+    const sizeScale  = d3.scaleOrdinal().domain([1, 4, 8]).range([3, 12, 28]);
     const sy = 80;
 
-    lg.append("text")
-      .attr("x", 0).attr("y", sy - 14)
-      .attr("fill", "#6b7564")
-      .attr("font-family", "'DM Mono', monospace")
-      .attr("font-size", "8px")
-      .attr("letter-spacing", "0.1em")
-      .text("CROWN DIAMETER");
+    lg.append("text").attr("x", 0).attr("y", sy - 14).attr("fill", "#6b7564")
+      .attr("font-family", "'DM Mono', monospace").attr("font-size", "8px")
+      .attr("letter-spacing", "0.1em").text("CROWN CLASS");
 
     sizeLabels.forEach((v, i) => {
-      const r  = sizeScale(v);
-      const x  = cx + i * gapX;
-      const cy2= sy + 20;
-
-      lg.append("circle")
-        .attr("cx", x).attr("cy", cy2)
-        .attr("r", r)
-        .attr("fill", "none")
-        .attr("stroke", "#6b7564")
-        .attr("stroke-width", 0.8);
-
-      lg.append("text")
-        .attr("x", x).attr("y", cy2 + r + 12)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#6b7564")
-        .attr("font-family", "'DM Mono', monospace")
-        .attr("font-size", "8px")
-        .text(v + " m");
+      const r   = sizeScale(v);
+      const x   = cx + i * gapX;
+      const cy2 = sy + 20;
+      lg.append("circle").attr("cx", x).attr("cy", cy2).attr("r", r)
+        .attr("fill", "none").attr("stroke", "#6b7564").attr("stroke-width", 0.8);
+      lg.append("text").attr("x", x).attr("y", cy2 + r + 12).attr("text-anchor", "middle")
+        .attr("fill", "#6b7564").attr("font-family", "'DM Mono', monospace").attr("font-size", "8px")
+        .text(v);
     });
   })();
   </script>
