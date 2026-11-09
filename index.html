@@ -77,6 +77,16 @@
     padding: 0.45rem 0.95rem; border-radius: 4px; font-weight: 700;
   }
   .nav-links .nav-cv:hover { color: var(--ocean); background: var(--paper); }
+  button.nav-cv { border: none; font: inherit; font-weight: 700; cursor: pointer; }
+  /* CV language dialog */
+  .cv-dialog { margin: auto; width: min(92vw, 380px); padding: 1.6rem 1.6rem 1.4rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--ocean); color: var(--paper); }
+  .cv-dialog::backdrop { background: rgba(5,15,22,0.75); }
+  .cv-dialog h2 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+  .cv-dialog p { color: var(--shoal); margin-bottom: 1.2rem; }
+  .cv-options { display: grid; gap: 0.7rem; }
+  .cv-options .btn { text-align: center; }
+  .cv-close { margin-top: 1rem; background: none; border: none; color: var(--shoal); font: inherit; text-decoration: underline; cursor: pointer; padding: 0.2rem 0; }
+  .cv-close:hover { color: var(--paper); }
   .nav-toggle { display: none; background: none; border: 1px solid var(--rule); color: var(--paper);
     padding: 0.4rem 0.75rem; border-radius: 4px; font: inherit; cursor: pointer; }
 
@@ -306,7 +316,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#background">Background</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a class="nav-cv" href="Radhika_Dhuri_CV.pdf" download>Download CV</a></li>
+      <li><button class="nav-cv" type="button" data-cv-open aria-haspopup="dialog">Download CV</button></li>
     </ul>
   </div>
 </header>
@@ -327,7 +337,7 @@
       <p class="status"><span class="status-dot" aria-hidden="true"></span>Available now and open to relocation</p>
       <div class="actions">
         <a class="btn btn-solid" href="#projects">See my projects</a>
-        <a class="btn btn-line" href="Radhika_Dhuri_CV.pdf" download>Download CV</a>
+        <button class="btn btn-line" type="button" data-cv-open aria-haspopup="dialog">Download CV</button>
       </div>
     </div>
 
@@ -362,7 +372,7 @@
     <div class="skills">
       <h3>GIS and remote sensing</h3>
       <ul class="chips">
-        <li>ArcGIS Pro</li><li>ArcMap</li><li>QGIS</li><li>PostGIS</li><li>GDAL</li>
+        <li>ArcGIS Pro</li><li>ArcMap</li><li>QGIS</li><li>PostGIS</li>
         <li>Sentinel-2</li><li>Landsat</li><li>Google Earth Engine</li><li>ERDAS Imagine</li>
       </ul>
       <h3>Map design</h3>
@@ -408,10 +418,10 @@
       <article class="card" data-cat="rs" data-url="https://cartographic-star-dune-dynamics-thesis.streamlit.app/">
         <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/thesis_tn.png" alt="Dashboard showing star dune crestlines in the Namib Sand Sea"></div>
         <div class="card-body">
-          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MSc thesis, 2026</div>
+          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MSc thesis, TU Munich, 2026</div>
           <h3>Moving star dunes in Namibia</h3>
-          <p>Found dune crestlines in Sentinel-2 images with Python and mapped how they move over time, including uncertain or missing data.</p>
-          <div class="card-tools">Python, Sentinel-2, Streamlit</div>
+          <p>Built a Python workflow that finds dune crestlines in Sentinel-2 images and maps how they move over several years, including uncertain or missing data. The results are in an interactive dashboard.</p>
+          <div class="card-tools">Python, Google Earth Engine, Sentinel-2, Streamlit</div>
           <span class="card-open">Open dashboard</span>
         </div>
       </article>
@@ -420,8 +430,8 @@
         <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/atlas_map.png" alt="Atlas spread on climate action"></div>
         <div class="card-body">
           <div class="card-kind"><span class="swatch sw-print"></span>Print, TU Wien, 2025</div>
-          <h3>Atlas of Sustainability</h3>
-          <p>Co-authored the climate action spread in an official atlas of the International Cartographic Association. Made in one week.</p>
+          <h3>SDG 13 Climate Action, Atlas of Sustainability</h3>
+          <p>Co-authored the climate action spread in the Atlas of Sustainability of the International Cartographic Association. Made in one week during the 2025 design challenge.</p>
           <div class="card-tools">QGIS, Illustrator</div>
           <span class="card-open">View atlas project</span>
         </div>
@@ -438,9 +448,9 @@
                      portfolio_websites/Urban_heat_island_overview/Slide7.PNG">
         <div class="card-media"><img loading="lazy" src="portfolio_websites/Urban_heat_island_overview/Slide1.PNG" alt="Land surface temperature maps of Pune"></div>
         <div class="card-body">
-          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MA dissertation, 2024</div>
+          <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MA dissertation, Goa University, 2024</div>
           <h3>Urban heat in Pune, 2002 to 2022</h3>
-          <p>Mapped surface temperature over 20 years from Landsat images and compared ten industrial and residential areas.</p>
+          <p>Mapped surface temperature over 20 years from Landsat images and compared ten industrial and residential areas. Presented at an international geography conference in 2023.</p>
           <div class="card-tools">Landsat, ArcMap, ERDAS Imagine</div>
           <span class="card-open">View maps</span>
         </div>
@@ -462,8 +472,8 @@
         <div class="card-body">
           <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
           <h3>Family amenities in Vienna</h3>
-          <p>Web map that helps parents find playgrounds, kindergartens and cafés nearby.</p>
-          <div class="card-tools">PostGIS, GeoServer, Leaflet</div>
+          <p>Loaded OpenStreetMap data into PostGIS, ran spatial queries and buffers, and published the layers as a GeoServer WMS. The web map helps parents find playgrounds, kindergartens and cafés nearby.</p>
+          <div class="card-tools">PostgreSQL/PostGIS, SQL, GeoServer (WMS), Leaflet</div>
           <span class="card-open">View screenshot</span>
         </div>
       </article>
@@ -472,9 +482,9 @@
         <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/Presentation_Dhuri_Radhika-01.png" alt="Forest biomass estimation results"></div>
         <div class="card-body">
           <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, TU Dresden, 2025</div>
-          <h3>Forest biomass estimation</h3>
-          <p>Estimated forest biomass from satellite data with a Random Forest model. Team of four.</p>
-          <div class="card-tools">R, Random Forest</div>
+          <h3>Forest biomass from SAR data</h3>
+          <p>Processed SAR satellite data in R and estimated forest biomass with a Random Forest model. Final assignment of the remote sensing course. Team of four.</p>
+          <div class="card-tools">R, SAR data, Random Forest</div>
           <span class="card-open">View on GitHub</span>
         </div>
       </article>
@@ -484,8 +494,8 @@
         <div class="card-body">
           <div class="card-kind"><span class="swatch sw-print"></span>Print, TU Dresden, 2025</div>
           <h3>Topographic map of Rabenau Grund</h3>
-          <p>A 1:25,000 map with contours, hillshading and a UTM grid, made from a 1 m elevation model.</p>
-          <div class="card-tools">QGIS, elevation model, OpenStreetMap</div>
+          <p>A 1:25,000 map with contours, hillshading and a UTM grid, made from a 1 m elevation model (DGM1). An editorial documents every production step.</p>
+          <div class="card-tools">QGIS, DGM1 elevation model, OpenStreetMap</div>
           <span class="card-open">View map</span>
         </div>
       </article>
@@ -562,7 +572,7 @@
           <div class="card-kind"><span class="swatch sw-web"></span>Web, TU Wien, 2025</div>
           <h3>Pune election wards</h3>
           <p>Interactive map of the 2024 ward boundaries with roads and rivers.</p>
-          <div class="card-tools">Mapbox GL JS</div>
+          <div class="card-tools">SVG</div>
           <span class="card-open">Open web map</span>
         </div>
       </article>
@@ -599,7 +609,7 @@
         <div class="tl-years">2022 to 2024</div>
         <h3>MA Geography</h3>
         <div class="tl-place">Parvatibai Chowgule College, Goa University, India</div>
-        <p>A department known for combining geography with GIS and fieldwork. My dissertation studied urban heat in Pune with satellite data.</p>
+        <p>A department known for combining geography with GIS and fieldwork. My dissertation studied urban heat in Pune with satellite data. In 2024 I qualified in the UGC NET in Geography, the national eligibility test for university teaching in India.</p>
       </li>
       <li>
         <div class="tl-years">2024 to 2026</div>
@@ -633,7 +643,7 @@
       <p class="lead">I am looking for roles in cartography, GIS, remote sensing and geodata. I would be glad to hear from you.</p>
       <div class="actions" style="margin-top:1.6rem">
         <a class="btn btn-solid" href="mailto:radhamaheshdhuri@gmail.com">Email me</a>
-        <a class="btn btn-line" href="Radhika_Dhuri_CV.pdf" download>Download CV</a>
+        <button class="btn btn-line" type="button" data-cv-open aria-haspopup="dialog">Download CV</button>
       </div>
     </div>
     <ul class="contact-list">
@@ -652,6 +662,16 @@
     <span>Globe data: Natural Earth</span>
   </div>
 </footer>
+
+<dialog class="cv-dialog" id="cvDialog" aria-labelledby="cvTitle">
+  <h2 id="cvTitle">Download CV</h2>
+  <p>Choose a language.</p>
+  <div class="cv-options">
+    <a class="btn btn-solid" href="CV_radhika_en.pdf" download hreflang="en">English</a>
+    <a class="btn btn-line" href="CV_radhika_de.pdf" download hreflang="de" lang="de">Deutsch</a>
+  </div>
+  <button class="cv-close" type="button" id="cvClose">Cancel</button>
+</dialog>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
   <div class="lb-top">
@@ -682,6 +702,13 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   navLinks.classList.remove('open');
   navToggle.setAttribute('aria-expanded', 'false');
 }));
+
+/* ─── CV language dialog ─── */
+const cvDialog = document.getElementById('cvDialog');
+document.querySelectorAll('[data-cv-open]').forEach(b => b.addEventListener('click', () => cvDialog.showModal()));
+document.getElementById('cvClose').addEventListener('click', () => cvDialog.close());
+cvDialog.addEventListener('click', e => { if (e.target === cvDialog) cvDialog.close(); });
+cvDialog.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(() => cvDialog.close(), 150)));
 
 /* ─── Hide images that are not uploaded yet ─── */
 document.querySelectorAll('img[loading]').forEach(img => {
