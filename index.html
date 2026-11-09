@@ -213,14 +213,56 @@
   /* ─── LIGHTBOX ─── */
   .lightbox {
     position: fixed; inset: 0; z-index: 100; display: none;
-    background: rgba(5,15,22,0.94); align-items: center; justify-content: center; padding: 1.5rem;
+    background: rgba(5,15,22,0.95);
+    flex-direction: column; padding: 0.9rem clamp(0.75rem, 3vw, 1.5rem) 1rem; gap: 0.6rem;
   }
   .lightbox.open { display: flex; }
-  .lightbox img { max-width: 92vw; max-height: 86vh; border-radius: 4px; }
-  .lightbox button {
-    position: absolute; top: 1rem; right: 1rem; font: inherit; font-weight: 700;
-    background: var(--paper); color: var(--ocean); border: none; border-radius: 4px;
-    padding: 0.55rem 1rem; cursor: pointer;
+  .lb-top { display: flex; align-items: center; gap: 1rem; min-height: 44px; }
+  .lb-title { font-family: var(--serif); font-weight: 600; font-size: 1.1rem; flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb-count { color: var(--shoal); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+  #lightboxClose {
+    font: inherit; font-weight: 700; background: var(--paper); color: var(--ocean);
+    border: none; border-radius: 4px; padding: 0.55rem 1rem; cursor: pointer;
+  }
+  #lightboxClose:hover { background: var(--sandstone); }
+  .lb-stage { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .lb-stage img {
+    max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px;
+    transition: opacity 0.2s ease; user-select: none; -webkit-user-drag: none;
+  }
+  .lb-stage img.loading { opacity: 0.25; }
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(242,234,216,0.35);
+    background: rgba(10,31,46,0.8); color: var(--paper); font-size: 1.6rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .lb-nav:hover { background: var(--ocean-lift); border-color: var(--paper); }
+  .lb-prev { left: 0.25rem; }
+  .lb-next { right: 0.25rem; }
+  .lb-caption { text-align: center; color: var(--paper); font-size: 1rem; min-height: 1.65em; }
+  .lb-thumbs { display: flex; gap: 0.5rem; justify-content: center; overflow-x: auto; padding: 0.25rem; scrollbar-width: thin; }
+  .lb-thumbs button {
+    flex: 0 0 auto; width: 72px; height: 54px; padding: 0; border-radius: 3px; overflow: hidden; cursor: pointer;
+    border: 2px solid transparent; background: var(--ocean-lift); opacity: 0.55; transition: opacity 0.2s, border-color 0.2s;
+  }
+  .lb-thumbs button:hover { opacity: 0.9; }
+  .lb-thumbs button[aria-current="true"] { opacity: 1; border-color: var(--sandstone); }
+  .lb-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+  .lightbox.single .lb-nav, .lightbox.single .lb-thumbs, .lightbox.single .lb-count { display: none; }
+  @media (max-width: 600px) {
+    .lb-nav { width: 40px; height: 40px; font-size: 1.3rem; }
+    .lb-thumbs button { width: 56px; height: 42px; }
+  }
+
+  /* "N images" badge on cards that open a gallery */
+  .card-count {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(10,31,46,0.85); color: var(--paper); font-size: 0.85rem; font-weight: 700;
+    padding: 0.2rem 0.55rem; border-radius: 3px;
   }
 
   /* ─── RESPONSIVE ─── */
@@ -356,8 +398,10 @@
     <!--
       How a card works:
       data-cat   = which filter shows it (print, web, rs, apps)
-      data-image = opens the image large on click
-      data-url   = opens a link in a new tab on click
+      data-image    = opens the image large on click
+      data-images   = opens a gallery: image paths separated by commas
+      data-captions = optional, one caption per image, separated by |
+      data-url      = opens a link in a new tab on click
     -->
     <div class="grid" id="grid">
 
@@ -383,8 +427,16 @@
         </div>
       </article>
 
-      <article class="card" data-cat="rs" data-image="portfolio_websites/print_maps/uhi_lst_series.png">
-        <div class="card-media"><img loading="lazy" src="portfolio_websites/Thumbnails/uhi_tn.png" alt="Land surface temperature maps of Pune"></div>
+      <!-- Replace these paths with your PNG files (any number, in the order you want them shown) -->
+      <article class="card" data-cat="rs"
+        data-images="portfolio_websites/Urban_heat_island_overview/Slide1.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide2.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide3.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide4.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide5.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide6.PNG,
+                     portfolio_websites/Urban_heat_island_overview/Slide7.PNG">
+        <div class="card-media"><img loading="lazy" src="portfolio_websites/Urban_heat_island_overview/Slide1.PNG" alt="Land surface temperature maps of Pune"></div>
         <div class="card-body">
           <div class="card-kind"><span class="swatch sw-rs"></span>Remote sensing, MA dissertation, 2024</div>
           <h3>Urban heat in Pune, 2002 to 2022</h3>
@@ -601,9 +653,19 @@
   </div>
 </footer>
 
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Map preview">
-  <button id="lightboxClose">Close</button>
-  <img id="lightboxImg" src="" alt="">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-top">
+    <p class="lb-title" id="lbTitle"></p>
+    <span class="lb-count" id="lbCount" aria-live="polite"></span>
+    <button id="lightboxClose" type="button">Close</button>
+  </div>
+  <div class="lb-stage" id="lbStage">
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous image">‹</button>
+    <img id="lightboxImg" src="" alt="">
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next image">›</button>
+  </div>
+  <p class="lb-caption" id="lbCaption"></p>
+  <div class="lb-thumbs" id="lbThumbs" aria-label="Choose an image"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -637,26 +699,111 @@ document.querySelectorAll('.legend button').forEach(btn => {
   });
 });
 
-/* ─── Cards: open image or link (mouse and keyboard) ─── */
-const lightbox = document.getElementById('lightbox');
+/* ─── Lightbox gallery (one image or many) ─── */
+const lightbox    = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
-function openLightbox(src, alt) {
-  lightboxImg.src = src; lightboxImg.alt = alt;
-  lightbox.classList.add('open');
-  document.getElementById('lightboxClose').focus();
-}
-function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
-document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+const lbTitle     = document.getElementById('lbTitle');
+const lbCount     = document.getElementById('lbCount');
+const lbCaption   = document.getElementById('lbCaption');
+const lbThumbs    = document.getElementById('lbThumbs');
+const lbClose     = document.getElementById('lightboxClose');
+let gallery = [], galleryIndex = 0, galleryTitle = '', lastFocus = null;
 
+function openGallery(images, captions, title, opener) {
+  gallery = images; galleryTitle = title; lastFocus = opener || document.activeElement;
+  lbTitle.textContent = title;
+  lightbox.classList.toggle('single', images.length < 2);
+  lbThumbs.innerHTML = '';
+  if (images.length > 1) {
+    images.forEach((src, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Show image ${i + 1}${captions[i] ? ': ' + captions[i] : ''}`);
+      b.innerHTML = `<img src="${src}" alt="" loading="lazy">`;
+      b.addEventListener('click', () => showImage(i));
+      lbThumbs.appendChild(b);
+    });
+  }
+  lightbox._captions = captions;
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showImage(0);
+  lbClose.focus();
+}
+
+function showImage(i) {
+  const n = gallery.length;
+  galleryIndex = (i + n) % n;
+  const cap = lightbox._captions[galleryIndex] || '';
+  lightboxImg.classList.add('loading');
+  lightboxImg.onload = () => lightboxImg.classList.remove('loading');
+  lightboxImg.src = gallery[galleryIndex];
+  lightboxImg.alt = cap ? `${galleryTitle}: ${cap}` : `${galleryTitle}, image ${galleryIndex + 1} of ${n}`;
+  lbCaption.textContent = cap;
+  lbCount.textContent = `${galleryIndex + 1} / ${n}`;
+  [...lbThumbs.children].forEach((b, j) => b.setAttribute('aria-current', j === galleryIndex));
+  const active = lbThumbs.children[galleryIndex];
+  if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+  // preload neighbours so next/previous feel instant
+  if (n > 1) [1, -1].forEach(d => { new Image().src = gallery[(galleryIndex + d + n) % n]; });
+}
+
+function closeLightbox() {
+  if (!lightbox.classList.contains('open')) return;
+  lightbox.classList.remove('open');
+  lightboxImg.src = '';
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+
+lbClose.addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', () => showImage(galleryIndex - 1));
+document.getElementById('lbNext').addEventListener('click', () => showImage(galleryIndex + 1));
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox || e.target.id === 'lbStage') closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowRight' && gallery.length > 1) showImage(galleryIndex + 1);
+  else if (e.key === 'ArrowLeft'  && gallery.length > 1) showImage(galleryIndex - 1);
+  else if (e.key === 'Tab') {
+    // keep keyboard focus inside the open gallery
+    const f = [...lightbox.querySelectorAll('button')].filter(b => b.offsetParent !== null);
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+// swipe on touch screens
+let touchX = null;
+lightbox.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+lightbox.addEventListener('touchend', e => {
+  if (touchX === null || gallery.length < 2) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 40) showImage(galleryIndex + (dx < 0 ? 1 : -1));
+  touchX = null;
+});
+
+/* ─── Cards: open gallery, image or link (mouse and keyboard) ─── */
 document.querySelectorAll('.card').forEach(card => {
   const title = card.querySelector('h3').textContent;
+  const images = card.dataset.images
+    ? card.dataset.images.split(',').map(s => s.trim()).filter(Boolean)
+    : card.dataset.image ? [card.dataset.image] : null;
+  const captions = (card.dataset.captions || '').split('|').map(s => s.trim());
   card.tabIndex = 0;
   card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', title);
-  const go = () => card.dataset.image
-    ? openLightbox(card.dataset.image, title)
+  card.setAttribute('aria-label', images && images.length > 1 ? `${title}, ${images.length} images` : title);
+  if (images && images.length > 1) {
+    const badge = document.createElement('span');
+    badge.className = 'card-count';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = `${images.length} images`;
+    card.querySelector('.card-media').appendChild(badge);
+  }
+  const go = () => images
+    ? openGallery(images, captions, title, card)
     : window.open(card.dataset.url, '_blank', 'noopener');
   card.addEventListener('click', go);
   card.addEventListener('keydown', e => {
